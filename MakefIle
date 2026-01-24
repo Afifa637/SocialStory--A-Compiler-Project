@@ -1,0 +1,88 @@
+# Makefile for SocialStoryScript Compiler
+# Author: Your Name
+# Date: January 2026
+
+CC = gcc
+FLEX = flex
+CFLAGS = -Wall -Wextra -std=c99
+LDFLAGS = -lfl
+
+# Target executable
+TARGET = socialstory
+
+# Source files
+LEX_SOURCE = socialstory.l
+LEX_OUTPUT = lex.yy.c
+HEADER = socialstory_tokens.h
+
+# Test files
+INPUT_FILE = sample_input.txt
+OUTPUT_FILE = token_output.txt
+
+# Colors for output
+GREEN = \033[0;32m
+YELLOW = \033[0;33m
+BLUE = \033[0;34m
+NC = \033[0m # No Color
+
+.PHONY: all clean run help test
+
+# Default target
+all: $(TARGET)
+	@echo "$(GREEN)✓ Build completed successfully!$(NC)"
+	@echo "$(BLUE)Run 'make run' to test the lexer$(NC)"
+
+# Build the lexer
+$(TARGET): $(LEX_SOURCE) $(HEADER)
+	@echo "$(YELLOW)Generating lexical analyzer...$(NC)"
+	$(FLEX) $(LEX_SOURCE)
+	@echo "$(YELLOW)Compiling lexer...$(NC)"
+	$(CC) $(CFLAGS) $(LEX_OUTPUT) -o $(TARGET) $(LDFLAGS)
+	@echo "$(GREEN)✓ Compilation successful!$(NC)"
+
+# Run the lexer with sample input
+run: $(TARGET)
+	@echo "$(BLUE)════════════════════════════════════════════════$(NC)"
+	@echo "$(BLUE)Running SocialStoryScript Lexical Analyzer$(NC)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(NC)"
+	@./$(TARGET) $(INPUT_FILE) $(OUTPUT_FILE)
+	@echo "$(GREEN)Output saved to $(OUTPUT_FILE)$(NC)"
+	@echo "$(YELLOW)Displaying results:$(NC)"
+	@cat $(OUTPUT_FILE)
+
+# Test with custom files
+test:
+	@if [ -z "$(INPUT)" ] || [ -z "$(OUTPUT)" ]; then \
+		echo "$(YELLOW)Usage: make test INPUT=<input_file> OUTPUT=<output_file>$(NC)"; \
+		exit 1; \
+	fi
+	@echo "$(BLUE)Testing with $(INPUT) → $(OUTPUT)$(NC)"
+	@./$(TARGET) $(INPUT) $(OUTPUT)
+	@echo "$(GREEN)✓ Test completed!$(NC)"
+	@cat $(OUTPUT)
+
+# Clean build artifacts
+clean:
+	@echo "$(YELLOW)Cleaning build artifacts...$(NC)"
+	@rm -f $(TARGET) $(LEX_OUTPUT) $(OUTPUT_FILE)
+	@echo "$(GREEN)✓ Clean completed!$(NC)"
+
+# Help target
+help:
+	@echo "$(BLUE)════════════════════════════════════════════════$(NC)"
+	@echo "$(BLUE)SocialStoryScript Compiler - Makefile Help$(NC)"
+	@echo "$(BLUE)════════════════════════════════════════════════$(NC)"
+	@echo ""
+	@echo "$(GREEN)Available targets:$(NC)"
+	@echo "  $(YELLOW)make$(NC) or $(YELLOW)make all$(NC)     - Build the lexical analyzer"
+	@echo "  $(YELLOW)make run$(NC)            - Build and run with sample_input.txt"
+	@echo "  $(YELLOW)make test$(NC)           - Test with custom files:"
+	@echo "                         make test INPUT=file.txt OUTPUT=out.txt"
+	@echo "  $(YELLOW)make clean$(NC)          - Remove all build artifacts"
+	@echo "  $(YELLOW)make help$(NC)           - Show this help message"
+	@echo ""
+	@echo "$(GREEN)Example usage:$(NC)"
+	@echo "  $(BLUE)$$$(NC) make              # Build the compiler"
+	@echo "  $(BLUE)$$$(NC) make run          # Run with sample input"
+	@echo "  $(BLUE)$$$(NC) make clean        # Clean up"
+	@echo ""
