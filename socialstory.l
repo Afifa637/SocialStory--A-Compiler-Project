@@ -1,300 +1,472 @@
 %{
-/*
- * SocialStoryScript Lexical Analyzer
- * A unique narrative programming language inspired by social media storytelling
- * Author: Your Name
- * Date: January 2026
- */
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "socialstory_tokens.h"
 
-/* Function prototypes */
-int yylex(void);
-static char* duplicate_string(const char* s);
-static void print_token(int token, const char* name);
-
-/* Global variables */
 YYSTYPE yylval;
-extern FILE *yyin;
-FILE *yyout = NULL;
+int error_count = 0;
 
-/* String duplication utility */
-static char* duplicate_string(const char* s) {
-    size_t len = strlen(s) + 1;
-    char* copy = (char*)malloc(len);
+char* duplicate_string(const char* s) {
+    char* copy = (char*)malloc(strlen(s) + 1);
     if (!copy) {
-        fprintf(stderr, "ERROR: Memory allocation failed\n");
-        exit(EXIT_FAILURE);
+        fprintf(stderr, "Memory allocation failed at line %d\n", yylineno);
+        exit(1);
     }
-    memcpy(copy, s, len);
+    strcpy(copy, s);
     return copy;
 }
 
-/* Token printing utility */
-static void print_token(int token, const char* name) {
-    fprintf(yyout, "%-30s | Line %-4d | Token: %s\n", yytext, yylineno, name);
+char* process_string(const char* str) {
+    size_t len = strlen(str);
+    char* result = (char*)malloc(len + 1);
+    if (!result) return NULL;
+    
+    int j = 0;
+    for (size_t i = 0; i < len; i++) {
+        if (str[i] == '\\' && i + 1 < len) {
+            i++;
+            switch(str[i]) {
+                case 'n':  result[j++] = '\n'; break;
+                case 't':  result[j++] = '\t'; break;
+                case 'r':  result[j++] = '\r'; break;
+                case '\\': result[j++] = '\\'; break;
+                case '"':  result[j++] = '"'; break;
+                case '\'': result[j++] = '\''; break;
+                case '0':  result[j++] = '\0'; break;
+                default:   result[j++] = str[i]; break;
+            }
+        } else {
+            result[j++] = str[i];
+        }
+    }
+    result[j] = '\0';
+    return result;
 }
 
 %}
 
-/* Flex options */
 %option noyywrap
 %option yylineno
-%option case-insensitive
 
-/* Regular expression definitions */
-WHITESPACE      [ \t\r]+
-NEWLINE         \n
-DIGIT           [0-9]
-LETTER          [A-Za-z]
-IDENTIFIER      {LETTER}({LETTER}|{DIGIT}|_)*
-INTEGER         {DIGIT}+
-DECIMAL         {DIGIT}+\.{DIGIT}+
-STRING          \"([^\\\"\n]|\\.)*\"
-COMMENT         ("//".*|"#".*)
+WS          [ \t\r]+
+NEWLINE     \n
+DIGIT       [0-9]
+LETTER      [A-Za-z]
+ID          {LETTER}({LETTER}|{DIGIT}|_)*
+INTEGER     {DIGIT}+
+FLOAT       {DIGIT}+\.{DIGIT}+
+SCIENTIFIC  {DIGIT}+(\.{DIGIT}+)?[eE][+-]?{DIGIT}+
+HEX         0[xX][0-9a-fA-F]+
+OCTAL       0[0-7]+
+STRING      \"([^\\\"\n]|\\.)*\"
+CHAR        '([^\\'\n]|\\.)' 
+UNTERMINATED_STRING  \"([^\\\"\n]|\\.)*
+SINGLE_COMMENT  ("//".*|"#".*)
+MULTI_COMMENT_START "/*"
+MULTI_COMMENT_END "*/"
 
-%%
-
-    /* ==================== PROGRAM STRUCTURE ==================== */
-"Go live"(".")?                 { print_token(T_GO_LIVE, "GO_LIVE"); return T_GO_LIVE; }
-"End live"(".")?                { print_token(T_END_LIVE, "END_LIVE"); return T_END_LIVE; }
-
-    /* ==================== ACCOUNT & NARRATIVE ==================== */
-"The account"                   { print_token(T_THE_ACCOUNT, "THE_ACCOUNT"); return T_THE_ACCOUNT; }
-"was created"(".")?             { print_token(T_WAS_CREATED, "WAS_CREATED"); return T_WAS_CREATED; }
-"The post"                      { print_token(T_THE_POST, "THE_POST"); return T_THE_POST; }
-"The caption"                   { print_token(T_THE_CAPTION, "THE_CAPTION"); return T_THE_CAPTION; }
-"The follower"                  { print_token(T_THE_FOLLOWER, "THE_FOLLOWER"); return T_THE_FOLLOWER; }
-
-    /* ==================== INITIALIZATION VERBS ==================== */
-"started with"                  { print_token(T_STARTED_WITH, "STARTED_WITH"); return T_STARTED_WITH; }
-"began at"                      { print_token(T_BEGAN_AT, "BEGAN_AT"); return T_BEGAN_AT; }
-"now has"                       { print_token(T_NOW_HAS, "NOW_HAS"); return T_NOW_HAS; }
-"reads"                         { print_token(T_READS, "READS"); return T_READS; }
-"is viral"(".")?                { print_token(T_IS_VIRAL, "IS_VIRAL"); return T_IS_VIRAL; }
-"is trending"(".")?             { print_token(T_IS_TRENDING, "IS_TRENDING"); return T_IS_TRENDING; }
-
-    /* ==================== UPDATE VERBS ==================== */
-"gained"                        { print_token(T_GAINED, "GAINED"); return T_GAINED; }
-"lost"                          { print_token(T_LOST, "LOST"); return T_LOST; }
-"increased by"                  { print_token(T_INCREASED_BY, "INCREASED_BY"); return T_INCREASED_BY; }
-"decreased by"                  { print_token(T_DECREASED_BY, "DECREASED_BY"); return T_DECREASED_BY; }
-"was updated to"                { print_token(T_WAS_UPDATED_TO, "WAS_UPDATED_TO"); return T_WAS_UPDATED_TO; }
-"became"                        { print_token(T_BECAME, "BECAME"); return T_BECAME; }
-
-    /* ==================== DATA STRUCTURES ==================== */
-"contains"                      { print_token(T_CONTAINS, "CONTAINS"); return T_CONTAINS; }
-"the feed"                      { print_token(T_THE_FEED, "THE_FEED"); return T_THE_FEED; }
-"at index"                      { print_token(T_AT_INDEX, "AT_INDEX"); return T_AT_INDEX; }
-
-    /* ==================== TYPE KEYWORDS ==================== */
-"likes"                         { print_token(T_LIKES, "LIKES"); return T_LIKES; }
-"followers"                     { print_token(T_FOLLOWERS, "FOLLOWERS"); return T_FOLLOWERS; }
-"views"                         { print_token(T_VIEWS, "VIEWS"); return T_VIEWS; }
-"comments"                      { print_token(T_COMMENTS, "COMMENTS"); return T_COMMENTS; }
-"shares"                        { print_token(T_SHARES, "SHARES"); return T_SHARES; }
-"engagement rate"               { print_token(T_ENGAGEMENT_RATE, "ENGAGEMENT_RATE"); return T_ENGAGEMENT_RATE; }
-"reach"                         { print_token(T_REACH, "REACH"); return T_REACH; }
-
-    /* ==================== CONDITIONALS ==================== */
-"When"                          { print_token(T_WHEN, "WHEN"); return T_WHEN; }
-"Otherwise if"                  { print_token(T_OTHERWISE_IF, "OTHERWISE_IF"); return T_OTHERWISE_IF; }
-"Otherwise"                     { print_token(T_OTHERWISE, "OTHERWISE"); return T_OTHERWISE; }
-"went viral"                    { print_token(T_WENT_VIRAL, "WENT_VIRAL"); return T_WENT_VIRAL; }
-"reached"                       { print_token(T_REACHED, "REACHED"); return T_REACHED; }
-"exceeded"                      { print_token(T_EXCEEDED, "EXCEEDED"); return T_EXCEEDED; }
-"dropped below"                 { print_token(T_DROPPED_BELOW, "DROPPED_BELOW"); return T_DROPPED_BELOW; }
-"stayed at"                     { print_token(T_STAYED_AT, "STAYED_AT"); return T_STAYED_AT; }
-
-    /* ==================== COMPARISON OPERATORS ==================== */
-"more than"                     { print_token(T_MORE_THAN, "MORE_THAN"); return T_MORE_THAN; }
-"less than"                     { print_token(T_LESS_THAN, "LESS_THAN"); return T_LESS_THAN; }
-"exactly"                       { print_token(T_EXACTLY, "EXACTLY"); return T_EXACTLY; }
-"at least"                      { print_token(T_AT_LEAST, "AT_LEAST"); return T_AT_LEAST; }
-"at most"                       { print_token(T_AT_MOST, "AT_MOST"); return T_AT_MOST; }
-"different from"                { print_token(T_DIFFERENT_FROM, "DIFFERENT_FROM"); return T_DIFFERENT_FROM; }
-
-    /* ==================== LOOPS ==================== */
-"Every day for"                 { print_token(T_EVERY_DAY_FOR, "EVERY_DAY_FOR"); return T_EVERY_DAY_FOR; }
-"days"(","|".")?                { print_token(T_DAYS, "DAYS"); return T_DAYS; }
-"For each"                      { print_token(T_FOR_EACH, "FOR_EACH"); return T_FOR_EACH; }
-"post in"                       { print_token(T_POST_IN, "POST_IN"); return T_POST_IN; }
-"follower from"                 { print_token(T_FOLLOWER_FROM, "FOLLOWER_FROM"); return T_FOLLOWER_FROM; }
-"to"                            { print_token(T_TO, "TO"); return T_TO; }
-"trending loop"                 { print_token(T_TRENDING_LOOP, "TRENDING_LOOP"); return T_TRENDING_LOOP; }
-"until"                         { print_token(T_UNTIL, "UNTIL"); return T_UNTIL; }
-
-    /* ==================== LOOP CONTROL ==================== */
-"Stop the story"(".")?          { print_token(T_STOP_THE_STORY, "STOP_THE_STORY"); return T_STOP_THE_STORY; }
-"Skip this post"(".")?          { print_token(T_SKIP_THIS_POST, "SKIP_THIS_POST"); return T_SKIP_THIS_POST; }
-
-    /* ==================== FUNCTIONS ==================== */
-"The story of"                  { print_token(T_THE_STORY_OF, "THE_STORY_OF"); return T_THE_STORY_OF; }
-"begins with"                   { print_token(T_BEGINS_WITH, "BEGINS_WITH"); return T_BEGINS_WITH; }
-"Tell back"                     { print_token(T_TELL_BACK, "TELL_BACK"); return T_TELL_BACK; }
-"The story ends"(".")?          { print_token(T_THE_STORY_ENDS, "THE_STORY_ENDS"); return T_THE_STORY_ENDS; }
-"Tell"                          { print_token(T_TELL, "TELL"); return T_TELL; }
-
-    /* ==================== INPUT/OUTPUT ==================== */
-"Announce"                      { print_token(T_ANNOUNCE, "ANNOUNCE"); return T_ANNOUNCE; }
-"Ask for"                       { print_token(T_ASK_FOR, "ASK_FOR"); return T_ASK_FOR; }
-"Display"                       { print_token(T_DISPLAY, "DISPLAY"); return T_DISPLAY; }
-
-    /* ==================== BUILT-IN FUNCTIONS ==================== */
-"Calculate virality"            { print_token(T_CALCULATE_VIRALITY, "CALCULATE_VIRALITY"); return T_CALCULATE_VIRALITY; }
-"Find top post"                 { print_token(T_FIND_TOP_POST, "FIND_TOP_POST"); return T_FIND_TOP_POST; }
-"Count total engagement"        { print_token(T_COUNT_TOTAL_ENGAGEMENT, "COUNT_TOTAL_ENGAGEMENT"); return T_COUNT_TOTAL_ENGAGEMENT; }
-"Check if trending"             { print_token(T_CHECK_IF_TRENDING, "CHECK_IF_TRENDING"); return T_CHECK_IF_TRENDING; }
-"Analyze growth"                { print_token(T_ANALYZE_GROWTH, "ANALYZE_GROWTH"); return T_ANALYZE_GROWTH; }
-
-    /* ==================== BOOLEAN LITERALS ==================== */
-"true story"                    { yylval.bval = 1; print_token(T_TRUE_STORY, "TRUE_STORY"); return T_TRUE_STORY; }
-"false alarm"                   { yylval.bval = 0; print_token(T_FALSE_ALARM, "FALSE_ALARM"); return T_FALSE_ALARM; }
-
-    /* ==================== LOGICAL OPERATORS ==================== */
-"also"                          { print_token(T_ALSO, "ALSO"); return T_ALSO; }
-"either"                        { print_token(T_EITHER, "EITHER"); return T_EITHER; }
-"opposite"                      { print_token(T_OPPOSITE, "OPPOSITE"); return T_OPPOSITE; }
-
-    /* ==================== PUNCTUATION ==================== */
-"("                             { print_token(T_LPAREN, "LPAREN"); return T_LPAREN; }
-")"                             { print_token(T_RPAREN, "RPAREN"); return T_RPAREN; }
-"{"                             { print_token(T_LBRACE, "LBRACE"); return T_LBRACE; }
-"}"                             { print_token(T_RBRACE, "RBRACE"); return T_RBRACE; }
-"["                             { print_token(T_LBRACKET, "LBRACKET"); return T_LBRACKET; }
-"]"                             { print_token(T_RBRACKET, "RBRACKET"); return T_RBRACKET; }
-","                             { print_token(T_COMMA, "COMMA"); return T_COMMA; }
-"."                             { print_token(T_DOT, "DOT"); return T_DOT; }
-":"                             { print_token(T_COLON, "COLON"); return T_COLON; }
-";"                             { print_token(T_SEMICOLON, "SEMICOLON"); return T_SEMICOLON; }
-
-    /* ==================== ARITHMETIC OPERATORS ==================== */
-"+"                             { print_token(T_PLUS, "PLUS"); return T_PLUS; }
-"-"                             { print_token(T_MINUS, "MINUS"); return T_MINUS; }
-"*"                             { print_token(T_MULTIPLY, "MULTIPLY"); return T_MULTIPLY; }
-"/"                             { print_token(T_DIVIDE, "DIVIDE"); return T_DIVIDE; }
-"%"                             { print_token(T_PERCENT, "PERCENT"); return T_PERCENT; }
-
-    /* ==================== ASSIGNMENT ==================== */
-"="                             { print_token(T_EQUALS, "EQUALS"); return T_EQUALS; }
-
-    /* ==================== LITERALS ==================== */
-{DECIMAL}                       { 
-                                  yylval.fval = atof(yytext); 
-                                  print_token(T_DECIMAL, "DECIMAL"); 
-                                  return T_DECIMAL; 
-                                }
-
-{INTEGER}                       { 
-                                  yylval.ival = atoi(yytext); 
-                                  print_token(T_NUMBER, "NUMBER"); 
-                                  return T_NUMBER; 
-                                }
-
-{STRING}                        { 
-                                  size_t len = strlen(yytext);
-                                  char* str = (char*)malloc(len - 1);
-                                  if (!str) {
-                                      fprintf(stderr, "ERROR: Memory allocation failed\n");
-                                      exit(EXIT_FAILURE);
-                                  }
-                                  strncpy(str, yytext + 1, len - 2);
-                                  str[len - 2] = '\0';
-                                  yylval.sval = str;
-                                  print_token(T_TEXT, "TEXT");
-                                  return T_TEXT;
-                                }
-
-{IDENTIFIER}                    { 
-                                  yylval.sval = duplicate_string(yytext); 
-                                  print_token(T_ID, "IDENTIFIER"); 
-                                  return T_ID; 
-                                }
-
-    /* ==================== IGNORE ==================== */
-{WHITESPACE}                    { /* Ignore whitespace */ }
-{NEWLINE}                       { /* Ignore newlines */ }
-{COMMENT}                       { /* Ignore comments */ }
-
-    /* ==================== ERROR HANDLING ==================== */
-.                               { 
-                                  fprintf(stderr, "\n╔══════════════════════════════════════╗\n");
-                                  fprintf(stderr, "║  LEXICAL ERROR DETECTED!            ║\n");
-                                  fprintf(stderr, "╠══════════════════════════════════════╣\n");
-                                  fprintf(stderr, "║  Line: %-28d ║\n", yylineno);
-                                  fprintf(stderr, "║  Unexpected character: '%-11s' ║\n", yytext);
-                                  fprintf(stderr, "╚══════════════════════════════════════╝\n\n");
-                                  fprintf(yyout, "\nLEXICAL ERROR at line %d: Unexpected '%s'\n", yylineno, yytext);
-                                }
+%x MULTILINE_COMMENT
 
 %%
 
-/* ==================== MAIN DRIVER ==================== */
+{MULTI_COMMENT_START}   { BEGIN(MULTILINE_COMMENT); }
+<MULTILINE_COMMENT>{MULTI_COMMENT_END}  { BEGIN(INITIAL); }
+<MULTILINE_COMMENT>\n   { }
+<MULTILINE_COMMENT>.    { }
+<MULTILINE_COMMENT><<EOF>> { 
+                          fprintf(stderr, "Error line %d: Unterminated comment\n", yylineno);
+                          error_count++;
+                          yyterminate();
+                        }
+
+"Go live"           { return T_GO_LIVE; }
+"End live"          { return T_END_LIVE; }
+
+    // ACCOUNT & ENTITY KEYWORDS
+"The account"       { return T_THE_ACCOUNT; }
+"was created"       { return T_WAS_CREATED; }
+"The post"          { return T_THE_POST; }
+"The caption"       { return T_THE_CAPTION; }
+"The follower"      { return T_THE_FOLLOWER; }
+"The story"         { return T_THE_STORY; }
+"posted"            { return T_POSTED; }
+"about"             { return T_ABOUT; }
+"that had"          { return T_THAT_HAD; }
+
+    //INITIALIZATION VERBS
+"started with"      { return T_STARTED_WITH; }
+"began at"          { return T_BEGAN_AT; }
+"now has"           { return T_NOW_HAS; }
+"reads"             { return T_READS; }
+"is viral"          { return T_IS_VIRAL; }
+"is trending"       { return T_IS_TRENDING; }
+
+    //UPDATE ACTION VERBS
+"gained"            { return T_GAINED; }
+"lost"              { return T_LOST; }
+"increased by"      { return T_INCREASED_BY; }
+"decreased by"      { return T_DECREASED_BY; }
+"was updated to"    { return T_WAS_UPDATED_TO; }
+"became"            { return T_BECAME; }
+"multiplied by"     { return T_MULTIPLIED_BY; }
+"divided by"        { return T_DIVIDED_BY; }
+
+    //CALCULATION WORDS
+"plus"              { return T_PLUS; }
+"minus"             { return T_MINUS; }
+"times"             { return T_TIMES; }
+"divided evenly by" { return T_DIVIDED_EVENLY_BY; }
+"modulo"            { return T_MODULO; }
+"with"              { return T_WITH; }
+"and then"          { return T_AND_THEN; }
+
+    // DATA STRUCTURES 
+"the feed"          { return T_THE_FEED; }
+"contains"          { return T_CONTAINS; }
+"at index"          { return T_AT_INDEX; }
+
+    // TYPE KEYWORDS
+"likes"             { return T_LIKES; }
+"followers"         { return T_FOLLOWERS; }
+"views"             { return T_VIEWS; }
+"comments"          { return T_COMMENTS; }
+"shares"            { return T_SHARES; }
+"posts"             { return T_POSTS; }
+"stories"           { return T_STORIES; }
+"engagement rate"   { return T_ENGAGEMENT_RATE; }
+"reach"             { return T_REACH; }
+"growth rate"       { return T_GROWTH_RATE; }
+
+    //CONDITIONALS 
+"When"              { return T_WHEN; }
+"Otherwise if"      { return T_OTHERWISE_IF; }
+"Otherwise"         { return T_OTHERWISE; }
+"went viral"        { return T_WENT_VIRAL; }
+"reached"           { return T_REACHED; }
+"exceeded"          { return T_EXCEEDED; }
+"dropped below"     { return T_DROPPED_BELOW; }
+"stayed at"         { return T_STAYED_AT; }
+
+    //COMPARISON OPERATORS 
+"more than"         { return T_MORE_THAN; }
+"less than"         { return T_LESS_THAN; }
+"exactly"           { return T_EXACTLY; }
+"at least"          { return T_AT_LEAST; }
+"at most"           { return T_AT_MOST; }
+"different from"    { return T_DIFFERENT_FROM; }
+"equal to"          { return T_EQUAL_TO; }
+"not equal to"      { return T_NOT_EQUAL_TO; }
+
+    //LOOPS 
+"Every day for"     { return T_EVERY_DAY_FOR; }
+"Every"             { return T_EVERY; }
+"days"              { return T_DAYS; }
+"incrementing by"   { return T_INCREMENTING_BY; }
+"decrementing by"   { return T_DECREMENTING_BY; }
+"For each"          { return T_FOR_EACH; }
+"post in"           { return T_POST_IN; }
+"story in"          { return T_STORY_IN; }
+"follower from"     { return T_FOLLOWER_FROM; }
+"to"                { return T_TO; }
+"trending loop"     { return T_TRENDING_LOOP; }
+"until"             { return T_UNTIL; }
+
+    // LOOP CONTROL 
+"Stop the story"    { return T_STOP_THE_STORY; }
+"Skip this post"    { return T_SKIP_THIS_POST; }
+
+    //FUNCTIONS 
+"The story of"      { return T_THE_STORY_OF; }
+"begins with"       { return T_BEGINS_WITH; }
+"Tell back"         { return T_TELL_BACK; }
+"The story ends"    { return T_THE_STORY_ENDS; }
+"Tell"              { return T_TELL; }
+
+    //I/O
+"Announce"          { return T_ANNOUNCE; }
+"Ask for"           { return T_ASK_FOR; }
+"Display"           { return T_DISPLAY; }
+
+    //BUILT-IN FUNCTIONS
+"Calculate virality"            { return T_CALCULATE_VIRALITY; }
+"Calculate engagement with"     { return T_CALCULATE_ENGAGEMENT; }
+"Find top post"                 { return T_FIND_TOP_POST; }
+"Find the highest reach in"     { return T_FIND_HIGHEST_REACH; }
+"Find the total reach in"       { return T_FIND_TOTAL_REACH; }
+"Count total engagement"        { return T_COUNT_TOTAL_ENGAGEMENT; }
+"Check if trending"             { return T_CHECK_IF_TRENDING; }
+"Analyze growth"                { return T_ANALYZE_GROWTH; }
+"Find max viral account"        { return T_FIND_MAX_VIRAL_ACCOUNT; }
+"Reverse the caption"           { return T_REVERSE_THE_CAPTION; }
+"Detect spam in"                { return T_DETECT_SPAM; }
+"Clamp engagement between"      { return T_CLAMP_ENGAGEMENT; }
+"between"                       { return T_BETWEEN; }
+"Reverse growth"                { return T_REVERSE_GROWTH; }
+
+//Boolean
+"true story"        { yylval.bval = 1; return T_TRUE_STORY; }
+"false alarm"       { yylval.bval = 0; return T_FALSE_ALARM; }
+
+    //LOGICAL OPERATORS 
+"also"              { return T_ALSO; }
+"either"            { return T_EITHER; }
+"opposite"          { return T_OPPOSITE; }
+
+"("                 { return T_LPAREN; }
+")"                 { return T_RPAREN; }
+"{"                 { return T_LBRACE; }
+"}"                 { return T_RBRACE; }
+"["                 { return T_LBRACKET; }
+"]"                 { return T_RBRACKET; }
+","                 { return T_COMMA; }
+"."                 { return T_DOT; }
+":"                 { return T_COLON; }
+
+    // NUMERIC LITERALS 
+{SCIENTIFIC}        { yylval.fval = atof(yytext); return T_DECIMAL; }
+{HEX}               { yylval.ival = (int)strtol(yytext, NULL, 16); return T_NUMBER; }
+{OCTAL}             { yylval.ival = (int)strtol(yytext, NULL, 8); return T_NUMBER; }
+{FLOAT}             { yylval.fval = atof(yytext); return T_DECIMAL; }
+{INTEGER}           { yylval.ival = atoi(yytext); return T_NUMBER; }
+
+    //CHARACTER LITERALS
+{CHAR}              {
+                      if (yytext[1] == '\\') {
+                          switch(yytext[2]) {
+                              case 'n': yylval.cval = '\n'; break;
+                              case 't': yylval.cval = '\t'; break;
+                              case 'r': yylval.cval = '\r'; break;
+                              case '\\': yylval.cval = '\\'; break;
+                              case '\'': yylval.cval = '\''; break;
+                              case '0': yylval.cval = '\0'; break;
+                              default: yylval.cval = yytext[2]; break;
+                          }
+                      } else {
+                          yylval.cval = yytext[1];
+                      }
+                      return T_CHAR;
+                    }
+
+    //STRING LITERALS 
+{STRING}            {
+                      size_t len = strlen(yytext);
+                      char* temp = (char*)malloc(len - 1);
+                      if (!temp) {
+                          fprintf(stderr, "Memory allocation failed at line %d\n", yylineno);
+                          exit(1);
+                      }
+                      strncpy(temp, yytext + 1, len - 2);
+                      temp[len - 2] = '\0';
+                      yylval.sval = process_string(temp);
+                      free(temp);
+                      return T_TEXT;
+                    }
+
+    //IDENTIFIERS 
+{ID}                { yylval.sval = duplicate_string(yytext); return T_ID; }
+
+{WS}                { }
+{NEWLINE}           { }
+{SINGLE_COMMENT}    { }
+
+    //ERROR HANDLING 
+{UNTERMINATED_STRING} {
+                      fprintf(stderr, "Error line %d: Unterminated string starting with %s\n", 
+                              yylineno, yytext);
+                      error_count++;
+                    }
+
+.                   { 
+                      fprintf(stderr, "Error line %d: Invalid character '%s' (ASCII %d)\n", 
+                              yylineno, yytext, (int)yytext[0]);
+                      error_count++;
+                    }
+
+%%
+
+const char* token_name(int t) {
+    switch(t) {
+        case T_GO_LIVE: return "T_GO_LIVE";
+        case T_END_LIVE: return "T_END_LIVE";
+        case T_THE_ACCOUNT: return "T_THE_ACCOUNT";
+        case T_WAS_CREATED: return "T_WAS_CREATED";
+        case T_THE_POST: return "T_THE_POST";
+        case T_THE_CAPTION: return "T_THE_CAPTION";
+        case T_THE_FOLLOWER: return "T_THE_FOLLOWER";
+        case T_THE_STORY: return "T_THE_STORY";
+        case T_POSTED: return "T_POSTED";
+        case T_ABOUT: return "T_ABOUT";
+        case T_THAT_HAD: return "T_THAT_HAD";
+        case T_STARTED_WITH: return "T_STARTED_WITH";
+        case T_BEGAN_AT: return "T_BEGAN_AT";
+        case T_NOW_HAS: return "T_NOW_HAS";
+        case T_READS: return "T_READS";
+        case T_IS_VIRAL: return "T_IS_VIRAL";
+        case T_IS_TRENDING: return "T_IS_TRENDING";
+        case T_GAINED: return "T_GAINED";
+        case T_LOST: return "T_LOST";
+        case T_INCREASED_BY: return "T_INCREASED_BY";
+        case T_DECREASED_BY: return "T_DECREASED_BY";
+        case T_WAS_UPDATED_TO: return "T_WAS_UPDATED_TO";
+        case T_BECAME: return "T_BECAME";
+        case T_MULTIPLIED_BY: return "T_MULTIPLIED_BY";
+        case T_DIVIDED_BY: return "T_DIVIDED_BY";
+        case T_PLUS: return "T_PLUS";
+        case T_MINUS: return "T_MINUS";
+        case T_TIMES: return "T_TIMES";
+        case T_DIVIDED_EVENLY_BY: return "T_DIVIDED_EVENLY_BY";
+        case T_MODULO: return "T_MODULO";
+        case T_WITH: return "T_WITH";
+        case T_AND_THEN: return "T_AND_THEN";
+        case T_THE_FEED: return "T_THE_FEED";
+        case T_CONTAINS: return "T_CONTAINS";
+        case T_AT_INDEX: return "T_AT_INDEX";
+        case T_LIKES: return "T_LIKES";
+        case T_FOLLOWERS: return "T_FOLLOWERS";
+        case T_VIEWS: return "T_VIEWS";
+        case T_COMMENTS: return "T_COMMENTS";
+        case T_SHARES: return "T_SHARES";
+        case T_POSTS: return "T_POSTS";
+        case T_STORIES: return "T_STORIES";
+        case T_ENGAGEMENT_RATE: return "T_ENGAGEMENT_RATE";
+        case T_REACH: return "T_REACH";
+        case T_GROWTH_RATE: return "T_GROWTH_RATE";
+        case T_WHEN: return "T_WHEN";
+        case T_OTHERWISE_IF: return "T_OTHERWISE_IF";
+        case T_OTHERWISE: return "T_OTHERWISE";
+        case T_WENT_VIRAL: return "T_WENT_VIRAL";
+        case T_REACHED: return "T_REACHED";
+        case T_EXCEEDED: return "T_EXCEEDED";
+        case T_DROPPED_BELOW: return "T_DROPPED_BELOW";
+        case T_STAYED_AT: return "T_STAYED_AT";
+        case T_MORE_THAN: return "T_MORE_THAN";
+        case T_LESS_THAN: return "T_LESS_THAN";
+        case T_EXACTLY: return "T_EXACTLY";
+        case T_AT_LEAST: return "T_AT_LEAST";
+        case T_AT_MOST: return "T_AT_MOST";
+        case T_DIFFERENT_FROM: return "T_DIFFERENT_FROM";
+        case T_EQUAL_TO: return "T_EQUAL_TO";
+        case T_NOT_EQUAL_TO: return "T_NOT_EQUAL_TO";
+        case T_EVERY_DAY_FOR: return "T_EVERY_DAY_FOR";
+        case T_EVERY: return "T_EVERY";
+        case T_DAYS: return "T_DAYS";
+        case T_INCREMENTING_BY: return "T_INCREMENTING_BY";
+        case T_DECREMENTING_BY: return "T_DECREMENTING_BY";
+        case T_FOR_EACH: return "T_FOR_EACH";
+        case T_POST_IN: return "T_POST_IN";
+        case T_STORY_IN: return "T_STORY_IN";
+        case T_FOLLOWER_FROM: return "T_FOLLOWER_FROM";
+        case T_TO: return "T_TO";
+        case T_TRENDING_LOOP: return "T_TRENDING_LOOP";
+        case T_UNTIL: return "T_UNTIL";
+        case T_STOP_THE_STORY: return "T_STOP_THE_STORY";
+        case T_SKIP_THIS_POST: return "T_SKIP_THIS_POST";
+        case T_THE_STORY_OF: return "T_THE_STORY_OF";
+        case T_BEGINS_WITH: return "T_BEGINS_WITH";
+        case T_TELL_BACK: return "T_TELL_BACK";
+        case T_THE_STORY_ENDS: return "T_THE_STORY_ENDS";
+        case T_TELL: return "T_TELL";
+        case T_ANNOUNCE: return "T_ANNOUNCE";
+        case T_ASK_FOR: return "T_ASK_FOR";
+        case T_DISPLAY: return "T_DISPLAY";
+        case T_CALCULATE_VIRALITY: return "T_CALCULATE_VIRALITY";
+        case T_CALCULATE_ENGAGEMENT: return "T_CALCULATE_ENGAGEMENT";
+        case T_FIND_TOP_POST: return "T_FIND_TOP_POST";
+        case T_FIND_HIGHEST_REACH: return "T_FIND_HIGHEST_REACH";
+        case T_FIND_TOTAL_REACH: return "T_FIND_TOTAL_REACH";
+        case T_COUNT_TOTAL_ENGAGEMENT: return "T_COUNT_TOTAL_ENGAGEMENT";
+        case T_CHECK_IF_TRENDING: return "T_CHECK_IF_TRENDING";
+        case T_ANALYZE_GROWTH: return "T_ANALYZE_GROWTH";
+        case T_FIND_MAX_VIRAL_ACCOUNT: return "T_FIND_MAX_VIRAL_ACCOUNT";
+        case T_REVERSE_THE_CAPTION: return "T_REVERSE_THE_CAPTION";
+        case T_DETECT_SPAM: return "T_DETECT_SPAM";
+        case T_CLAMP_ENGAGEMENT: return "T_CLAMP_ENGAGEMENT";
+        case T_BETWEEN: return "T_BETWEEN";
+        case T_REVERSE_GROWTH: return "T_REVERSE_GROWTH";
+        case T_TRUE_STORY: return "T_TRUE_STORY";
+        case T_FALSE_ALARM: return "T_FALSE_ALARM";
+        case T_ALSO: return "T_ALSO";
+        case T_EITHER: return "T_EITHER";
+        case T_OPPOSITE: return "T_OPPOSITE";
+        case T_LPAREN: return "T_LPAREN";
+        case T_RPAREN: return "T_RPAREN";
+        case T_LBRACE: return "T_LBRACE";
+        case T_RBRACE: return "T_RBRACE";
+        case T_LBRACKET: return "T_LBRACKET";
+        case T_RBRACKET: return "T_RBRACKET";
+        case T_COMMA: return "T_COMMA";
+        case T_DOT: return "T_DOT";
+        case T_COLON: return "T_COLON";
+        case T_NUMBER: return "T_NUMBER";
+        case T_DECIMAL: return "T_DECIMAL";
+        case T_TEXT: return "T_TEXT";
+        case T_CHAR: return "T_CHAR";
+        case T_ID: return "T_ID";
+        default: return "T_UNKNOWN";
+    }
+}
+
 int main(int argc, char** argv) {
-    if (argc != 3) {
-        fprintf(stderr, "\n╔═══════════════════════════════════════════════════╗\n");
-        fprintf(stderr, "║  SocialStoryScript Lexical Analyzer              ║\n");
-        fprintf(stderr, "║  A Narrative Social Media Programming Language   ║\n");
-        fprintf(stderr, "╠═══════════════════════════════════════════════════╣\n");
-        fprintf(stderr, "║  Usage: %s <input_file> <output_file>     ║\n", argv[0]);
-        fprintf(stderr, "╚═══════════════════════════════════════════════════╝\n\n");
-        return EXIT_FAILURE;
-    }
-
-    /* Open input file */
-    yyin = fopen(argv[1], "r");
-    if (!yyin) {
-        fprintf(stderr, "ERROR: Cannot open input file '%s'\n", argv[1]);
-        perror("fopen");
-        return EXIT_FAILURE;
-    }
-
-    /* Open output file */
-    yyout = fopen(argv[2], "w");
-    if (!yyout) {
-        fprintf(stderr, "ERROR: Cannot open output file '%s'\n", argv[2]);
-        perror("fopen");
-        fclose(yyin);
-        return EXIT_FAILURE;
-    }
-
-    /* Print header */
-    fprintf(yyout, "╔═══════════════════════════════════════════════════════════════════════╗\n");
-    fprintf(yyout, "║            SocialStoryScript Lexical Analysis Report                 ║\n");
-    fprintf(yyout, "╠═══════════════════════════════════════════════════════════════════════╣\n");
-    fprintf(yyout, "║  Input File:  %-56s║\n", argv[1]);
-    fprintf(yyout, "║  Output File: %-56s║\n", argv[2]);
-    fprintf(yyout, "╚═══════════════════════════════════════════════════════════════════════╝\n\n");
-    fprintf(yyout, "%-30s | %-9s | %s\n", "LEXEME", "LINE NO.", "TOKEN TYPE");
-    fprintf(yyout, "══════════════════════════════════════════════════════════════════════════\n");
-
-    /* Run lexical analysis */
-    int token_count = 0;
+    FILE *input, *output;
     int token;
+    int token_count = 0;
+
+    if (argc != 3) {
+        fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
+        return 1;
+    }
+
+    input = fopen(argv[1], "r");
+    if (!input) {
+        fprintf(stderr, "Error: Cannot open input file '%s'\n", argv[1]);
+        return 1;
+    }
+
+    output = fopen(argv[2], "w");
+    if (!output) {
+        fprintf(stderr, "Error: Cannot open output file '%s'\n", argv[2]);
+        fclose(input);
+        return 1;
+    }
+
+    yyin = input;
+
     while ((token = yylex()) != 0) {
         token_count++;
+        fprintf(output, "%s %s", token_name(token), yytext);
+        
+        if (token == T_NUMBER) {
+            fprintf(output, " %d", yylval.ival);
+        } else if (token == T_DECIMAL) {
+            fprintf(output, " %g", yylval.fval);
+        } else if (token == T_TEXT) {
+            fprintf(output, " \"%s\"", yylval.sval);
+            free(yylval.sval);
+        } else if (token == T_CHAR) {
+            fprintf(output, " '%c'", yylval.cval);
+        } else if (token == T_ID) {
+            fprintf(output, " %s", yylval.sval);
+            free(yylval.sval);
+        }
+        
+        fprintf(output, "\n");
     }
 
-    /* Print footer */
-    fprintf(yyout, "══════════════════════════════════════════════════════════════════════════\n");
-    fprintf(yyout, "\n╔═══════════════════════════════════════╗\n");
-    fprintf(yyout, "║  Lexical Analysis Complete!          ║\n");
-    fprintf(yyout, "╠═══════════════════════════════════════╣\n");
-    fprintf(yyout, "║  Total Tokens: %-22d ║\n", token_count);
-    fprintf(yyout, "║  Total Lines:  %-22d ║\n", yylineno);
-    fprintf(yyout, "╚═══════════════════════════════════════╝\n");
+    fprintf(output, "\n# Lexical Analysis Summary:\n");
+    fprintf(output, "# Total tokens: %d\n", token_count);
+    fprintf(output, "# Total lines: %d\n", yylineno);
+    fprintf(output, "# Total errors: %d\n", error_count);
 
-    printf("\n✓ Lexical analysis completed successfully!\n");
-    printf("  Tokens analyzed: %d\n", token_count);
-    printf("  Lines processed: %d\n", yylineno);
-    printf("  Output saved to: %s\n\n", argv[2]);
+    if (error_count > 0) {
+        fprintf(stderr, "\nLexical analysis completed with %d error(s)\n", error_count);
+    } else {
+        printf("\nLexical analysis successful!\n");
+        printf("Tokens: %d, Lines: %d\n", token_count, yylineno);
+    }
 
-    /* Cleanup */
-    fclose(yyin);
-    fclose(yyout);
-    
-    return EXIT_SUCCESS;
+    fclose(input);
+    fclose(output);
+    return (error_count > 0) ? 1 : 0;
 }

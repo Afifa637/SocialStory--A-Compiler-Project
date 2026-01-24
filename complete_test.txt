@@ -1,0 +1,430 @@
+# ============================================================
+# SOCIALSTORYSCRIPT - PURE NARRATIVE TEST
+# NO operator symbols! Everything in natural language!
+# ============================================================
+
+Go live.
+
+# ============================================================
+# 1. MULTIPLE ACCOUNT CREATION
+# ============================================================
+The account TechInfluencer was created.
+The account FashionBlogger was created.
+The account GamingStreamer was created.
+The account FoodVlogger was created.
+
+# ============================================================
+# 2. VARIABLE INITIALIZATION
+# ============================================================
+The account TechInfluencer started with 1000 followers.
+The account TechInfluencer started with 500 likes.
+The account TechInfluencer began at 3.5 engagement rate.
+The account TechInfluencer now has 2500 reach.
+
+The account FashionBlogger started with 2000 followers.
+The account FashionBlogger started with 1500 likes.
+The account FashionBlogger began at 4.2 engagement rate.
+
+# ============================================================
+# 3. STORY POSTING (Narrative Action!)
+# ============================================================
+The account TechInfluencer posted a story about "AI Revolution" that had 10000 views.
+The account FashionBlogger posted a story about "Summer Fashion" that had 5000 views.
+The account GamingStreamer posted a story about "New Game Release" that had 15000 views.
+
+# ============================================================
+# 4. NARRATIVE ARITHMETIC (NO symbols like +, -, *, /, %)
+# ============================================================
+
+# Addition through narrative
+The account now has likes plus followers reach.
+
+# Subtraction through narrative
+The account now has views minus comments reach.
+
+# Multiplication through narrative
+The account now has posts times 5 reach.
+
+# Division through narrative
+The account now has likes divided evenly by views engagement rate.
+
+# Modulo through narrative
+The account now has followers modulo 10 reach.
+
+# Complex expression with all operations
+The account now has likes plus followers times 2 minus views reach.
+
+# Using parentheses for grouping (only brackets allowed!)
+The account now has (likes plus followers) times 2 reach.
+
+# ============================================================
+# 5. UPDATE ACTIONS (NO += or -= symbols!)
+# ============================================================
+
+# Instead of +=
+The account gained 50 likes.
+The account gained 100 followers.
+
+# Instead of -=
+The account lost 20 followers.
+The account lost 10 likes.
+
+# Instead of += for floats
+The account increased by 1.5 engagement rate.
+The account increased by 0.3 growth rate.
+
+# Instead of -= for floats
+The account decreased by 0.2 engagement rate.
+The account decreased by 0.1 growth rate.
+
+# Instead of *=
+The account multiplied by 2 reach.
+The account multiplied by 3 posts.
+
+# Instead of /=
+The account divided by 2 views.
+The account divided by 4 comments.
+
+# Instead of = for strings
+The caption was updated to "New Amazing Post"
+
+# Instead of = for general assignment
+The post became "Viral Status"
+
+# ============================================================
+# 6. VARIABLE-STEP LOOPS
+# ============================================================
+
+# Loop incrementing by 2 each iteration
+Every 2 days incrementing by 2
+{
+    The account gained 20 likes.
+    Display "Increment by 2 days"
+}
+
+# Loop decrementing
+Every 5 days decrementing by 1
+{
+    The account lost 5 followers.
+    Display "Decrement loop"
+}
+
+# Traditional loop
+Every day for 7 days,
+{
+    The account gained 10 likes.
+}
+
+# Range loop
+For each follower from 1 to 100
+{
+    The account gained 1 views.
+}
+
+# Loop through posts
+For each post in the feed
+{
+    The post gained 5 likes.
+}
+
+# Loop through stories
+For each story in the feed
+{
+    The story gained 10 views.
+}
+
+# ============================================================
+# 7. ALL BUILT-IN FUNCTIONS
+# ============================================================
+
+# Analytics
+Calculate virality.
+Calculate engagement with likes, views.
+Find top post.
+Find the highest reach in the feed.
+Find the total reach in the feed.
+Count total engagement.
+Check if trending.
+Analyze growth.
+
+# Account comparison
+Find max viral account.
+
+# String operations
+Reverse the caption.
+Detect spam in "Buy now! Click here!"
+
+# Utility
+Clamp engagement between 0.0 and 5.0
+Reverse growth.
+
+# ============================================================
+# 8. NESTED STRUCTURES (3 LEVELS)
+# ============================================================
+
+# Nested conditionals
+When likes exceeded 1000
+{
+    Announce "Level 1: Popular"
+    When followers more than 500
+    {
+        Display "Level 2: Influential"
+        When engagement rate at least 3.0
+        {
+            Announce "Level 3: Super Star!"
+            The account became "Verified"
+        }
+    }
+}
+
+# Nested loops
+Every day for 3 days,
+{
+    Display "Outer day loop"
+    For each post in the feed
+    {
+        Display "Middle post loop"
+        For each follower from 1 to 5
+        {
+            Display "Inner follower loop"
+            The account gained 1 likes.
+        }
+    }
+}
+
+# ============================================================
+# 9. ALL NARRATIVE COMPARISON OPERATORS
+# ============================================================
+When likes more than 100
+{
+    Display "More than test"
+}
+
+When followers less than 1000
+{
+    Display "Less than test"
+}
+
+When views exactly 500
+{
+    Display "Exactly test"
+}
+
+When comments at least 50
+{
+    Display "At least test"
+}
+
+When shares at most 200
+{
+    Display "At most test"
+}
+
+When reach different from 0
+{
+    Display "Different from test"
+}
+
+When likes exceeded 1000
+{
+    Display "Exceeded test"
+}
+
+When followers dropped below 100
+{
+    Display "Dropped below test"
+}
+
+When engagement rate reached 3.0
+{
+    Display "Reached test"
+}
+
+When posts stayed at 10
+{
+    Display "Stayed at test"
+}
+
+When views went viral
+{
+    Display "Went viral test"
+}
+
+When likes equal to 500
+{
+    Display "Equal to test"
+}
+
+When followers not equal to 100
+{
+    Display "Not equal to test"
+}
+
+# ============================================================
+# 10. NARRATIVE LOGICAL OPERATORS (NO &&, ||, !)
+# ============================================================
+
+# AND using "also"
+When likes more than 100 also followers more than 50
+{
+    Display "Both conditions true"
+}
+
+# OR using "either"
+When views exceeded 500 either comments more than 20
+{
+    Display "At least one condition true"
+}
+
+# NOT using "opposite"
+When opposite likes less than 10
+{
+    Display "Negation works"
+}
+
+# ============================================================
+# 11. FUNCTION DEFINITION & CALLS
+# ============================================================
+
+# Simple function
+The story of calculateTotal begins with a, b
+{
+    The account now has a plus b reach.
+    Tell back reach.
+}
+The story ends.
+
+# Complex function with calculations
+The story of analyzePerformance begins with likes, followers, views
+{
+    The account now has likes divided evenly by views engagement rate.
+    The account now has followers times engagement rate reach.
+    Tell back reach.
+}
+The story ends.
+
+# Function calls
+Tell calculateTotal(100, 200).
+Tell analyzePerformance(1000, 500, 5000).
+
+# ============================================================
+# 12. ARRAY/FEED OPERATIONS
+# ============================================================
+The feed contains 100 posts.
+The feed contains 50 stories.
+The feed at index 5 = 250
+The feed at index 10 = 500
+The feed[15] = 1000
+
+# ============================================================
+# 13. ALL LITERAL TYPES
+# ============================================================
+
+# Integers
+The account started with 100 followers.
+The account started with 0xFF likes.
+The account started with 0777 views.
+
+# Floats
+The post began at 3.14 engagement rate.
+The post began at 1.5e10 reach.
+
+# Strings with escape sequences
+The caption reads "Hello World"
+The caption reads "Line1\nLine2"
+The caption reads "Tab\there"
+The caption reads "Quote: \"test\""
+The caption reads "Backslash: \\"
+The caption reads ""
+
+# Characters
+The post became 'A'
+The post became 'Z'
+The post became '\n'
+The post became '\t'
+
+# Booleans
+true story
+false alarm
+The post is viral.
+The post is trending.
+
+# ============================================================
+# 14. LOOP CONTROL
+# ============================================================
+For each follower from 1 to 50
+{
+    When followers exceeded 25
+    {
+        Stop the story.
+    }
+    
+    When followers less than 10
+    {
+        Skip this post.
+    }
+    
+    The account gained 1 likes.
+}
+
+# ============================================================
+# 15. INPUT/OUTPUT
+# ============================================================
+Announce "Welcome to SocialStoryScript"
+Display likes
+Display followers
+Display engagement rate
+Ask for username
+
+# ============================================================
+# 16. COMPLEX NARRATIVE EXPRESSIONS
+# ============================================================
+The account now has (likes plus followers) times 2 divided evenly by views minus comments modulo shares reach.
+The account now has likes times 2 plus followers divided evenly by 3 minus views modulo 10 reach.
+
+# ============================================================
+# 17. REAL-WORLD SCENARIO - 30 DAY GROWTH
+# ============================================================
+
+Every day for 30 days,
+{
+    # Morning post
+    The account gained 50 likes.
+    The account gained 10 followers.
+    
+    # Check viral status
+    When likes exceeded 1000
+    {
+        Announce "Post went viral!"
+        Calculate virality.
+        Find max viral account.
+        The account gained 500 followers.
+    }
+    
+    # Evening story
+    The account posted a story about "Daily Update" that had 500 views.
+    
+    # Calculate metrics using narrative arithmetic
+    The account now has likes divided evenly by views engagement rate.
+    The account now has followers times engagement rate reach.
+    
+    # Analytics
+    Analyze growth.
+}
+
+# Final analytics
+Find top post.
+Find the highest reach in the feed.
+Count total engagement.
+Reverse growth.
+Find max viral account.
+
+End live.
+
+# ============================================================
+# ERROR TEST CASES
+# ============================================================
+@invalid_character
+$another_invalid
+"Unterminated string should error
+/* Unterminated comment should error

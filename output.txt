@@ -1,0 +1,879 @@
+T_GO_LIVE Go live
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_WAS_CREATED was created
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FashionBlogger FashionBlogger
+T_WAS_CREATED was created
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID GamingStreamer GamingStreamer
+T_WAS_CREATED was created
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FoodVlogger FoodVlogger
+T_WAS_CREATED was created
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_STARTED_WITH started with
+T_NUMBER 1000 1000
+T_FOLLOWERS followers
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_STARTED_WITH started with
+T_NUMBER 500 500
+T_LIKES likes
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_BEGAN_AT began at
+T_DECIMAL 3.5 3.5
+T_ENGAGEMENT_RATE engagement rate
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_NOW_HAS now has
+T_NUMBER 2500 2500
+T_REACH reach
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FashionBlogger FashionBlogger
+T_STARTED_WITH started with
+T_NUMBER 2000 2000
+T_FOLLOWERS followers
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FashionBlogger FashionBlogger
+T_STARTED_WITH started with
+T_NUMBER 1500 1500
+T_LIKES likes
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FashionBlogger FashionBlogger
+T_BEGAN_AT began at
+T_DECIMAL 4.2 4.2
+T_ENGAGEMENT_RATE engagement rate
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID TechInfluencer TechInfluencer
+T_ID posted posted
+T_ID a a
+T_ID story story
+T_ID about about
+T_TEXT "AI Revolution" "AI Revolution"
+T_ID that that
+T_ID had had
+T_NUMBER 10000 10000
+T_VIEWS views
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID FashionBlogger FashionBlogger
+T_ID posted posted
+T_ID a a
+T_ID story story
+T_ID about about
+T_TEXT "Summer Fashion" "Summer Fashion"
+T_ID that that
+T_ID had had
+T_NUMBER 5000 5000
+T_VIEWS views
+T_DOT .
+T_THE_ACCOUNT The account
+T_ID GamingStreamer GamingStreamer
+T_ID posted posted
+T_ID a a
+T_ID story story
+T_ID about about
+T_TEXT "New Game Release" "New Game Release"
+T_ID that that
+T_ID had had
+T_NUMBER 15000 15000
+T_VIEWS views
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_NUMBER 100 100
+T_PLUS +
+T_NUMBER 50 50
+T_LIKES likes
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_NUMBER 200 200
+T_MINUS -
+T_NUMBER 30 30
+T_FOLLOWERS followers
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_NUMBER 10 10
+T_MULTIPLY *
+T_NUMBER 5 5
+T_ID posts posts
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_NUMBER 100 100
+T_DIVIDE /
+T_NUMBER 4 4
+T_ID stories stories
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_NUMBER 157 157
+T_PERCENT %
+T_NUMBER 10 10
+T_SHARES shares
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_LPAREN (
+T_NUMBER 100 100
+T_PLUS +
+T_NUMBER 50 50
+T_RPAREN )
+T_MULTIPLY *
+T_NUMBER 2 2
+T_REACH reach
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_LIKES likes
+T_PLUS +
+T_FOLLOWERS followers
+T_MINUS -
+T_COMMENTS comments
+T_REACH reach
+T_DOT .
+T_ID Every Every
+T_NUMBER 2 2
+T_DAYS days
+T_ID incrementing incrementing
+T_ID by by
+T_NUMBER 2 2
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 20 20
+T_LIKES likes
+T_DOT .
+T_DISPLAY Display
+T_TEXT "Increment by 2 days" "Increment by 2 days"
+T_RBRACE }
+T_ID Every Every
+T_NUMBER 5 5
+T_DAYS days
+T_ID decrementing decrementing
+T_ID by by
+T_NUMBER 1 1
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_LOST lost
+T_NUMBER 5 5
+T_FOLLOWERS followers
+T_DOT .
+T_DISPLAY Display
+T_TEXT "Decrement loop" "Decrement loop"
+T_RBRACE }
+T_EVERY_DAY_FOR Every day for
+T_NUMBER 7 7
+T_DAYS days
+T_COMMA ,
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 10 10
+T_LIKES likes
+T_DOT .
+T_RBRACE }
+T_FOR_EACH For each
+T_FOLLOWER_FROM follower from
+T_NUMBER 1 1
+T_TO to
+T_NUMBER 100 100
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 1 1
+T_VIEWS views
+T_DOT .
+T_RBRACE }
+T_FOR_EACH For each
+T_POST_IN post in
+T_THE_FEED the feed
+T_LBRACE {
+T_THE_POST The post
+T_GAINED gained
+T_NUMBER 5 5
+T_LIKES likes
+T_DOT .
+T_RBRACE }
+T_FOR_EACH For each
+T_ID story story
+T_ID in in
+T_THE_FEED the feed
+T_LBRACE {
+T_ID The The
+T_ID story story
+T_GAINED gained
+T_NUMBER 10 10
+T_VIEWS views
+T_DOT .
+T_RBRACE }
+T_CALCULATE_VIRALITY Calculate virality
+T_DOT .
+T_ID Calculate Calculate
+T_ID engagement engagement
+T_ID with with
+T_LIKES likes
+T_COMMA ,
+T_VIEWS views
+T_DOT .
+T_FIND_TOP_POST Find top post
+T_DOT .
+T_ID Find Find
+T_ID the the
+T_ID highest highest
+T_REACH reach
+T_ID in in
+T_THE_FEED the feed
+T_DOT .
+T_ID Find Find
+T_ID the the
+T_ID total total
+T_REACH reach
+T_ID in in
+T_THE_FEED the feed
+T_DOT .
+T_COUNT_TOTAL_ENGAGEMENT Count total engagement
+T_DOT .
+T_CHECK_IF_TRENDING Check if trending
+T_DOT .
+T_ANALYZE_GROWTH Analyze growth
+T_DOT .
+T_ID Find Find
+T_ID max max
+T_ID viral viral
+T_ID account account
+T_DOT .
+T_ID Reverse Reverse
+T_ID the the
+T_ID caption caption
+T_DOT .
+T_ID Detect Detect
+T_ID spam spam
+T_ID in in
+T_TEXT "Buy now! Click here!" "Buy now! Click here!"
+T_ID Clamp Clamp
+T_ID engagement engagement
+T_ID between between
+T_DECIMAL 0.0 0
+T_ID and and
+T_DECIMAL 5.0 5
+T_ID Reverse Reverse
+T_ID growth growth
+T_DOT .
+T_WHEN When
+T_LIKES likes
+T_EXCEEDED exceeded
+T_NUMBER 1000 1000
+T_LBRACE {
+T_ANNOUNCE Announce
+T_TEXT "Level 1: Popular" "Level 1: Popular"
+T_WHEN When
+T_FOLLOWERS followers
+T_MORE_THAN more than
+T_NUMBER 500 500
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Level 2: Influential" "Level 2: Influential"
+T_WHEN When
+T_ENGAGEMENT_RATE engagement rate
+T_AT_LEAST at least
+T_DECIMAL 3.0 3
+T_LBRACE {
+T_ANNOUNCE Announce
+T_TEXT "Level 3: Super Star!" "Level 3: Super Star!"
+T_THE_ACCOUNT The account
+T_BECAME became
+T_TEXT "Verified" "Verified"
+T_RBRACE }
+T_RBRACE }
+T_RBRACE }
+T_EVERY_DAY_FOR Every day for
+T_NUMBER 3 3
+T_DAYS days
+T_COMMA ,
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Outer day loop" "Outer day loop"
+T_FOR_EACH For each
+T_POST_IN post in
+T_THE_FEED the feed
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Middle post loop" "Middle post loop"
+T_FOR_EACH For each
+T_FOLLOWER_FROM follower from
+T_NUMBER 1 1
+T_TO to
+T_NUMBER 5 5
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Inner follower loop" "Inner follower loop"
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 1 1
+T_LIKES likes
+T_DOT .
+T_RBRACE }
+T_RBRACE }
+T_RBRACE }
+T_WHEN When
+T_LIKES likes
+T_MORE_THAN more than
+T_NUMBER 100 100
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "More than test" "More than test"
+T_RBRACE }
+T_WHEN When
+T_FOLLOWERS followers
+T_LESS_THAN less than
+T_NUMBER 1000 1000
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Less than test" "Less than test"
+T_RBRACE }
+T_WHEN When
+T_VIEWS views
+T_EXACTLY exactly
+T_NUMBER 500 500
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Exactly test" "Exactly test"
+T_RBRACE }
+T_WHEN When
+T_COMMENTS comments
+T_AT_LEAST at least
+T_NUMBER 50 50
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "At least test" "At least test"
+T_RBRACE }
+T_WHEN When
+T_SHARES shares
+T_AT_MOST at most
+T_NUMBER 200 200
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "At most test" "At most test"
+T_RBRACE }
+T_WHEN When
+T_REACH reach
+T_DIFFERENT_FROM different from
+T_NUMBER 0 0
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Different from test" "Different from test"
+T_RBRACE }
+T_WHEN When
+T_LIKES likes
+T_EXCEEDED exceeded
+T_NUMBER 1000 1000
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Exceeded test" "Exceeded test"
+T_RBRACE }
+T_WHEN When
+T_FOLLOWERS followers
+T_DROPPED_BELOW dropped below
+T_NUMBER 100 100
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Dropped below test" "Dropped below test"
+T_RBRACE }
+T_WHEN When
+T_ENGAGEMENT_RATE engagement rate
+T_REACHED reached
+T_DECIMAL 3.0 3
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Reached test" "Reached test"
+T_RBRACE }
+T_WHEN When
+T_ID posts posts
+T_STAYED_AT stayed at
+T_NUMBER 10 10
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Stayed at test" "Stayed at test"
+T_RBRACE }
+T_WHEN When
+T_VIEWS views
+T_WENT_VIRAL went viral
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Went viral test" "Went viral test"
+T_RBRACE }
+T_WHEN When
+T_LIKES likes
+T_EQ ==
+T_NUMBER 1000 1000
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Equal operator" "Equal operator"
+T_RBRACE }
+T_WHEN When
+T_FOLLOWERS followers
+T_NEQ !=
+T_NUMBER 500 500
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Not equal operator" "Not equal operator"
+T_RBRACE }
+T_WHEN When
+T_VIEWS views
+T_GT >
+T_NUMBER 5000 5000
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Greater than operator" "Greater than operator"
+T_RBRACE }
+T_WHEN When
+T_COMMENTS comments
+T_LT <
+T_NUMBER 100 100
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Less than operator" "Less than operator"
+T_RBRACE }
+T_WHEN When
+T_SHARES shares
+T_GTE >=
+T_NUMBER 50 50
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Greater or equal operator" "Greater or equal operator"
+T_RBRACE }
+T_WHEN When
+T_REACH reach
+T_LTE <=
+T_NUMBER 10000 10000
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "Less or equal operator" "Less or equal operator"
+T_RBRACE }
+T_WHEN When
+T_LIKES likes
+T_MORE_THAN more than
+T_NUMBER 100 100
+T_ALSO also
+T_FOLLOWERS followers
+T_MORE_THAN more than
+T_NUMBER 50 50
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "AND (narrative)" "AND (narrative)"
+T_RBRACE }
+T_WHEN When
+T_VIEWS views
+T_EXCEEDED exceeded
+T_NUMBER 500 500
+T_EITHER either
+T_COMMENTS comments
+T_MORE_THAN more than
+T_NUMBER 20 20
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "OR (narrative)" "OR (narrative)"
+T_RBRACE }
+T_WHEN When
+T_OPPOSITE opposite
+T_LIKES likes
+T_LESS_THAN less than
+T_NUMBER 10 10
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "NOT (narrative)" "NOT (narrative)"
+T_RBRACE }
+T_WHEN When
+T_LIKES likes
+T_GT >
+T_NUMBER 100 100
+T_AND &&
+T_FOLLOWERS followers
+T_GT >
+T_NUMBER 50 50
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "AND (C-style)" "AND (C-style)"
+T_RBRACE }
+T_WHEN When
+T_VIEWS views
+T_GT >
+T_NUMBER 500 500
+T_OR ||
+T_COMMENTS comments
+T_GT >
+T_NUMBER 20 20
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "OR (C-style)" "OR (C-style)"
+T_RBRACE }
+T_WHEN When
+T_NOT !
+T_VIEWS views
+T_LT <
+T_NUMBER 10 10
+T_LBRACE {
+T_DISPLAY Display
+T_TEXT "NOT (C-style)" "NOT (C-style)"
+T_RBRACE }
+T_LIKES likes
+T_PLUS_EQUALS +=
+T_NUMBER 50 50
+T_FOLLOWERS followers
+T_MINUS_EQUALS -=
+T_NUMBER 20 20
+T_VIEWS views
+T_MULT_EQUALS *=
+T_NUMBER 2 2
+T_COMMENTS comments
+T_DIV_EQUALS /=
+T_NUMBER 3 3
+T_SHARES shares
+T_INCREMENT ++
+T_REACH reach
+T_DECREMENT --
+T_THE_STORY_OF The story of
+T_ID calculateTotal calculateTotal
+T_BEGINS_WITH begins with
+T_ID a a
+T_COMMA ,
+T_ID b b
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_ID a a
+T_PLUS +
+T_ID b b
+T_REACH reach
+T_DOT .
+T_TELL_BACK Tell back
+T_REACH reach
+T_DOT .
+T_RBRACE }
+T_THE_STORY_ENDS The story ends
+T_DOT .
+T_THE_STORY_OF The story of
+T_ID analyzePerformance analyzePerformance
+T_BEGINS_WITH begins with
+T_LIKES likes
+T_COMMA ,
+T_FOLLOWERS followers
+T_COMMA ,
+T_VIEWS views
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_LIKES likes
+T_DIVIDE /
+T_VIEWS views
+T_ENGAGEMENT_RATE engagement rate
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_FOLLOWERS followers
+T_MULTIPLY *
+T_ENGAGEMENT_RATE engagement rate
+T_REACH reach
+T_DOT .
+T_TELL_BACK Tell back
+T_REACH reach
+T_DOT .
+T_RBRACE }
+T_THE_STORY_ENDS The story ends
+T_DOT .
+T_TELL Tell
+T_ID calculateTotal calculateTotal
+T_LPAREN (
+T_NUMBER 100 100
+T_COMMA ,
+T_NUMBER 200 200
+T_RPAREN )
+T_DOT .
+T_TELL Tell
+T_ID analyzePerformance analyzePerformance
+T_LPAREN (
+T_NUMBER 1000 1000
+T_COMMA ,
+T_NUMBER 500 500
+T_COMMA ,
+T_NUMBER 5000 5000
+T_RPAREN )
+T_DOT .
+T_ID The The
+T_ID feed feed
+T_CONTAINS contains
+T_NUMBER 100 100
+T_ID posts posts
+T_DOT .
+T_ID The The
+T_ID feed feed
+T_CONTAINS contains
+T_NUMBER 50 50
+T_ID stories stories
+T_DOT .
+T_ID The The
+T_ID feed feed
+T_AT_INDEX at index
+T_NUMBER 5 5
+T_EQUALS =
+T_NUMBER 250 250
+T_ID The The
+T_ID feed feed
+T_AT_INDEX at index
+T_NUMBER 10 10
+T_EQUALS =
+T_NUMBER 500 500
+T_ID The The
+T_ID feed feed
+T_LBRACKET [
+T_NUMBER 15 15
+T_RBRACKET ]
+T_EQUALS =
+T_NUMBER 1000 1000
+T_THE_ACCOUNT The account
+T_STARTED_WITH started with
+T_NUMBER 100 100
+T_FOLLOWERS followers
+T_DOT .
+T_THE_ACCOUNT The account
+T_STARTED_WITH started with
+T_MINUS -
+T_NUMBER 50 50
+T_REACH reach
+T_DOT .
+T_THE_ACCOUNT The account
+T_STARTED_WITH started with
+T_NUMBER 0xFF 255
+T_LIKES likes
+T_DOT .
+T_THE_ACCOUNT The account
+T_STARTED_WITH started with
+T_NUMBER 0777 511
+T_VIEWS views
+T_DOT .
+T_THE_POST The post
+T_BEGAN_AT began at
+T_DECIMAL 3.14 3.14
+T_ENGAGEMENT_RATE engagement rate
+T_DOT .
+T_THE_POST The post
+T_BEGAN_AT began at
+T_MINUS -
+T_DECIMAL 2.5 2.5
+T_ID growth growth
+T_ID rate rate
+T_DOT .
+T_THE_POST The post
+T_BEGAN_AT began at
+T_DECIMAL 1.5e10 1.5e+10
+T_REACH reach
+T_DOT .
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "Hello World" "Hello World"
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "Line1\nLine2" "Line1
+Line2"
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "Tab\there" "Tab	here"
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "Quote: \"test\"" "Quote: "test""
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "Backslash: \\" "Backslash: \"
+T_THE_CAPTION The caption
+T_READS reads
+T_TEXT "" ""
+T_THE_POST The post
+T_BECAME became
+T_CHAR 'A' 'A'
+T_THE_POST The post
+T_BECAME became
+T_CHAR 'Z' 'Z'
+T_THE_POST The post
+T_BECAME became
+T_CHAR '\n' '
+'
+T_THE_POST The post
+T_BECAME became
+T_CHAR '\t' '	'
+T_TRUE_STORY true story
+T_FALSE_ALARM false alarm
+T_THE_POST The post
+T_IS_VIRAL is viral
+T_DOT .
+T_THE_POST The post
+T_IS_TRENDING is trending
+T_DOT .
+T_FOR_EACH For each
+T_FOLLOWER_FROM follower from
+T_NUMBER 1 1
+T_TO to
+T_NUMBER 50 50
+T_LBRACE {
+T_WHEN When
+T_FOLLOWERS followers
+T_EXCEEDED exceeded
+T_NUMBER 25 25
+T_LBRACE {
+T_STOP_THE_STORY Stop the story
+T_DOT .
+T_RBRACE }
+T_WHEN When
+T_FOLLOWERS followers
+T_LESS_THAN less than
+T_NUMBER 10 10
+T_LBRACE {
+T_SKIP_THIS_POST Skip this post
+T_DOT .
+T_RBRACE }
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 1 1
+T_LIKES likes
+T_DOT .
+T_RBRACE }
+T_ANNOUNCE Announce
+T_TEXT "Welcome to SocialStoryScript" "Welcome to SocialStoryScript"
+T_DISPLAY Display
+T_LIKES likes
+T_DISPLAY Display
+T_FOLLOWERS followers
+T_DISPLAY Display
+T_ENGAGEMENT_RATE engagement rate
+T_ASK_FOR Ask for
+T_ID username username
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_LPAREN (
+T_LIKES likes
+T_PLUS +
+T_FOLLOWERS followers
+T_RPAREN )
+T_MULTIPLY *
+T_NUMBER 2 2
+T_DIVIDE /
+T_VIEWS views
+T_MINUS -
+T_COMMENTS comments
+T_PERCENT %
+T_SHARES shares
+T_REACH reach
+T_DOT .
+T_THE_ACCOUNT The account
+T_NOW_HAS now has
+T_LIKES likes
+T_MULTIPLY *
+T_NUMBER 2 2
+T_PLUS +
+T_FOLLOWERS followers
+T_DIVIDE /
+T_NUMBER 3 3
+T_MINUS -
+T_VIEWS views
+T_PERCENT %
+T_NUMBER 10 10
+T_REACH reach
+T_DOT .
+T_EVERY_DAY_FOR Every day for
+T_NUMBER 30 30
+T_DAYS days
+T_COMMA ,
+T_LBRACE {
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 50 50
+T_LIKES likes
+T_DOT .
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 10 10
+T_FOLLOWERS followers
+T_DOT .
+T_WHEN When
+T_LIKES likes
+T_EXCEEDED exceeded
+T_NUMBER 1000 1000
+T_LBRACE {
+T_ANNOUNCE Announce
+T_TEXT "Post went viral!" "Post went viral!"
+T_CALCULATE_VIRALITY Calculate virality
+T_DOT .
+T_ID Find Find
+T_ID max max
+T_ID viral viral
+T_ID account account
+T_DOT .
+T_THE_ACCOUNT The account
+T_GAINED gained
+T_NUMBER 500 500
+T_FOLLOWERS followers
+T_DOT .
+T_RBRACE }
+T_THE_ACCOUNT The account
+T_ID posted posted
+T_ID a a
+T_ID story story
+T_ID about about
+T_TEXT "Daily Update" "Daily Update"
+T_ID that that
+T_ID had had
+T_NUMBER 500 500
+T_VIEWS views
+T_DOT .
+T_ID Calculate Calculate
+T_ID engagement engagement
+T_ID with with
+T_LIKES likes
+T_COMMA ,
+T_VIEWS views
+T_DOT .
+T_ANALYZE_GROWTH Analyze growth
+T_DOT .
+T_RBRACE }
+T_FIND_TOP_POST Find top post
+T_DOT .
+T_ID Find Find
+T_ID the the
+T_ID highest highest
+T_REACH reach
+T_ID in in
+T_THE_FEED the feed
+T_DOT .
+T_COUNT_TOTAL_ENGAGEMENT Count total engagement
+T_DOT .
+T_ID Reverse Reverse
+T_ID growth growth
+T_DOT .
+T_ID Find Find
+T_ID max max
+T_ID viral viral
+T_ID account account
+T_DOT .
+T_END_LIVE End live
+T_DOT .
+T_ID invalid_character invalid_character
+T_ID another_invalid another_invalid
+
+# Total errors: 4

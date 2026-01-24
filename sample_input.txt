@@ -1,0 +1,39 @@
+Go live.
+The account TechWorld was created.
+The account started with 100 followers.
+The account now has 500 likes.
+The post began at 2.5 engagement rate.
+The post is viral.
+The caption reads "Welcome to my channel"
+The feed contains 10 views.
+When likes exceeded 1000
+{
+The account gained 500 followers.
+Announce "Viral post"
+}
+Otherwise if likes more than 500
+{
+Display "Good engagement"
+}
+Otherwise
+{
+Announce "Keep growing"
+}
+Every day for 7 days,
+{
+The account gained 50 likes.
+The account increased by 10 followers.
+}
+For each follower from 1 to 100
+{
+The account gained 1 views.
+}
+The story of calculateTotal begins with likes, followers
+{
+Tell back likes + followers.
+}
+The story ends.
+Tell calculateTotal(500, 1000).
+Calculate virality.
+Find top post.
+End live.
