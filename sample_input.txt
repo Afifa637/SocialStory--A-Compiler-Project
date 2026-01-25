@@ -1,46 +1,80 @@
-//This is a comment
-
-/*
-multiline 
-comment
-*/
-
 Go live.
-The account TechWorld was created.
-The account started with 100 followers.
-The account now has 500 likes.
-The post began at 2.5 engagement rate.
-The post is viral.
-The caption reads "Welcome to my channel"
-The feed contains 10 views.
-When likes exceeded 1000
+
+# Create multiple accounts
+The account TechInfluencer was created.
+The account FashionBlogger was created.
+
+# Initialize TechInfluencer
+The account TechInfluencer started with 1000 followers.
+The account TechInfluencer started with 500 likes.
+The account TechInfluencer began at 3.5 engagement rate.
+
+# Initialize FashionBlogger
+The account FashionBlogger started with 2000 followers.
+The account FashionBlogger started with 1500 likes.
+The account FashionBlogger began at 4.2 engagement rate.
+
+# Story posting
+The account TechInfluencer posted a story about "AI Revolution" that had 5000 views.
+The account FashionBlogger posted a story about "Summer Trends" that had 3000 views.
+
+# Daily growth simulation
+Every day for 30 days,
 {
-The account gained 500 followers.
-Announce "Viral post"
+    The account TechInfluencer gained 50 likes.
+    The account FashionBlogger gained 75 likes.
+    
+    # Check viral status for TechInfluencer
+    When TechInfluencer likes exceeded 1000
+    {
+        Announce "TechInfluencer went viral"
+        Calculate virality(TechInfluencer).
+        The account TechInfluencer gained 500 followers.
+    }
+    
+    # Check engagement for FashionBlogger
+    When FashionBlogger engagement rate more than 4.0
+    {
+        Display "FashionBlogger has excellent engagement"
+    }
 }
-Otherwise if likes more than 500
+
+# Calculate metrics
+The account TechInfluencer now has likes divided evenly by views engagement rate.
+The account FashionBlogger now has (likes plus followers) times 2 reach.
+
+# Find best performing account
+Find max viral account(TechInfluencer, FashionBlogger).
+
+# Function definition
+The story of compareAccounts begins with acc1, acc2
 {
-Display "Good engagement"
-}
-Otherwise
-{
-Announce "Keep growing"
-}
-Every day for 7 days,
-{
-The account gained 50 likes.
-The account increased by 10 followers.
-}
-For each follower from 1 to 100
-{
-The account gained 1 views.
-}
-The story of calculateTotal begins with likes, followers
-{
-Tell back likes + followers.
+    When acc1 likes more than acc2 likes
+    {
+        Tell back acc1.
+    }
+    Otherwise
+    {
+        Tell back acc2.
+    }
 }
 The story ends.
-Tell calculateTotal(500, 1000).
-Calculate virality.
-Find top post.
+
+# Function call
+Tell compareAccounts(TechInfluencer, FashionBlogger).
+
+# Final analytics
+Announce "Final Statistics:"
+Display TechInfluencer followers
+Display TechInfluencer likes
+Display FashionBlogger followers
+Display FashionBlogger engagement rate
+
 End live.
+
+@dfsdfs
+124bro 
+99problems
+2fast2furious
+_underscore
+TechInfluencer

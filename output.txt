@@ -1,578 +1,203 @@
-Line   4: Go live                   -> T_GO_LIVE
+Line   1: Go live                   -> T_GO_LIVE
+Line   1: .                         -> T_DOT
+Line   4: The account               -> T_THE_ACCOUNT
+Line   4: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line   4: was created               -> T_WAS_CREATED
 Line   4: .                         -> T_DOT
-Line   7: The account               -> T_THE_ACCOUNT
-Line   7: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line   7: was created               -> T_WAS_CREATED
-Line   7: .                         -> T_DOT
+Line   5: The account               -> T_THE_ACCOUNT
+Line   5: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line   5: was created               -> T_WAS_CREATED
+Line   5: .                         -> T_DOT
 Line   8: The account               -> T_THE_ACCOUNT
-Line   8: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line   8: was created               -> T_WAS_CREATED
+Line   8: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line   8: started with              -> T_STARTED_WITH
+Line   8: 1000                      -> T_NUMBER (value: 1000)
+Line   8: followers                 -> T_FOLLOWERS
 Line   8: .                         -> T_DOT
 Line   9: The account               -> T_THE_ACCOUNT
-Line   9: GamingChannel             -> T_ID (name: GamingChannel)
-Line   9: was created               -> T_WAS_CREATED
+Line   9: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line   9: started with              -> T_STARTED_WITH
+Line   9: 500                       -> T_NUMBER (value: 500)
+Line   9: likes                     -> T_LIKES
 Line   9: .                         -> T_DOT
-Line  12: The account               -> T_THE_ACCOUNT
-Line  12: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  12: started with              -> T_STARTED_WITH
-Line  12: 1000                      -> T_NUMBER (value: 1000)
-Line  12: followers                 -> T_FOLLOWERS
-Line  12: .                         -> T_DOT
+Line  10: The account               -> T_THE_ACCOUNT
+Line  10: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  10: began at                  -> T_BEGAN_AT
+Line  10: 3.5                       -> T_DECIMAL (value: 3.5)
+Line  10: engagement rate           -> T_ENGAGEMENT_RATE
+Line  10: .                         -> T_DOT
 Line  13: The account               -> T_THE_ACCOUNT
-Line  13: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  13: FashionBlogger            -> T_ID (name: FashionBlogger)
 Line  13: started with              -> T_STARTED_WITH
-Line  13: 500                       -> T_NUMBER (value: 500)
-Line  13: likes                     -> T_LIKES
+Line  13: 2000                      -> T_NUMBER (value: 2000)
+Line  13: followers                 -> T_FOLLOWERS
 Line  13: .                         -> T_DOT
 Line  14: The account               -> T_THE_ACCOUNT
-Line  14: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  14: began at                  -> T_BEGAN_AT
-Line  14: 3.5                       -> T_DECIMAL (value: 3.5)
-Line  14: engagement rate           -> T_ENGAGEMENT_RATE
+Line  14: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  14: started with              -> T_STARTED_WITH
+Line  14: 1500                      -> T_NUMBER (value: 1500)
+Line  14: likes                     -> T_LIKES
 Line  14: .                         -> T_DOT
 Line  15: The account               -> T_THE_ACCOUNT
-Line  15: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  15: now has                   -> T_NOW_HAS
-Line  15: 2500                      -> T_NUMBER (value: 2500)
-Line  15: reach                     -> T_REACH
+Line  15: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  15: began at                  -> T_BEGAN_AT
+Line  15: 4.2                       -> T_DECIMAL (value: 4.2)
+Line  15: engagement rate           -> T_ENGAGEMENT_RATE
 Line  15: .                         -> T_DOT
-Line  17: The account               -> T_THE_ACCOUNT
-Line  17: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  17: started with              -> T_STARTED_WITH
-Line  17: 2000                      -> T_NUMBER (value: 2000)
-Line  17: followers                 -> T_FOLLOWERS
-Line  17: .                         -> T_DOT
 Line  18: The account               -> T_THE_ACCOUNT
-Line  18: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  18: started with              -> T_STARTED_WITH
-Line  18: 1500                      -> T_NUMBER (value: 1500)
-Line  18: likes                     -> T_LIKES
+Line  18: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  18: posted                    -> T_POSTED
+Line  18: a                         -> T_ID (name: a)
+Line  18: story                     -> T_ID (name: story)
+Line  18: about                     -> T_ABOUT
+Line  18: "AI Revolution"           -> T_TEXT (value: "AI Revolution")
+Line  18: that had                  -> T_THAT_HAD
+Line  18: 5000                      -> T_NUMBER (value: 5000)
+Line  18: views                     -> T_VIEWS
 Line  18: .                         -> T_DOT
 Line  19: The account               -> T_THE_ACCOUNT
 Line  19: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  19: began at                  -> T_BEGAN_AT
-Line  19: 4.2                       -> T_DECIMAL (value: 4.2)
-Line  19: engagement rate           -> T_ENGAGEMENT_RATE
+Line  19: posted                    -> T_POSTED
+Line  19: a                         -> T_ID (name: a)
+Line  19: story                     -> T_ID (name: story)
+Line  19: about                     -> T_ABOUT
+Line  19: "Summer Trends"           -> T_TEXT (value: "Summer Trends")
+Line  19: that had                  -> T_THAT_HAD
+Line  19: 3000                      -> T_NUMBER (value: 3000)
+Line  19: views                     -> T_VIEWS
 Line  19: .                         -> T_DOT
-Line  22: The account               -> T_THE_ACCOUNT
-Line  22: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  22: posted                    -> T_POSTED
-Line  22: a                         -> T_ID (name: a)
-Line  22: story                     -> T_ID (name: story)
-Line  22: about                     -> T_ABOUT
-Line  22: "AI Revolution"           -> T_TEXT (value: "AI Revolution")
-Line  22: that had                  -> T_THAT_HAD
-Line  22: 5000                      -> T_NUMBER (value: 5000)
-Line  22: views                     -> T_VIEWS
-Line  22: .                         -> T_DOT
-Line  23: The account               -> T_THE_ACCOUNT
-Line  23: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  23: posted                    -> T_POSTED
-Line  23: a                         -> T_ID (name: a)
-Line  23: story                     -> T_ID (name: story)
-Line  23: about                     -> T_ABOUT
-Line  23: "Summer Trends"           -> T_TEXT (value: "Summer Trends")
-Line  23: that had                  -> T_THAT_HAD
-Line  23: 3000                      -> T_NUMBER (value: 3000)
-Line  23: views                     -> T_VIEWS
-Line  23: .                         -> T_DOT
-Line  26: The account               -> T_THE_ACCOUNT
-Line  26: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  26: gained                    -> T_GAINED
-Line  26: 50                        -> T_NUMBER (value: 50)
-Line  26: likes                     -> T_LIKES
-Line  26: .                         -> T_DOT
-Line  27: The account               -> T_THE_ACCOUNT
-Line  27: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  27: lost                      -> T_LOST
-Line  27: 10                        -> T_NUMBER (value: 10)
-Line  27: followers                 -> T_FOLLOWERS
-Line  27: .                         -> T_DOT
-Line  28: The account               -> T_THE_ACCOUNT
-Line  28: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  28: gained                    -> T_GAINED
-Line  28: 100                       -> T_NUMBER (value: 100)
-Line  28: followers                 -> T_FOLLOWERS
-Line  28: .                         -> T_DOT
-Line  29: The account               -> T_THE_ACCOUNT
-Line  29: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  29: added                     -> T_ADDED
-Line  29: another                   -> T_ANOTHER
-Line  29: story                     -> T_ID (name: story)
-Line  29: "Fashion Tips"            -> T_TEXT (value: "Fashion Tips")
+Line  22: Every day for             -> T_EVERY_DAY_FOR
+Line  22: 30                        -> T_NUMBER (value: 30)
+Line  22: days                      -> T_DAYS
+Line  22: ,                         -> T_COMMA
+Line  23: {                         -> T_LBRACE
+Line  24: The account               -> T_THE_ACCOUNT
+Line  24: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  24: gained                    -> T_GAINED
+Line  24: 50                        -> T_NUMBER (value: 50)
+Line  24: likes                     -> T_LIKES
+Line  24: .                         -> T_DOT
+Line  25: The account               -> T_THE_ACCOUNT
+Line  25: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  25: gained                    -> T_GAINED
+Line  25: 75                        -> T_NUMBER (value: 75)
+Line  25: likes                     -> T_LIKES
+Line  25: .                         -> T_DOT
+Line  28: When                      -> T_WHEN
+Line  28: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  28: likes                     -> T_LIKES
+Line  28: exceeded                  -> T_EXCEEDED
+Line  28: 1000                      -> T_NUMBER (value: 1000)
+Line  29: {                         -> T_LBRACE
+Line  30: Announce                  -> T_ANNOUNCE
+Line  30: "TechInfluencer went viral" -> T_TEXT (value: "TechInfluencer went viral")
+Line  31: Calculate virality        -> T_CALCULATE_VIRALITY
+Line  31: (                         -> T_LPAREN
+Line  31: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  31: )                         -> T_RPAREN
+Line  31: .                         -> T_DOT
 Line  32: The account               -> T_THE_ACCOUNT
 Line  32: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  32: increased by              -> T_INCREASED_BY
-Line  32: 1.5                       -> T_DECIMAL (value: 1.5)
-Line  32: engagement rate           -> T_ENGAGEMENT_RATE
+Line  32: gained                    -> T_GAINED
+Line  32: 500                       -> T_NUMBER (value: 500)
+Line  32: followers                 -> T_FOLLOWERS
 Line  32: .                         -> T_DOT
-Line  33: The account               -> T_THE_ACCOUNT
-Line  33: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  33: decreased by              -> T_DECREASED_BY
-Line  33: 0.2                       -> T_DECIMAL (value: 0.2)
-Line  33: growth rate               -> T_GROWTH_RATE
-Line  33: .                         -> T_DOT
-Line  34: The account               -> T_THE_ACCOUNT
-Line  34: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  34: increased by              -> T_INCREASED_BY
-Line  34: 0.3                       -> T_DECIMAL (value: 0.3)
-Line  34: engagement rate           -> T_ENGAGEMENT_RATE
-Line  34: .                         -> T_DOT
-Line  37: The account               -> T_THE_ACCOUNT
-Line  37: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  37: now has                   -> T_NOW_HAS
-Line  37: likes                     -> T_LIKES
-Line  37: plus                      -> T_PLUS
-Line  37: followers                 -> T_FOLLOWERS
-Line  37: reach                     -> T_REACH
-Line  37: .                         -> T_DOT
-Line  38: The account               -> T_THE_ACCOUNT
-Line  38: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  38: now has                   -> T_NOW_HAS
-Line  38: views                     -> T_VIEWS
-Line  38: minus                     -> T_MINUS
-Line  38: comments                  -> T_COMMENTS
-Line  38: result                    -> T_ID (name: result)
-Line  38: .                         -> T_DOT
-Line  39: The account               -> T_THE_ACCOUNT
-Line  39: GamingChannel             -> T_ID (name: GamingChannel)
-Line  39: now has                   -> T_NOW_HAS
-Line  39: posts                     -> T_POSTS
-Line  39: times                     -> T_TIMES
-Line  39: 3                         -> T_NUMBER (value: 3)
-Line  39: total                     -> T_ID (name: total)
-Line  39: .                         -> T_DOT
-Line  42: The account               -> T_THE_ACCOUNT
-Line  42: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  42: now has                   -> T_NOW_HAS
-Line  42: (                         -> T_LPAREN
-Line  42: likes                     -> T_LIKES
-Line  42: plus                      -> T_PLUS
-Line  42: followers                 -> T_FOLLOWERS
-Line  42: )                         -> T_RPAREN
-Line  42: times                     -> T_TIMES
-Line  42: 2                         -> T_NUMBER (value: 2)
-Line  42: reach                     -> T_REACH
-Line  42: .                         -> T_DOT
-Line  45: When                      -> T_WHEN
-Line  45: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  45: likes                     -> T_LIKES
-Line  45: more than                 -> T_MORE_THAN
-Line  45: 100                       -> T_NUMBER (value: 100)
-Line  46: {                         -> T_LBRACE
-Line  47: Announce                  -> T_ANNOUNCE
-Line  47: "TechInfluencer is growing" -> T_TEXT (value: "TechInfluencer is growing")
-Line  48: The account               -> T_THE_ACCOUNT
-Line  48: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  48: gained                    -> T_GAINED
-Line  48: 50                        -> T_NUMBER (value: 50)
-Line  48: followers                 -> T_FOLLOWERS
-Line  48: .                         -> T_DOT
-Line  49: }                         -> T_RBRACE
-Line  51: When                      -> T_WHEN
-Line  51: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  51: followers                 -> T_FOLLOWERS
-Line  51: less than                 -> T_LESS_THAN
-Line  51: 5000                      -> T_NUMBER (value: 5000)
-Line  52: {                         -> T_LBRACE
-Line  53: Display                   -> T_DISPLAY
-Line  53: "FashionBlogger needs more followers" -> T_TEXT (value: "FashionBlogger needs more followers")
-Line  54: }                         -> T_RBRACE
-Line  56: When                      -> T_WHEN
-Line  56: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  56: views                     -> T_VIEWS
-Line  56: exactly                   -> T_EXACTLY
-Line  56: 5000                      -> T_NUMBER (value: 5000)
+Line  33: }                         -> T_RBRACE
+Line  36: When                      -> T_WHEN
+Line  36: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  36: engagement rate           -> T_ENGAGEMENT_RATE
+Line  36: more than                 -> T_MORE_THAN
+Line  36: 4.0                       -> T_DECIMAL (value: 4)
+Line  37: {                         -> T_LBRACE
+Line  38: Display                   -> T_DISPLAY
+Line  38: "FashionBlogger has excellent engagement" -> T_TEXT (value: "FashionBlogger has excellent engagement")
+Line  39: }                         -> T_RBRACE
+Line  40: }                         -> T_RBRACE
+Line  43: The account               -> T_THE_ACCOUNT
+Line  43: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  43: now has                   -> T_NOW_HAS
+Line  43: likes                     -> T_LIKES
+Line  43: divided evenly by         -> T_DIVIDED_EVENLY_BY
+Line  43: views                     -> T_VIEWS
+Line  43: engagement rate           -> T_ENGAGEMENT_RATE
+Line  43: .                         -> T_DOT
+Line  44: The account               -> T_THE_ACCOUNT
+Line  44: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  44: now has                   -> T_NOW_HAS
+Line  44: (                         -> T_LPAREN
+Line  44: likes                     -> T_LIKES
+Line  44: plus                      -> T_PLUS
+Line  44: followers                 -> T_FOLLOWERS
+Line  44: )                         -> T_RPAREN
+Line  44: times                     -> T_TIMES
+Line  44: 2                         -> T_NUMBER (value: 2)
+Line  44: reach                     -> T_REACH
+Line  44: .                         -> T_DOT
+Line  47: Find max viral account    -> T_FIND_MAX_VIRAL_ACCOUNT
+Line  47: (                         -> T_LPAREN
+Line  47: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  47: ,                         -> T_COMMA
+Line  47: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  47: )                         -> T_RPAREN
+Line  47: .                         -> T_DOT
+Line  50: The story of              -> T_THE_STORY_OF
+Line  50: compareAccounts           -> T_ID (name: compareAccounts)
+Line  50: begins with               -> T_BEGINS_WITH
+Line  50: acc1                      -> T_ID (name: acc1)
+Line  50: ,                         -> T_COMMA
+Line  50: acc2                      -> T_ID (name: acc2)
+Line  51: {                         -> T_LBRACE
+Line  52: When                      -> T_WHEN
+Line  52: acc1                      -> T_ID (name: acc1)
+Line  52: likes                     -> T_LIKES
+Line  52: more than                 -> T_MORE_THAN
+Line  52: acc2                      -> T_ID (name: acc2)
+Line  52: likes                     -> T_LIKES
+Line  53: {                         -> T_LBRACE
+Line  54: Tell back                 -> T_TELL_BACK
+Line  54: acc1                      -> T_ID (name: acc1)
+Line  54: .                         -> T_DOT
+Line  55: }                         -> T_RBRACE
+Line  56: Otherwise                 -> T_OTHERWISE
 Line  57: {                         -> T_LBRACE
-Line  58: Announce                  -> T_ANNOUNCE
-Line  58: "Perfect milestone for TechInfluencer" -> T_TEXT (value: "Perfect milestone for TechInfluencer")
+Line  58: Tell back                 -> T_TELL_BACK
+Line  58: acc2                      -> T_ID (name: acc2)
+Line  58: .                         -> T_DOT
 Line  59: }                         -> T_RBRACE
-Line  61: When                      -> T_WHEN
-Line  61: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  61: engagement rate           -> T_ENGAGEMENT_RATE
-Line  61: at least                  -> T_AT_LEAST
-Line  61: 3.0                       -> T_DECIMAL (value: 3)
-Line  62: {                         -> T_LBRACE
-Line  63: Display                   -> T_DISPLAY
-Line  63: "FashionBlogger has good engagement" -> T_TEXT (value: "FashionBlogger has good engagement")
-Line  64: }                         -> T_RBRACE
-Line  66: When                      -> T_WHEN
-Line  66: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  66: likes                     -> T_LIKES
-Line  66: exceeded                  -> T_EXCEEDED
-Line  66: 1000                      -> T_NUMBER (value: 1000)
-Line  67: {                         -> T_LBRACE
-Line  68: Announce                  -> T_ANNOUNCE
-Line  68: "TechInfluencer went viral" -> T_TEXT (value: "TechInfluencer went viral")
-Line  69: }                         -> T_RBRACE
-Line  72: When                      -> T_WHEN
-Line  72: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  72: likes                     -> T_LIKES
-Line  72: more than                 -> T_MORE_THAN
-Line  72: 100                       -> T_NUMBER (value: 100)
-Line  72: also                      -> T_ALSO
-Line  72: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  72: followers                 -> T_FOLLOWERS
-Line  72: more than                 -> T_MORE_THAN
-Line  72: 50                        -> T_NUMBER (value: 50)
-Line  73: {                         -> T_LBRACE
-Line  74: Announce                  -> T_ANNOUNCE
-Line  74: "TechInfluencer meets both criteria" -> T_TEXT (value: "TechInfluencer meets both criteria")
-Line  75: }                         -> T_RBRACE
-Line  77: When                      -> T_WHEN
-Line  77: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  77: views                     -> T_VIEWS
-Line  77: exceeded                  -> T_EXCEEDED
-Line  77: 500                       -> T_NUMBER (value: 500)
-Line  77: either                    -> T_EITHER
-Line  77: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  77: comments                  -> T_COMMENTS
-Line  77: more than                 -> T_MORE_THAN
-Line  77: 20                        -> T_NUMBER (value: 20)
-Line  78: {                         -> T_LBRACE
-Line  79: Display                   -> T_DISPLAY
-Line  79: "FashionBlogger has engagement" -> T_TEXT (value: "FashionBlogger has engagement")
-Line  80: }                         -> T_RBRACE
-Line  83: Every day for             -> T_EVERY_DAY_FOR
-Line  83: 7                         -> T_NUMBER (value: 7)
-Line  83: days                      -> T_DAYS
-Line  83: ,                         -> T_COMMA
-Line  84: {                         -> T_LBRACE
-Line  85: The account               -> T_THE_ACCOUNT
-Line  85: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  85: gained                    -> T_GAINED
-Line  85: 10                        -> T_NUMBER (value: 10)
-Line  85: likes                     -> T_LIKES
-Line  85: .                         -> T_DOT
-Line  86: The account               -> T_THE_ACCOUNT
-Line  86: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line  86: gained                    -> T_GAINED
-Line  86: 15                        -> T_NUMBER (value: 15)
-Line  86: likes                     -> T_LIKES
-Line  86: .                         -> T_DOT
-Line  87: }                         -> T_RBRACE
-Line  90: Every                     -> T_EVERY
-Line  90: 2                         -> T_NUMBER (value: 2)
-Line  90: days                      -> T_DAYS
-Line  90: incrementing by           -> T_INCREMENTING_BY
-Line  90: 2                         -> T_NUMBER (value: 2)
-Line  91: {                         -> T_LBRACE
-Line  92: The account               -> T_THE_ACCOUNT
-Line  92: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  92: gained                    -> T_GAINED
-Line  92: 20                        -> T_NUMBER (value: 20)
-Line  92: followers                 -> T_FOLLOWERS
-Line  92: .                         -> T_DOT
-Line  93: }                         -> T_RBRACE
-Line  96: For each                  -> T_FOR_EACH
-Line  96: follower from             -> T_FOLLOWER_FROM
-Line  96: 1                         -> T_NUMBER (value: 1)
-Line  96: to                        -> T_TO
-Line  96: 100                       -> T_NUMBER (value: 100)
-Line  97: {                         -> T_LBRACE
-Line  98: The account               -> T_THE_ACCOUNT
-Line  98: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line  98: gained                    -> T_GAINED
-Line  98: 1                         -> T_NUMBER (value: 1)
-Line  98: views                     -> T_VIEWS
-Line  98: .                         -> T_DOT
-Line  99: }                         -> T_RBRACE
-Line 102: For each                  -> T_FOR_EACH
-Line 102: post in                   -> T_POST_IN
-Line 102: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 102: feed                      -> T_ID (name: feed)
-Line 103: {                         -> T_LBRACE
-Line 104: The post                  -> T_THE_POST
-Line 104: gained                    -> T_GAINED
-Line 104: 5                         -> T_NUMBER (value: 5)
-Line 104: likes                     -> T_LIKES
-Line 104: .                         -> T_DOT
-Line 105: }                         -> T_RBRACE
-Line 107: For each                  -> T_FOR_EACH
-Line 107: story in                  -> T_STORY_IN
-Line 107: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 107: feed                      -> T_ID (name: feed)
-Line 108: {                         -> T_LBRACE
-Line 109: The story                 -> T_THE_STORY
-Line 109: gained                    -> T_GAINED
-Line 109: 10                        -> T_NUMBER (value: 10)
-Line 109: views                     -> T_VIEWS
-Line 109: .                         -> T_DOT
-Line 110: }                         -> T_RBRACE
-Line 113: For each                  -> T_FOR_EACH
-Line 113: follower from             -> T_FOLLOWER_FROM
-Line 113: 1                         -> T_NUMBER (value: 1)
-Line 113: to                        -> T_TO
-Line 113: 100                       -> T_NUMBER (value: 100)
-Line 114: {                         -> T_LBRACE
-Line 115: When                      -> T_WHEN
-Line 115: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 115: followers                 -> T_FOLLOWERS
-Line 115: exceeded                  -> T_EXCEEDED
-Line 115: 50                        -> T_NUMBER (value: 50)
-Line 116: {                         -> T_LBRACE
-Line 117: Stop the story            -> T_STOP_THE_STORY
-Line 117: .                         -> T_DOT
-Line 118: }                         -> T_RBRACE
-Line 119: The account               -> T_THE_ACCOUNT
-Line 119: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 119: gained                    -> T_GAINED
-Line 119: 1                         -> T_NUMBER (value: 1)
-Line 119: views                     -> T_VIEWS
-Line 119: .                         -> T_DOT
-Line 120: }                         -> T_RBRACE
-Line 123: When                      -> T_WHEN
-Line 123: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 123: likes                     -> T_LIKES
-Line 123: exceeded                  -> T_EXCEEDED
-Line 123: 100                       -> T_NUMBER (value: 100)
-Line 124: {                         -> T_LBRACE
-Line 125: Announce                  -> T_ANNOUNCE
-Line 125: "Level 1: TechInfluencer popular" -> T_TEXT (value: "Level 1: TechInfluencer popular")
-Line 126: When                      -> T_WHEN
-Line 126: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 126: followers                 -> T_FOLLOWERS
-Line 126: more than                 -> T_MORE_THAN
-Line 126: 500                       -> T_NUMBER (value: 500)
-Line 127: {                         -> T_LBRACE
-Line 128: Display                   -> T_DISPLAY
-Line 128: "Level 2: TechInfluencer influential" -> T_TEXT (value: "Level 2: TechInfluencer influential")
-Line 129: When                      -> T_WHEN
-Line 129: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 129: engagement rate           -> T_ENGAGEMENT_RATE
-Line 129: at least                  -> T_AT_LEAST
-Line 129: 3.0                       -> T_DECIMAL (value: 3)
-Line 130: {                         -> T_LBRACE
-Line 131: Announce                  -> T_ANNOUNCE
-Line 131: "Level 3: TechInfluencer is superstar" -> T_TEXT (value: "Level 3: TechInfluencer is superstar")
-Line 132: }                         -> T_RBRACE
-Line 133: }                         -> T_RBRACE
-Line 134: }                         -> T_RBRACE
-Line 137: The story of              -> T_THE_STORY_OF
-Line 137: calculateTotal            -> T_ID (name: calculateTotal)
-Line 137: begins with               -> T_BEGINS_WITH
-Line 137: accountName               -> T_ID (name: accountName)
-Line 137: ,                         -> T_COMMA
-Line 137: metric1                   -> T_ID (name: metric1)
-Line 137: ,                         -> T_COMMA
-Line 137: metric2                   -> T_ID (name: metric2)
-Line 138: {                         -> T_LBRACE
-Line 139: The account               -> T_THE_ACCOUNT
-Line 139: now has                   -> T_NOW_HAS
-Line 139: metric1                   -> T_ID (name: metric1)
-Line 139: plus                      -> T_PLUS
-Line 139: metric2                   -> T_ID (name: metric2)
-Line 139: result                    -> T_ID (name: result)
-Line 139: .                         -> T_DOT
-Line 140: Tell back                 -> T_TELL_BACK
-Line 140: result                    -> T_ID (name: result)
-Line 140: .                         -> T_DOT
-Line 141: }                         -> T_RBRACE
-Line 142: The story ends            -> T_THE_STORY_ENDS
-Line 142: .                         -> T_DOT
-Line 144: The story of              -> T_THE_STORY_OF
-Line 144: getEngagement             -> T_ID (name: getEngagement)
-Line 144: begins with               -> T_BEGINS_WITH
-Line 144: accountName               -> T_ID (name: accountName)
-Line 144: ,                         -> T_COMMA
-Line 144: likes                     -> T_LIKES
-Line 144: ,                         -> T_COMMA
-Line 144: views                     -> T_VIEWS
-Line 145: {                         -> T_LBRACE
-Line 146: The account               -> T_THE_ACCOUNT
-Line 146: now has                   -> T_NOW_HAS
-Line 146: likes                     -> T_LIKES
-Line 146: divided evenly by         -> T_DIVIDED_EVENLY_BY
-Line 146: views                     -> T_VIEWS
-Line 146: rate                      -> T_ID (name: rate)
-Line 146: .                         -> T_DOT
-Line 147: Tell back                 -> T_TELL_BACK
-Line 147: rate                      -> T_ID (name: rate)
-Line 147: .                         -> T_DOT
-Line 148: }                         -> T_RBRACE
-Line 149: The story ends            -> T_THE_STORY_ENDS
-Line 149: .                         -> T_DOT
-Line 152: Tell                      -> T_TELL
-Line 152: calculateTotal            -> T_ID (name: calculateTotal)
-Line 152: (                         -> T_LPAREN
-Line 152: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 152: ,                         -> T_COMMA
-Line 152: 100                       -> T_NUMBER (value: 100)
-Line 152: ,                         -> T_COMMA
-Line 152: 200                       -> T_NUMBER (value: 200)
-Line 152: )                         -> T_RPAREN
-Line 152: .                         -> T_DOT
-Line 153: Tell                      -> T_TELL
-Line 153: getEngagement             -> T_ID (name: getEngagement)
-Line 153: (                         -> T_LPAREN
-Line 153: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 153: ,                         -> T_COMMA
-Line 153: 1000                      -> T_NUMBER (value: 1000)
-Line 153: ,                         -> T_COMMA
-Line 153: 5000                      -> T_NUMBER (value: 5000)
-Line 153: )                         -> T_RPAREN
-Line 153: .                         -> T_DOT
-Line 156: Calculate virality        -> T_CALCULATE_VIRALITY
-Line 156: (                         -> T_LPAREN
-Line 156: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 156: )                         -> T_RPAREN
-Line 156: .                         -> T_DOT
-Line 157: Calculate engagement with -> T_CALCULATE_ENGAGEMENT
-Line 157: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 157: likes                     -> T_LIKES
-Line 157: ,                         -> T_COMMA
-Line 157: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 157: views                     -> T_VIEWS
-Line 157: .                         -> T_DOT
-Line 158: Find top post             -> T_FIND_TOP_POST
-Line 158: (                         -> T_LPAREN
-Line 158: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 158: )                         -> T_RPAREN
-Line 158: .                         -> T_DOT
-Line 159: Find the highest reach in -> T_FIND_HIGHEST_REACH
-Line 159: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 159: feed                      -> T_ID (name: feed)
-Line 159: .                         -> T_DOT
-Line 160: Find the total reach in   -> T_FIND_TOTAL_REACH
-Line 160: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 160: feed                      -> T_ID (name: feed)
-Line 160: .                         -> T_DOT
-Line 161: Count total engagement    -> T_COUNT_TOTAL_ENGAGEMENT
-Line 161: (                         -> T_LPAREN
-Line 161: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 161: )                         -> T_RPAREN
-Line 161: .                         -> T_DOT
-Line 162: Check if trending         -> T_CHECK_IF_TRENDING
-Line 162: (                         -> T_LPAREN
-Line 162: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 162: )                         -> T_RPAREN
-Line 162: .                         -> T_DOT
-Line 163: Analyze growth            -> T_ANALYZE_GROWTH
-Line 163: (                         -> T_LPAREN
-Line 163: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 163: )                         -> T_RPAREN
-Line 163: .                         -> T_DOT
-Line 166: Find max viral account    -> T_FIND_MAX_VIRAL_ACCOUNT
-Line 166: (                         -> T_LPAREN
-Line 166: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 166: ,                         -> T_COMMA
-Line 166: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 166: ,                         -> T_COMMA
-Line 166: GamingChannel             -> T_ID (name: GamingChannel)
-Line 166: )                         -> T_RPAREN
-Line 166: .                         -> T_DOT
-Line 169: Reverse the caption       -> T_REVERSE_THE_CAPTION
-Line 169: (                         -> T_LPAREN
-Line 169: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 169: )                         -> T_RPAREN
-Line 169: .                         -> T_DOT
-Line 170: Detect spam in            -> T_DETECT_SPAM
-Line 170: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 170: caption                   -> T_ID (name: caption)
-Line 170: .                         -> T_DOT
-Line 171: Clamp engagement between  -> T_CLAMP_ENGAGEMENT
-Line 171: 0.0                       -> T_DECIMAL (value: 0)
-Line 171: and                       -> T_ID (name: and)
-Line 171: 5.0                       -> T_DECIMAL (value: 5)
-Line 171: for                       -> T_ID (name: for)
-Line 171: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 171: .                         -> T_DOT
-Line 172: Reverse growth            -> T_REVERSE_GROWTH
-Line 172: (                         -> T_LPAREN
-Line 172: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 172: )                         -> T_RPAREN
-Line 172: .                         -> T_DOT
-Line 175: Announce                  -> T_ANNOUNCE
-Line 175: "Welcome to SocialStoryScript" -> T_TEXT (value: "Welcome to SocialStoryScript")
-Line 176: Display                   -> T_DISPLAY
-Line 176: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 176: likes                     -> T_LIKES
-Line 177: Display                   -> T_DISPLAY
-Line 177: FashionBlogger            -> T_ID (name: FashionBlogger)
-Line 177: engagement rate           -> T_ENGAGEMENT_RATE
-Line 178: Ask for                   -> T_ASK_FOR
-Line 178: newAccountName            -> T_ID (name: newAccountName)
-Line 181: The account               -> T_THE_ACCOUNT
-Line 181: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 181: started with              -> T_STARTED_WITH
-Line 181: 100                       -> T_NUMBER (value: 100)
-Line 181: followers                 -> T_FOLLOWERS
-Line 181: .                         -> T_DOT
-Line 182: The account               -> T_THE_ACCOUNT
-Line 182: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 182: started with              -> T_STARTED_WITH
-Line 182: 0xFF                      -> T_NUMBER (value: 255)
-Line 182: likes                     -> T_LIKES
-Line 182: .                         -> T_DOT
-Line 183: The account               -> T_THE_ACCOUNT
-Line 183: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 183: started with              -> T_STARTED_WITH
-Line 183: 0777                      -> T_NUMBER (value: 511)
-Line 183: views                     -> T_VIEWS
-Line 183: .                         -> T_DOT
-Line 184: The account               -> T_THE_ACCOUNT
-Line 184: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 184: began at                  -> T_BEGAN_AT
-Line 184: 3.14                      -> T_DECIMAL (value: 3.14)
-Line 184: engagement rate           -> T_ENGAGEMENT_RATE
-Line 184: .                         -> T_DOT
-Line 185: The account               -> T_THE_ACCOUNT
-Line 185: TechInfluencer            -> T_ID (name: TechInfluencer)
-Line 185: began at                  -> T_BEGAN_AT
-Line 185: 1.5e10                    -> T_DECIMAL (value: 1.5e+10)
-Line 185: reach                     -> T_REACH
-Line 185: .                         -> T_DOT
-Line 188: The caption               -> T_THE_CAPTION
-Line 188: reads                     -> T_READS
-Line 188: "Hello World"             -> T_TEXT (value: "Hello World")
-Line 189: The caption               -> T_THE_CAPTION
-Line 189: reads                     -> T_READS
-Line 189: "Line1\nLine2"            -> T_TEXT (value: "Line1
-Line2")
-Line 190: The caption               -> T_THE_CAPTION
-Line 190: reads                     -> T_READS
-Line 190: "Tab\there"               -> T_TEXT (value: "Tab	here")
-Line 191: The caption               -> T_THE_CAPTION
-Line 191: reads                     -> T_READS
-Line 191: "Quote: \"test\""         -> T_TEXT (value: "Quote: "test"")
-Line 194: The post                  -> T_THE_POST
-Line 194: became                    -> T_BECAME
-Line 194: 'A'                       -> T_CHAR (value: 'A')
-Line 195: The post                  -> T_THE_POST
-Line 195: became                    -> T_BECAME
-Line 195: '\n'                      -> T_CHAR (value: '
-')
-Line 198: true story                -> T_TRUE_STORY
-Line 199: false alarm               -> T_FALSE_ALARM
-Line 200: The post                  -> T_THE_POST
-Line 200: is viral                  -> T_IS_VIRAL
-Line 200: .                         -> T_DOT
-Line 201: The post                  -> T_THE_POST
-Line 201: is trending               -> T_IS_TRENDING
-Line 201: .                         -> T_DOT
-Line 204: The                       -> T_ID (name: The)
-Line 204: feed                      -> T_ID (name: feed)
-Line 204: contains                  -> T_CONTAINS
-Line 204: 100                       -> T_NUMBER (value: 100)
-Line 204: posts                     -> T_POSTS
-Line 204: .                         -> T_DOT
-Line 205: The                       -> T_ID (name: The)
-Line 205: feed                      -> T_ID (name: feed)
-Line 205: at index                  -> T_AT_INDEX
-Line 205: 5                         -> T_NUMBER (value: 5)
-Line 205: 250                       -> T_NUMBER (value: 250)
-Line 206: The                       -> T_ID (name: The)
-Line 206: feed                      -> T_ID (name: feed)
-Line 206: [                         -> T_LBRACKET
-Line 206: 10                        -> T_NUMBER (value: 10)
-Line 206: ]                         -> T_RBRACKET
-Line 206: 500                       -> T_NUMBER (value: 500)
-Line 216: End live                  -> T_END_LIVE
-Line 216: .                         -> T_DOT
-
-========================================
+Line  60: }                         -> T_RBRACE
+Line  61: The story ends            -> T_THE_STORY_ENDS
+Line  61: .                         -> T_DOT
+Line  64: Tell                      -> T_TELL
+Line  64: compareAccounts           -> T_ID (name: compareAccounts)
+Line  64: (                         -> T_LPAREN
+Line  64: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  64: ,                         -> T_COMMA
+Line  64: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  64: )                         -> T_RPAREN
+Line  64: .                         -> T_DOT
+Line  67: Announce                  -> T_ANNOUNCE
+Line  67: "Final Statistics:"       -> T_TEXT (value: "Final Statistics:")
+Line  68: Display                   -> T_DISPLAY
+Line  68: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  68: followers                 -> T_FOLLOWERS
+Line  69: Display                   -> T_DISPLAY
+Line  69: TechInfluencer            -> T_ID (name: TechInfluencer)
+Line  69: likes                     -> T_LIKES
+Line  70: Display                   -> T_DISPLAY
+Line  70: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  70: followers                 -> T_FOLLOWERS
+Line  71: Display                   -> T_DISPLAY
+Line  71: FashionBlogger            -> T_ID (name: FashionBlogger)
+Line  71: engagement rate           -> T_ENGAGEMENT_RATE
+Line  73: End live                  -> T_END_LIVE
+Line  73: .                         -> T_DOT
+Line  75: dfsdfs                    -> T_ID (name: dfsdfs)
+Line  76: 124bro                    -> T_ID (name: 124bro)
+Line  77: 99problems                -> T_ID (name: 99problems)
+Line  78: 2fast2furious             -> T_ID (name: 2fast2furious)
+Line  79: _underscore               -> T_ID (name: _underscore)
+Line  80: TechInfluencer            -> T_ID (name: TechInfluencer)
 Lexical Analysis Summary:
-  Total tokens: 569
-  Total lines: 222
-  Total errors: 6
-========================================
+  Total tokens: 199
+  Total lines: 80
+  Total errors: 1

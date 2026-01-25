@@ -53,7 +53,7 @@ WS          [ \t\r]+
 NEWLINE     \n
 DIGIT       [0-9]
 LETTER      [A-Za-z]
-ID          {LETTER}({LETTER}|{DIGIT}|_)*
+IDENTIFIER   ({LETTER}|_)({LETTER}|{DIGIT}|_)*|{DIGIT}+({LETTER}|_)({LETTER}|{DIGIT}|_)*
 INTEGER     {DIGIT}+
 FLOAT       {DIGIT}+\.{DIGIT}+
 SCIENTIFIC  {DIGIT}+(\.{DIGIT}+)?[eE][+-]?{DIGIT}+
@@ -217,6 +217,9 @@ MULTI_COMMENT_END "*/"
 {HEX}               { yylval.ival = (int)strtol(yytext, NULL, 16); return T_NUMBER; }
 {OCTAL}             { yylval.ival = (int)strtol(yytext, NULL, 8); return T_NUMBER; }
 {FLOAT}             { yylval.fval = atof(yytext); return T_DECIMAL; }
+
+{IDENTIFIER}        { yylval.sval = duplicate_string(yytext); return T_ID; }
+
 {INTEGER}           { yylval.ival = atoi(yytext); return T_NUMBER; }
 
 {CHAR}              {
@@ -249,8 +252,6 @@ MULTI_COMMENT_END "*/"
                       free(temp);
                       return T_TEXT;
                     }
-
-{ID}                { yylval.sval = duplicate_string(yytext); return T_ID; }
 
 {WS}                { }
 {NEWLINE}           { }
@@ -443,12 +444,10 @@ int main(int argc, char** argv) {
         fprintf(output, "\n");
     }
 
-    fprintf(output, "\n========================================\n");
     fprintf(output, "Lexical Analysis Summary:\n");
     fprintf(output, "  Total tokens: %d\n", token_count);
     fprintf(output, "  Total lines: %d\n", yylineno);
     fprintf(output, "  Total errors: %d\n", error_count);
-    fprintf(output, "========================================\n");
 
     if (error_count > 0) {
         fprintf(stderr, "\nLexical analysis completed with %d error(s)\n", error_count);
