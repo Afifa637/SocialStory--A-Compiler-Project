@@ -1,5 +1,4 @@
 %{
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,7 +83,6 @@ MULTI_COMMENT_END "*/"
 "Go live"           { return T_GO_LIVE; }
 "End live"          { return T_END_LIVE; }
 
-    // ACCOUNT & ENTITY KEYWORDS
 "The account"       { return T_THE_ACCOUNT; }
 "was created"       { return T_WAS_CREATED; }
 "The post"          { return T_THE_POST; }
@@ -94,8 +92,8 @@ MULTI_COMMENT_END "*/"
 "posted"            { return T_POSTED; }
 "about"             { return T_ABOUT; }
 "that had"          { return T_THAT_HAD; }
+"another"           { return T_ANOTHER; }
 
-    //INITIALIZATION VERBS
 "started with"      { return T_STARTED_WITH; }
 "began at"          { return T_BEGAN_AT; }
 "now has"           { return T_NOW_HAS; }
@@ -103,9 +101,10 @@ MULTI_COMMENT_END "*/"
 "is viral"          { return T_IS_VIRAL; }
 "is trending"       { return T_IS_TRENDING; }
 
-    //UPDATE ACTION VERBS
 "gained"            { return T_GAINED; }
 "lost"              { return T_LOST; }
+"added"             { return T_ADDED; }
+"removed"           { return T_REMOVED; }
 "increased by"      { return T_INCREASED_BY; }
 "decreased by"      { return T_DECREASED_BY; }
 "was updated to"    { return T_WAS_UPDATED_TO; }
@@ -113,21 +112,20 @@ MULTI_COMMENT_END "*/"
 "multiplied by"     { return T_MULTIPLIED_BY; }
 "divided by"        { return T_DIVIDED_BY; }
 
-    //CALCULATION WORDS
 "plus"              { return T_PLUS; }
 "minus"             { return T_MINUS; }
 "times"             { return T_TIMES; }
+"multiply"          { return T_MULTIPLY; }
 "divided evenly by" { return T_DIVIDED_EVENLY_BY; }
+"divide"            { return T_DIVIDE; }
 "modulo"            { return T_MODULO; }
 "with"              { return T_WITH; }
 "and then"          { return T_AND_THEN; }
 
-    // DATA STRUCTURES 
 "the feed"          { return T_THE_FEED; }
 "contains"          { return T_CONTAINS; }
 "at index"          { return T_AT_INDEX; }
 
-    // TYPE KEYWORDS
 "likes"             { return T_LIKES; }
 "followers"         { return T_FOLLOWERS; }
 "views"             { return T_VIEWS; }
@@ -139,7 +137,6 @@ MULTI_COMMENT_END "*/"
 "reach"             { return T_REACH; }
 "growth rate"       { return T_GROWTH_RATE; }
 
-    //CONDITIONALS 
 "When"              { return T_WHEN; }
 "Otherwise if"      { return T_OTHERWISE_IF; }
 "Otherwise"         { return T_OTHERWISE; }
@@ -149,7 +146,6 @@ MULTI_COMMENT_END "*/"
 "dropped below"     { return T_DROPPED_BELOW; }
 "stayed at"         { return T_STAYED_AT; }
 
-    //COMPARISON OPERATORS 
 "more than"         { return T_MORE_THAN; }
 "less than"         { return T_LESS_THAN; }
 "exactly"           { return T_EXACTLY; }
@@ -159,7 +155,6 @@ MULTI_COMMENT_END "*/"
 "equal to"          { return T_EQUAL_TO; }
 "not equal to"      { return T_NOT_EQUAL_TO; }
 
-    //LOOPS 
 "Every day for"     { return T_EVERY_DAY_FOR; }
 "Every"             { return T_EVERY; }
 "days"              { return T_DAYS; }
@@ -173,23 +168,19 @@ MULTI_COMMENT_END "*/"
 "trending loop"     { return T_TRENDING_LOOP; }
 "until"             { return T_UNTIL; }
 
-    // LOOP CONTROL 
 "Stop the story"    { return T_STOP_THE_STORY; }
 "Skip this post"    { return T_SKIP_THIS_POST; }
 
-    //FUNCTIONS 
 "The story of"      { return T_THE_STORY_OF; }
 "begins with"       { return T_BEGINS_WITH; }
 "Tell back"         { return T_TELL_BACK; }
 "The story ends"    { return T_THE_STORY_ENDS; }
 "Tell"              { return T_TELL; }
 
-    //I/O
 "Announce"          { return T_ANNOUNCE; }
 "Ask for"           { return T_ASK_FOR; }
 "Display"           { return T_DISPLAY; }
 
-    //BUILT-IN FUNCTIONS
 "Calculate virality"            { return T_CALCULATE_VIRALITY; }
 "Calculate engagement with"     { return T_CALCULATE_ENGAGEMENT; }
 "Find top post"                 { return T_FIND_TOP_POST; }
@@ -205,11 +196,9 @@ MULTI_COMMENT_END "*/"
 "between"                       { return T_BETWEEN; }
 "Reverse growth"                { return T_REVERSE_GROWTH; }
 
-//Boolean
 "true story"        { yylval.bval = 1; return T_TRUE_STORY; }
 "false alarm"       { yylval.bval = 0; return T_FALSE_ALARM; }
 
-    //LOGICAL OPERATORS 
 "also"              { return T_ALSO; }
 "either"            { return T_EITHER; }
 "opposite"          { return T_OPPOSITE; }
@@ -224,14 +213,12 @@ MULTI_COMMENT_END "*/"
 "."                 { return T_DOT; }
 ":"                 { return T_COLON; }
 
-    // NUMERIC LITERALS 
 {SCIENTIFIC}        { yylval.fval = atof(yytext); return T_DECIMAL; }
 {HEX}               { yylval.ival = (int)strtol(yytext, NULL, 16); return T_NUMBER; }
 {OCTAL}             { yylval.ival = (int)strtol(yytext, NULL, 8); return T_NUMBER; }
 {FLOAT}             { yylval.fval = atof(yytext); return T_DECIMAL; }
 {INTEGER}           { yylval.ival = atoi(yytext); return T_NUMBER; }
 
-    //CHARACTER LITERALS
 {CHAR}              {
                       if (yytext[1] == '\\') {
                           switch(yytext[2]) {
@@ -249,7 +236,6 @@ MULTI_COMMENT_END "*/"
                       return T_CHAR;
                     }
 
-    //STRING LITERALS 
 {STRING}            {
                       size_t len = strlen(yytext);
                       char* temp = (char*)malloc(len - 1);
@@ -264,14 +250,12 @@ MULTI_COMMENT_END "*/"
                       return T_TEXT;
                     }
 
-    //IDENTIFIERS 
 {ID}                { yylval.sval = duplicate_string(yytext); return T_ID; }
 
 {WS}                { }
 {NEWLINE}           { }
 {SINGLE_COMMENT}    { }
 
-    //ERROR HANDLING 
 {UNTERMINATED_STRING} {
                       fprintf(stderr, "Error line %d: Unterminated string starting with %s\n", 
                               yylineno, yytext);
@@ -299,6 +283,7 @@ const char* token_name(int t) {
         case T_POSTED: return "T_POSTED";
         case T_ABOUT: return "T_ABOUT";
         case T_THAT_HAD: return "T_THAT_HAD";
+        case T_ANOTHER: return "T_ANOTHER";
         case T_STARTED_WITH: return "T_STARTED_WITH";
         case T_BEGAN_AT: return "T_BEGAN_AT";
         case T_NOW_HAS: return "T_NOW_HAS";
@@ -307,6 +292,8 @@ const char* token_name(int t) {
         case T_IS_TRENDING: return "T_IS_TRENDING";
         case T_GAINED: return "T_GAINED";
         case T_LOST: return "T_LOST";
+        case T_ADDED: return "T_ADDED";
+        case T_REMOVED: return "T_REMOVED";
         case T_INCREASED_BY: return "T_INCREASED_BY";
         case T_DECREASED_BY: return "T_DECREASED_BY";
         case T_WAS_UPDATED_TO: return "T_WAS_UPDATED_TO";
@@ -316,7 +303,9 @@ const char* token_name(int t) {
         case T_PLUS: return "T_PLUS";
         case T_MINUS: return "T_MINUS";
         case T_TIMES: return "T_TIMES";
+        case T_MULTIPLY: return "T_MULTIPLY";
         case T_DIVIDED_EVENLY_BY: return "T_DIVIDED_EVENLY_BY";
+        case T_DIVIDE: return "T_DIVIDE";
         case T_MODULO: return "T_MODULO";
         case T_WITH: return "T_WITH";
         case T_AND_THEN: return "T_AND_THEN";
@@ -435,29 +424,31 @@ int main(int argc, char** argv) {
 
     while ((token = yylex()) != 0) {
         token_count++;
-        fprintf(output, "%s %s", token_name(token), yytext);
+        fprintf(output, "Line %3d: %-25s -> %s", yylineno, yytext, token_name(token));
         
         if (token == T_NUMBER) {
-            fprintf(output, " %d", yylval.ival);
+            fprintf(output, " (value: %d)", yylval.ival);
         } else if (token == T_DECIMAL) {
-            fprintf(output, " %g", yylval.fval);
+            fprintf(output, " (value: %g)", yylval.fval);
         } else if (token == T_TEXT) {
-            fprintf(output, " \"%s\"", yylval.sval);
+            fprintf(output, " (value: \"%s\")", yylval.sval);
             free(yylval.sval);
         } else if (token == T_CHAR) {
-            fprintf(output, " '%c'", yylval.cval);
+            fprintf(output, " (value: '%c')", yylval.cval);
         } else if (token == T_ID) {
-            fprintf(output, " %s", yylval.sval);
+            fprintf(output, " (name: %s)", yylval.sval);
             free(yylval.sval);
         }
         
         fprintf(output, "\n");
     }
 
-    fprintf(output, "\n# Lexical Analysis Summary:\n");
-    fprintf(output, "# Total tokens: %d\n", token_count);
-    fprintf(output, "# Total lines: %d\n", yylineno);
-    fprintf(output, "# Total errors: %d\n", error_count);
+    fprintf(output, "\n========================================\n");
+    fprintf(output, "Lexical Analysis Summary:\n");
+    fprintf(output, "  Total tokens: %d\n", token_count);
+    fprintf(output, "  Total lines: %d\n", yylineno);
+    fprintf(output, "  Total errors: %d\n", error_count);
+    fprintf(output, "========================================\n");
 
     if (error_count > 0) {
         fprintf(stderr, "\nLexical analysis completed with %d error(s)\n", error_count);
