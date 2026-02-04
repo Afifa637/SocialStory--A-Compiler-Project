@@ -296,7 +296,7 @@ cat output.txt | wc -l  # Show number of tokens
 cat output.txt | grep "Error"
 ```
 
-cd /d/Compiler\ Design/SocialStory
+cd /f/Compiler\ Design/SocialStory
 
 # Compile
 flex socialstory.l
@@ -304,7 +304,9 @@ gcc lex.yy.c -o socialstory.exe
 
 # Test complete features
 ./socialstory.exe complete_test.txt output.txt
-
+bison -d socialstory_parser.y
+gcc -o socialstory_compiler socialstory_parser.tab.c lex.yy.c -lfl
+./socialstory_compiler test_program.sss
 # View output
 cat output.txt
 

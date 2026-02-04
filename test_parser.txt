@@ -1,0 +1,81 @@
+Go live
+
+# Test 1: Account Creation
+The account TechWorld was created.
+The account FashionBlogger was created.
+The account FoodieLife was created.
+
+# Test 2: Account Initialization
+The account TechWorld started with 500 followers.
+The account TechWorld started with 100 likes.
+The account TechWorld now has 250 views.
+
+The account FashionBlogger started with 1000 followers.
+The account FashionBlogger started with 300 likes.
+
+The account FoodieLife started with 750 followers.
+
+# Test 3: Account Updates
+The account TechWorld gained 50 likes.
+The account TechWorld gained 100 followers.
+The account FashionBlogger lost 25 followers.
+The account FoodieLife increased by 80 likes.
+
+# Test 4: Story Posting
+The account TechWorld posted about "AI Revolution" that had 5000 views.
+The account FashionBlogger posted about "Summer Trends 2026" that had 3500 views.
+
+# Test 5: Announcements
+Announce "Welcome to SocialStoryScript!".
+Announce "Testing the compiler...".
+
+# Test 6: Display Account Stats
+Display TechWorld.
+Display FashionBlogger.
+Display FoodieLife.
+
+# Test 7: Conditionals
+When likes more than 100
+{
+    Announce "Great engagement!".
+    The account TechWorld gained 20 likes.
+}
+
+When followers less than 500
+{
+    Announce "Time to grow!".
+}
+Otherwise
+{
+    Announce "Solid follower base!".
+}
+
+# Test 8: Loops
+Every day for 3 days,
+{
+    The account TechWorld gained 10 likes.
+    Announce "Daily growth!".
+}
+
+Every 5 days incrementing by 1
+{
+    The account FashionBlogger gained 5 followers.
+}
+
+Every 4 days decrementing by 1
+{
+    Announce "Countdown active!".
+}
+
+# Test 9: Built-in Functions
+Calculate virality.
+Find max viral account.
+Analyze growth.
+
+# Test 10: Final Stats
+Announce "Final Statistics:".
+Display TechWorld.
+Display FashionBlogger.
+Display FoodieLife.
+
+End live.

@@ -4,7 +4,6 @@
 #include <string.h>
 #include "socialstory_tokens.h"
 
-YYSTYPE yylval;
 int error_count = 0;
 
 char* duplicate_string(const char* s) {
@@ -53,7 +52,7 @@ WS          [ \t\r]+
 NEWLINE     \n
 DIGIT       [0-9]
 LETTER      [A-Za-z]
-IDENTIFIER   ({LETTER}|_)({LETTER}|{DIGIT}|_)*|{DIGIT}+({LETTER}|_)({LETTER}|{DIGIT}|_)*
+IDENTIFIER  ({LETTER}|_)({LETTER}|{DIGIT}|_)*|{DIGIT}+({LETTER}|_)({LETTER}|{DIGIT}|_)*
 INTEGER     {DIGIT}+
 FLOAT       {DIGIT}+\.{DIGIT}+
 SCIENTIFIC  {DIGIT}+(\.{DIGIT}+)?[eE][+-]?{DIGIT}+
@@ -67,7 +66,6 @@ MULTI_COMMENT_START "/*"
 MULTI_COMMENT_END "*/"
 
 %x MULTILINE_COMMENT
-
 %%
 
 {MULTI_COMMENT_START}   { BEGIN(MULTILINE_COMMENT); }
@@ -398,65 +396,4 @@ const char* token_name(int t) {
     }
 }
 
-int main(int argc, char** argv) {
-    FILE *input, *output;
-    int token;
-    int token_count = 0;
-
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
-        return 1;
-    }
-
-    input = fopen(argv[1], "r");
-    if (!input) {
-        fprintf(stderr, "Error: Cannot open input file '%s'\n", argv[1]);
-        return 1;
-    }
-
-    output = fopen(argv[2], "w");
-    if (!output) {
-        fprintf(stderr, "Error: Cannot open output file '%s'\n", argv[2]);
-        fclose(input);
-        return 1;
-    }
-
-    yyin = input;
-
-    while ((token = yylex()) != 0) {
-        token_count++;
-        fprintf(output, "Line %3d: %-25s -> %s", yylineno, yytext, token_name(token));
-        
-        if (token == T_NUMBER) {
-            fprintf(output, " (value: %d)", yylval.ival);
-        } else if (token == T_DECIMAL) {
-            fprintf(output, " (value: %g)", yylval.fval);
-        } else if (token == T_TEXT) {
-            fprintf(output, " (value: \"%s\")", yylval.sval);
-            free(yylval.sval);
-        } else if (token == T_CHAR) {
-            fprintf(output, " (value: '%c')", yylval.cval);
-        } else if (token == T_ID) {
-            fprintf(output, " (name: %s)", yylval.sval);
-            free(yylval.sval);
-        }
-        
-        fprintf(output, "\n");
-    }
-
-    fprintf(output, "Lexical Analysis Summary:\n");
-    fprintf(output, "  Total tokens: %d\n", token_count);
-    fprintf(output, "  Total lines: %d\n", yylineno);
-    fprintf(output, "  Total errors: %d\n", error_count);
-
-    if (error_count > 0) {
-        fprintf(stderr, "\nLexical analysis completed with %d error(s)\n", error_count);
-    } else {
-        printf("\nLexical analysis successful!\n");
-        printf("Tokens: %d, Lines: %d\n", token_count, yylineno);
-    }
-
-    fclose(input);
-    fclose(output);
-    return (error_count > 0) ? 1 : 0;
-}
+/* Lexer has no main; parser provides main in socialstory_parser.y */

@@ -1,5 +1,6 @@
+#line 1 "lex.yy.c"
 
-#line 2 "lex.yy.c"
+#line 3 "lex.yy.c"
 
 #define  YY_INT_ALIGNED short int
 
@@ -996,7 +997,6 @@ char *yytext;
 #include <string.h>
 #include "socialstory_tokens.h"
 
-YYSTYPE yylval;
 int error_count = 0;
 
 char* duplicate_string(const char* s) {
@@ -1256,7 +1256,7 @@ YY_DECL
 		}
 
 	{
-#line 71 "socialstory.l"
+#line 69 "socialstory.l"
 
 
 #line 1262 "lex.yy.c"
@@ -1328,27 +1328,27 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 73 "socialstory.l"
+#line 71 "socialstory.l"
 { BEGIN(MULTILINE_COMMENT); }
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 74 "socialstory.l"
+#line 72 "socialstory.l"
 { BEGIN(INITIAL); }
 	YY_BREAK
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 75 "socialstory.l"
+#line 73 "socialstory.l"
 { }
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 76 "socialstory.l"
+#line 74 "socialstory.l"
 { }
 	YY_BREAK
 case YY_STATE_EOF(MULTILINE_COMMENT):
-#line 77 "socialstory.l"
+#line 75 "socialstory.l"
 { 
                           fprintf(stderr, "Error line %d: Unterminated comment\n", yylineno);
                           error_count++;
@@ -1357,617 +1357,617 @@ case YY_STATE_EOF(MULTILINE_COMMENT):
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
-#line 83 "socialstory.l"
+#line 81 "socialstory.l"
 { return T_GO_LIVE; }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 84 "socialstory.l"
+#line 82 "socialstory.l"
 { return T_END_LIVE; }
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
-#line 86 "socialstory.l"
+#line 84 "socialstory.l"
 { return T_THE_ACCOUNT; }
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 87 "socialstory.l"
+#line 85 "socialstory.l"
 { return T_WAS_CREATED; }
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 88 "socialstory.l"
+#line 86 "socialstory.l"
 { return T_THE_POST; }
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 89 "socialstory.l"
+#line 87 "socialstory.l"
 { return T_THE_CAPTION; }
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 90 "socialstory.l"
+#line 88 "socialstory.l"
 { return T_THE_FOLLOWER; }
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 91 "socialstory.l"
+#line 89 "socialstory.l"
 { return T_THE_STORY; }
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 92 "socialstory.l"
+#line 90 "socialstory.l"
 { return T_POSTED; }
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 93 "socialstory.l"
+#line 91 "socialstory.l"
 { return T_ABOUT; }
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 94 "socialstory.l"
+#line 92 "socialstory.l"
 { return T_THAT_HAD; }
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 95 "socialstory.l"
+#line 93 "socialstory.l"
 { return T_ANOTHER; }
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 97 "socialstory.l"
+#line 95 "socialstory.l"
 { return T_STARTED_WITH; }
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 98 "socialstory.l"
+#line 96 "socialstory.l"
 { return T_BEGAN_AT; }
 	YY_BREAK
 case 19:
 YY_RULE_SETUP
-#line 99 "socialstory.l"
+#line 97 "socialstory.l"
 { return T_NOW_HAS; }
 	YY_BREAK
 case 20:
 YY_RULE_SETUP
-#line 100 "socialstory.l"
+#line 98 "socialstory.l"
 { return T_READS; }
 	YY_BREAK
 case 21:
 YY_RULE_SETUP
-#line 101 "socialstory.l"
+#line 99 "socialstory.l"
 { return T_IS_VIRAL; }
 	YY_BREAK
 case 22:
 YY_RULE_SETUP
-#line 102 "socialstory.l"
+#line 100 "socialstory.l"
 { return T_IS_TRENDING; }
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
-#line 104 "socialstory.l"
+#line 102 "socialstory.l"
 { return T_GAINED; }
 	YY_BREAK
 case 24:
 YY_RULE_SETUP
-#line 105 "socialstory.l"
+#line 103 "socialstory.l"
 { return T_LOST; }
 	YY_BREAK
 case 25:
 YY_RULE_SETUP
-#line 106 "socialstory.l"
+#line 104 "socialstory.l"
 { return T_ADDED; }
 	YY_BREAK
 case 26:
 YY_RULE_SETUP
-#line 107 "socialstory.l"
+#line 105 "socialstory.l"
 { return T_REMOVED; }
 	YY_BREAK
 case 27:
 YY_RULE_SETUP
-#line 108 "socialstory.l"
+#line 106 "socialstory.l"
 { return T_INCREASED_BY; }
 	YY_BREAK
 case 28:
 YY_RULE_SETUP
-#line 109 "socialstory.l"
+#line 107 "socialstory.l"
 { return T_DECREASED_BY; }
 	YY_BREAK
 case 29:
 YY_RULE_SETUP
-#line 110 "socialstory.l"
+#line 108 "socialstory.l"
 { return T_WAS_UPDATED_TO; }
 	YY_BREAK
 case 30:
 YY_RULE_SETUP
-#line 111 "socialstory.l"
+#line 109 "socialstory.l"
 { return T_BECAME; }
 	YY_BREAK
 case 31:
 YY_RULE_SETUP
-#line 112 "socialstory.l"
+#line 110 "socialstory.l"
 { return T_MULTIPLIED_BY; }
 	YY_BREAK
 case 32:
 YY_RULE_SETUP
-#line 113 "socialstory.l"
+#line 111 "socialstory.l"
 { return T_DIVIDED_BY; }
 	YY_BREAK
 case 33:
 YY_RULE_SETUP
-#line 115 "socialstory.l"
+#line 113 "socialstory.l"
 { return T_PLUS; }
 	YY_BREAK
 case 34:
 YY_RULE_SETUP
-#line 116 "socialstory.l"
+#line 114 "socialstory.l"
 { return T_MINUS; }
 	YY_BREAK
 case 35:
 YY_RULE_SETUP
-#line 117 "socialstory.l"
+#line 115 "socialstory.l"
 { return T_TIMES; }
 	YY_BREAK
 case 36:
 YY_RULE_SETUP
-#line 118 "socialstory.l"
+#line 116 "socialstory.l"
 { return T_MULTIPLY; }
 	YY_BREAK
 case 37:
 YY_RULE_SETUP
-#line 119 "socialstory.l"
+#line 117 "socialstory.l"
 { return T_DIVIDED_EVENLY_BY; }
 	YY_BREAK
 case 38:
 YY_RULE_SETUP
-#line 120 "socialstory.l"
+#line 118 "socialstory.l"
 { return T_DIVIDE; }
 	YY_BREAK
 case 39:
 YY_RULE_SETUP
-#line 121 "socialstory.l"
+#line 119 "socialstory.l"
 { return T_MODULO; }
 	YY_BREAK
 case 40:
 YY_RULE_SETUP
-#line 122 "socialstory.l"
+#line 120 "socialstory.l"
 { return T_WITH; }
 	YY_BREAK
 case 41:
 YY_RULE_SETUP
-#line 123 "socialstory.l"
+#line 121 "socialstory.l"
 { return T_AND_THEN; }
 	YY_BREAK
 case 42:
 YY_RULE_SETUP
-#line 125 "socialstory.l"
+#line 123 "socialstory.l"
 { return T_THE_FEED; }
 	YY_BREAK
 case 43:
 YY_RULE_SETUP
-#line 126 "socialstory.l"
+#line 124 "socialstory.l"
 { return T_CONTAINS; }
 	YY_BREAK
 case 44:
 YY_RULE_SETUP
-#line 127 "socialstory.l"
+#line 125 "socialstory.l"
 { return T_AT_INDEX; }
 	YY_BREAK
 case 45:
 YY_RULE_SETUP
-#line 129 "socialstory.l"
+#line 127 "socialstory.l"
 { return T_LIKES; }
 	YY_BREAK
 case 46:
 YY_RULE_SETUP
-#line 130 "socialstory.l"
+#line 128 "socialstory.l"
 { return T_FOLLOWERS; }
 	YY_BREAK
 case 47:
 YY_RULE_SETUP
-#line 131 "socialstory.l"
+#line 129 "socialstory.l"
 { return T_VIEWS; }
 	YY_BREAK
 case 48:
 YY_RULE_SETUP
-#line 132 "socialstory.l"
+#line 130 "socialstory.l"
 { return T_COMMENTS; }
 	YY_BREAK
 case 49:
 YY_RULE_SETUP
-#line 133 "socialstory.l"
+#line 131 "socialstory.l"
 { return T_SHARES; }
 	YY_BREAK
 case 50:
 YY_RULE_SETUP
-#line 134 "socialstory.l"
+#line 132 "socialstory.l"
 { return T_POSTS; }
 	YY_BREAK
 case 51:
 YY_RULE_SETUP
-#line 135 "socialstory.l"
+#line 133 "socialstory.l"
 { return T_STORIES; }
 	YY_BREAK
 case 52:
 YY_RULE_SETUP
-#line 136 "socialstory.l"
+#line 134 "socialstory.l"
 { return T_ENGAGEMENT_RATE; }
 	YY_BREAK
 case 53:
 YY_RULE_SETUP
-#line 137 "socialstory.l"
+#line 135 "socialstory.l"
 { return T_REACH; }
 	YY_BREAK
 case 54:
 YY_RULE_SETUP
-#line 138 "socialstory.l"
+#line 136 "socialstory.l"
 { return T_GROWTH_RATE; }
 	YY_BREAK
 case 55:
 YY_RULE_SETUP
-#line 140 "socialstory.l"
+#line 138 "socialstory.l"
 { return T_WHEN; }
 	YY_BREAK
 case 56:
 YY_RULE_SETUP
-#line 141 "socialstory.l"
+#line 139 "socialstory.l"
 { return T_OTHERWISE_IF; }
 	YY_BREAK
 case 57:
 YY_RULE_SETUP
-#line 142 "socialstory.l"
+#line 140 "socialstory.l"
 { return T_OTHERWISE; }
 	YY_BREAK
 case 58:
 YY_RULE_SETUP
-#line 143 "socialstory.l"
+#line 141 "socialstory.l"
 { return T_WENT_VIRAL; }
 	YY_BREAK
 case 59:
 YY_RULE_SETUP
-#line 144 "socialstory.l"
+#line 142 "socialstory.l"
 { return T_REACHED; }
 	YY_BREAK
 case 60:
 YY_RULE_SETUP
-#line 145 "socialstory.l"
+#line 143 "socialstory.l"
 { return T_EXCEEDED; }
 	YY_BREAK
 case 61:
 YY_RULE_SETUP
-#line 146 "socialstory.l"
+#line 144 "socialstory.l"
 { return T_DROPPED_BELOW; }
 	YY_BREAK
 case 62:
 YY_RULE_SETUP
-#line 147 "socialstory.l"
+#line 145 "socialstory.l"
 { return T_STAYED_AT; }
 	YY_BREAK
 case 63:
 YY_RULE_SETUP
-#line 149 "socialstory.l"
+#line 147 "socialstory.l"
 { return T_MORE_THAN; }
 	YY_BREAK
 case 64:
 YY_RULE_SETUP
-#line 150 "socialstory.l"
+#line 148 "socialstory.l"
 { return T_LESS_THAN; }
 	YY_BREAK
 case 65:
 YY_RULE_SETUP
-#line 151 "socialstory.l"
+#line 149 "socialstory.l"
 { return T_EXACTLY; }
 	YY_BREAK
 case 66:
 YY_RULE_SETUP
-#line 152 "socialstory.l"
+#line 150 "socialstory.l"
 { return T_AT_LEAST; }
 	YY_BREAK
 case 67:
 YY_RULE_SETUP
-#line 153 "socialstory.l"
+#line 151 "socialstory.l"
 { return T_AT_MOST; }
 	YY_BREAK
 case 68:
 YY_RULE_SETUP
-#line 154 "socialstory.l"
+#line 152 "socialstory.l"
 { return T_DIFFERENT_FROM; }
 	YY_BREAK
 case 69:
 YY_RULE_SETUP
-#line 155 "socialstory.l"
+#line 153 "socialstory.l"
 { return T_EQUAL_TO; }
 	YY_BREAK
 case 70:
 YY_RULE_SETUP
-#line 156 "socialstory.l"
+#line 154 "socialstory.l"
 { return T_NOT_EQUAL_TO; }
 	YY_BREAK
 case 71:
 YY_RULE_SETUP
-#line 158 "socialstory.l"
+#line 156 "socialstory.l"
 { return T_EVERY_DAY_FOR; }
 	YY_BREAK
 case 72:
 YY_RULE_SETUP
-#line 159 "socialstory.l"
+#line 157 "socialstory.l"
 { return T_EVERY; }
 	YY_BREAK
 case 73:
 YY_RULE_SETUP
-#line 160 "socialstory.l"
+#line 158 "socialstory.l"
 { return T_DAYS; }
 	YY_BREAK
 case 74:
 YY_RULE_SETUP
-#line 161 "socialstory.l"
+#line 159 "socialstory.l"
 { return T_INCREMENTING_BY; }
 	YY_BREAK
 case 75:
 YY_RULE_SETUP
-#line 162 "socialstory.l"
+#line 160 "socialstory.l"
 { return T_DECREMENTING_BY; }
 	YY_BREAK
 case 76:
 YY_RULE_SETUP
-#line 163 "socialstory.l"
+#line 161 "socialstory.l"
 { return T_FOR_EACH; }
 	YY_BREAK
 case 77:
 YY_RULE_SETUP
-#line 164 "socialstory.l"
+#line 162 "socialstory.l"
 { return T_POST_IN; }
 	YY_BREAK
 case 78:
 YY_RULE_SETUP
-#line 165 "socialstory.l"
+#line 163 "socialstory.l"
 { return T_STORY_IN; }
 	YY_BREAK
 case 79:
 YY_RULE_SETUP
-#line 166 "socialstory.l"
+#line 164 "socialstory.l"
 { return T_FOLLOWER_FROM; }
 	YY_BREAK
 case 80:
 YY_RULE_SETUP
-#line 167 "socialstory.l"
+#line 165 "socialstory.l"
 { return T_TO; }
 	YY_BREAK
 case 81:
 YY_RULE_SETUP
-#line 168 "socialstory.l"
+#line 166 "socialstory.l"
 { return T_TRENDING_LOOP; }
 	YY_BREAK
 case 82:
 YY_RULE_SETUP
-#line 169 "socialstory.l"
+#line 167 "socialstory.l"
 { return T_UNTIL; }
 	YY_BREAK
 case 83:
 YY_RULE_SETUP
-#line 171 "socialstory.l"
+#line 169 "socialstory.l"
 { return T_STOP_THE_STORY; }
 	YY_BREAK
 case 84:
 YY_RULE_SETUP
-#line 172 "socialstory.l"
+#line 170 "socialstory.l"
 { return T_SKIP_THIS_POST; }
 	YY_BREAK
 case 85:
 YY_RULE_SETUP
-#line 174 "socialstory.l"
+#line 172 "socialstory.l"
 { return T_THE_STORY_OF; }
 	YY_BREAK
 case 86:
 YY_RULE_SETUP
-#line 175 "socialstory.l"
+#line 173 "socialstory.l"
 { return T_BEGINS_WITH; }
 	YY_BREAK
 case 87:
 YY_RULE_SETUP
-#line 176 "socialstory.l"
+#line 174 "socialstory.l"
 { return T_TELL_BACK; }
 	YY_BREAK
 case 88:
 YY_RULE_SETUP
-#line 177 "socialstory.l"
+#line 175 "socialstory.l"
 { return T_THE_STORY_ENDS; }
 	YY_BREAK
 case 89:
 YY_RULE_SETUP
-#line 178 "socialstory.l"
+#line 176 "socialstory.l"
 { return T_TELL; }
 	YY_BREAK
 case 90:
 YY_RULE_SETUP
-#line 180 "socialstory.l"
+#line 178 "socialstory.l"
 { return T_ANNOUNCE; }
 	YY_BREAK
 case 91:
 YY_RULE_SETUP
-#line 181 "socialstory.l"
+#line 179 "socialstory.l"
 { return T_ASK_FOR; }
 	YY_BREAK
 case 92:
 YY_RULE_SETUP
-#line 182 "socialstory.l"
+#line 180 "socialstory.l"
 { return T_DISPLAY; }
 	YY_BREAK
 case 93:
 YY_RULE_SETUP
-#line 184 "socialstory.l"
+#line 182 "socialstory.l"
 { return T_CALCULATE_VIRALITY; }
 	YY_BREAK
 case 94:
 YY_RULE_SETUP
-#line 185 "socialstory.l"
+#line 183 "socialstory.l"
 { return T_CALCULATE_ENGAGEMENT; }
 	YY_BREAK
 case 95:
 YY_RULE_SETUP
-#line 186 "socialstory.l"
+#line 184 "socialstory.l"
 { return T_FIND_TOP_POST; }
 	YY_BREAK
 case 96:
 YY_RULE_SETUP
-#line 187 "socialstory.l"
+#line 185 "socialstory.l"
 { return T_FIND_HIGHEST_REACH; }
 	YY_BREAK
 case 97:
 YY_RULE_SETUP
-#line 188 "socialstory.l"
+#line 186 "socialstory.l"
 { return T_FIND_TOTAL_REACH; }
 	YY_BREAK
 case 98:
 YY_RULE_SETUP
-#line 189 "socialstory.l"
+#line 187 "socialstory.l"
 { return T_COUNT_TOTAL_ENGAGEMENT; }
 	YY_BREAK
 case 99:
 YY_RULE_SETUP
-#line 190 "socialstory.l"
+#line 188 "socialstory.l"
 { return T_CHECK_IF_TRENDING; }
 	YY_BREAK
 case 100:
 YY_RULE_SETUP
-#line 191 "socialstory.l"
+#line 189 "socialstory.l"
 { return T_ANALYZE_GROWTH; }
 	YY_BREAK
 case 101:
 YY_RULE_SETUP
-#line 192 "socialstory.l"
+#line 190 "socialstory.l"
 { return T_FIND_MAX_VIRAL_ACCOUNT; }
 	YY_BREAK
 case 102:
 YY_RULE_SETUP
-#line 193 "socialstory.l"
+#line 191 "socialstory.l"
 { return T_REVERSE_THE_CAPTION; }
 	YY_BREAK
 case 103:
 YY_RULE_SETUP
-#line 194 "socialstory.l"
+#line 192 "socialstory.l"
 { return T_DETECT_SPAM; }
 	YY_BREAK
 case 104:
 YY_RULE_SETUP
-#line 195 "socialstory.l"
+#line 193 "socialstory.l"
 { return T_CLAMP_ENGAGEMENT; }
 	YY_BREAK
 case 105:
 YY_RULE_SETUP
-#line 196 "socialstory.l"
+#line 194 "socialstory.l"
 { return T_BETWEEN; }
 	YY_BREAK
 case 106:
 YY_RULE_SETUP
-#line 197 "socialstory.l"
+#line 195 "socialstory.l"
 { return T_REVERSE_GROWTH; }
 	YY_BREAK
 case 107:
 YY_RULE_SETUP
-#line 199 "socialstory.l"
+#line 197 "socialstory.l"
 { yylval.bval = 1; return T_TRUE_STORY; }
 	YY_BREAK
 case 108:
 YY_RULE_SETUP
-#line 200 "socialstory.l"
+#line 198 "socialstory.l"
 { yylval.bval = 0; return T_FALSE_ALARM; }
 	YY_BREAK
 case 109:
 YY_RULE_SETUP
-#line 202 "socialstory.l"
+#line 200 "socialstory.l"
 { return T_ALSO; }
 	YY_BREAK
 case 110:
 YY_RULE_SETUP
-#line 203 "socialstory.l"
+#line 201 "socialstory.l"
 { return T_EITHER; }
 	YY_BREAK
 case 111:
 YY_RULE_SETUP
-#line 204 "socialstory.l"
+#line 202 "socialstory.l"
 { return T_OPPOSITE; }
 	YY_BREAK
 case 112:
 YY_RULE_SETUP
-#line 206 "socialstory.l"
+#line 204 "socialstory.l"
 { return T_LPAREN; }
 	YY_BREAK
 case 113:
 YY_RULE_SETUP
-#line 207 "socialstory.l"
+#line 205 "socialstory.l"
 { return T_RPAREN; }
 	YY_BREAK
 case 114:
 YY_RULE_SETUP
-#line 208 "socialstory.l"
+#line 206 "socialstory.l"
 { return T_LBRACE; }
 	YY_BREAK
 case 115:
 YY_RULE_SETUP
-#line 209 "socialstory.l"
+#line 207 "socialstory.l"
 { return T_RBRACE; }
 	YY_BREAK
 case 116:
 YY_RULE_SETUP
-#line 210 "socialstory.l"
+#line 208 "socialstory.l"
 { return T_LBRACKET; }
 	YY_BREAK
 case 117:
 YY_RULE_SETUP
-#line 211 "socialstory.l"
+#line 209 "socialstory.l"
 { return T_RBRACKET; }
 	YY_BREAK
 case 118:
 YY_RULE_SETUP
-#line 212 "socialstory.l"
+#line 210 "socialstory.l"
 { return T_COMMA; }
 	YY_BREAK
 case 119:
 YY_RULE_SETUP
-#line 213 "socialstory.l"
+#line 211 "socialstory.l"
 { return T_DOT; }
 	YY_BREAK
 case 120:
 YY_RULE_SETUP
-#line 214 "socialstory.l"
+#line 212 "socialstory.l"
 { return T_COLON; }
 	YY_BREAK
 case 121:
 YY_RULE_SETUP
-#line 216 "socialstory.l"
+#line 214 "socialstory.l"
 { yylval.fval = atof(yytext); return T_DECIMAL; }
 	YY_BREAK
 case 122:
 YY_RULE_SETUP
-#line 217 "socialstory.l"
+#line 215 "socialstory.l"
 { yylval.ival = (int)strtol(yytext, NULL, 16); return T_NUMBER; }
 	YY_BREAK
 case 123:
 YY_RULE_SETUP
-#line 218 "socialstory.l"
+#line 216 "socialstory.l"
 { yylval.ival = (int)strtol(yytext, NULL, 8); return T_NUMBER; }
 	YY_BREAK
 case 124:
 YY_RULE_SETUP
-#line 219 "socialstory.l"
+#line 217 "socialstory.l"
 { yylval.fval = atof(yytext); return T_DECIMAL; }
 	YY_BREAK
 case 125:
 YY_RULE_SETUP
-#line 221 "socialstory.l"
+#line 219 "socialstory.l"
 { yylval.sval = duplicate_string(yytext); return T_ID; }
 	YY_BREAK
 case 126:
 YY_RULE_SETUP
-#line 223 "socialstory.l"
+#line 221 "socialstory.l"
 { yylval.ival = atoi(yytext); return T_NUMBER; }
 	YY_BREAK
 case 127:
 YY_RULE_SETUP
-#line 225 "socialstory.l"
+#line 223 "socialstory.l"
 {
                       if (yytext[1] == '\\') {
                           switch(yytext[2]) {
@@ -1987,7 +1987,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 128:
 YY_RULE_SETUP
-#line 242 "socialstory.l"
+#line 240 "socialstory.l"
 {
                       size_t len = strlen(yytext);
                       char* temp = (char*)malloc(len - 1);
@@ -2004,23 +2004,23 @@ YY_RULE_SETUP
 	YY_BREAK
 case 129:
 YY_RULE_SETUP
-#line 256 "socialstory.l"
+#line 254 "socialstory.l"
 { }
 	YY_BREAK
 case 130:
 /* rule 130 can match eol */
 YY_RULE_SETUP
-#line 257 "socialstory.l"
+#line 255 "socialstory.l"
 { }
 	YY_BREAK
 case 131:
 YY_RULE_SETUP
-#line 258 "socialstory.l"
+#line 256 "socialstory.l"
 { }
 	YY_BREAK
 case 132:
 YY_RULE_SETUP
-#line 260 "socialstory.l"
+#line 258 "socialstory.l"
 {
                       fprintf(stderr, "Error line %d: Unterminated string starting with %s\n", 
                               yylineno, yytext);
@@ -2029,7 +2029,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 133:
 YY_RULE_SETUP
-#line 266 "socialstory.l"
+#line 264 "socialstory.l"
 { 
                       fprintf(stderr, "Error line %d: Invalid character '%s' (ASCII %d)\n", 
                               yylineno, yytext, (int)yytext[0]);
@@ -2038,7 +2038,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 134:
 YY_RULE_SETUP
-#line 272 "socialstory.l"
+#line 270 "socialstory.l"
 ECHO;
 	YY_BREAK
 #line 2044 "lex.yy.c"
@@ -3058,7 +3058,7 @@ void yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 272 "socialstory.l"
+#line 270 "socialstory.l"
 
 
 const char* token_name(int t) {
@@ -3188,65 +3188,5 @@ const char* token_name(int t) {
     }
 }
 
-int main(int argc, char** argv) {
-    FILE *input, *output;
-    int token;
-    int token_count = 0;
+/* Lexer has no main; parser provides main in socialstory_parser.y */
 
-    if (argc != 3) {
-        fprintf(stderr, "Usage: %s <input_file> <output_file>\n", argv[0]);
-        return 1;
-    }
-
-    input = fopen(argv[1], "r");
-    if (!input) {
-        fprintf(stderr, "Error: Cannot open input file '%s'\n", argv[1]);
-        return 1;
-    }
-
-    output = fopen(argv[2], "w");
-    if (!output) {
-        fprintf(stderr, "Error: Cannot open output file '%s'\n", argv[2]);
-        fclose(input);
-        return 1;
-    }
-
-    yyin = input;
-
-    while ((token = yylex()) != 0) {
-        token_count++;
-        fprintf(output, "Line %3d: %-25s -> %s", yylineno, yytext, token_name(token));
-        
-        if (token == T_NUMBER) {
-            fprintf(output, " (value: %d)", yylval.ival);
-        } else if (token == T_DECIMAL) {
-            fprintf(output, " (value: %g)", yylval.fval);
-        } else if (token == T_TEXT) {
-            fprintf(output, " (value: \"%s\")", yylval.sval);
-            free(yylval.sval);
-        } else if (token == T_CHAR) {
-            fprintf(output, " (value: '%c')", yylval.cval);
-        } else if (token == T_ID) {
-            fprintf(output, " (name: %s)", yylval.sval);
-            free(yylval.sval);
-        }
-        
-        fprintf(output, "\n");
-    }
-
-    fprintf(output, "Lexical Analysis Summary:\n");
-    fprintf(output, "  Total tokens: %d\n", token_count);
-    fprintf(output, "  Total lines: %d\n", yylineno);
-    fprintf(output, "  Total errors: %d\n", error_count);
-
-    if (error_count > 0) {
-        fprintf(stderr, "\nLexical analysis completed with %d error(s)\n", error_count);
-    } else {
-        printf("\nLexical analysis successful!\n");
-        printf("Tokens: %d, Lines: %d\n", token_count, yylineno);
-    }
-
-    fclose(input);
-    fclose(output);
-    return (error_count > 0) ? 1 : 0;
-}
