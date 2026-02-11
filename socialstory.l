@@ -47,6 +47,7 @@ char* process_string(const char* str) {
 
 %option noyywrap
 %option yylineno
+%option caseless
 
 WS          [ \t\r]+
 NEWLINE     \n
@@ -119,6 +120,7 @@ MULTI_COMMENT_END "*/"
 "modulo"            { return T_MODULO; }
 "with"              { return T_WITH; }
 "and then"          { return T_AND_THEN; }
+"for"               { return T_FOR; }
 
 "the feed"          { return T_THE_FEED; }
 "contains"          { return T_CONTAINS; }
@@ -180,7 +182,7 @@ MULTI_COMMENT_END "*/"
 "Display"           { return T_DISPLAY; }
 
 "Calculate virality"            { return T_CALCULATE_VIRALITY; }
-"Calculate engagement with"     { return T_CALCULATE_ENGAGEMENT; }
+"Calculate engagement"          { return T_CALCULATE_ENGAGEMENT; }
 "Find top post"                 { return T_FIND_TOP_POST; }
 "Find the highest reach in"     { return T_FIND_HIGHEST_REACH; }
 "Find the total reach in"       { return T_FIND_TOTAL_REACH; }
@@ -215,10 +217,8 @@ MULTI_COMMENT_END "*/"
 {HEX}               { yylval.ival = (int)strtol(yytext, NULL, 16); return T_NUMBER; }
 {OCTAL}             { yylval.ival = (int)strtol(yytext, NULL, 8); return T_NUMBER; }
 {FLOAT}             { yylval.fval = atof(yytext); return T_DECIMAL; }
-
-{IDENTIFIER}        { yylval.sval = duplicate_string(yytext); return T_ID; }
-
 {INTEGER}           { yylval.ival = atoi(yytext); return T_NUMBER; }
+{IDENTIFIER}        { yylval.sval = duplicate_string(yytext); return T_ID; }
 
 {CHAR}              {
                       if (yytext[1] == '\\') {
@@ -268,132 +268,3 @@ MULTI_COMMENT_END "*/"
                     }
 
 %%
-
-const char* token_name(int t) {
-    switch(t) {
-        case T_GO_LIVE: return "T_GO_LIVE";
-        case T_END_LIVE: return "T_END_LIVE";
-        case T_THE_ACCOUNT: return "T_THE_ACCOUNT";
-        case T_WAS_CREATED: return "T_WAS_CREATED";
-        case T_THE_POST: return "T_THE_POST";
-        case T_THE_CAPTION: return "T_THE_CAPTION";
-        case T_THE_FOLLOWER: return "T_THE_FOLLOWER";
-        case T_THE_STORY: return "T_THE_STORY";
-        case T_POSTED: return "T_POSTED";
-        case T_ABOUT: return "T_ABOUT";
-        case T_THAT_HAD: return "T_THAT_HAD";
-        case T_ANOTHER: return "T_ANOTHER";
-        case T_STARTED_WITH: return "T_STARTED_WITH";
-        case T_BEGAN_AT: return "T_BEGAN_AT";
-        case T_NOW_HAS: return "T_NOW_HAS";
-        case T_READS: return "T_READS";
-        case T_IS_VIRAL: return "T_IS_VIRAL";
-        case T_IS_TRENDING: return "T_IS_TRENDING";
-        case T_GAINED: return "T_GAINED";
-        case T_LOST: return "T_LOST";
-        case T_ADDED: return "T_ADDED";
-        case T_REMOVED: return "T_REMOVED";
-        case T_INCREASED_BY: return "T_INCREASED_BY";
-        case T_DECREASED_BY: return "T_DECREASED_BY";
-        case T_WAS_UPDATED_TO: return "T_WAS_UPDATED_TO";
-        case T_BECAME: return "T_BECAME";
-        case T_MULTIPLIED_BY: return "T_MULTIPLIED_BY";
-        case T_DIVIDED_BY: return "T_DIVIDED_BY";
-        case T_PLUS: return "T_PLUS";
-        case T_MINUS: return "T_MINUS";
-        case T_TIMES: return "T_TIMES";
-        case T_MULTIPLY: return "T_MULTIPLY";
-        case T_DIVIDED_EVENLY_BY: return "T_DIVIDED_EVENLY_BY";
-        case T_DIVIDE: return "T_DIVIDE";
-        case T_MODULO: return "T_MODULO";
-        case T_WITH: return "T_WITH";
-        case T_AND_THEN: return "T_AND_THEN";
-        case T_THE_FEED: return "T_THE_FEED";
-        case T_CONTAINS: return "T_CONTAINS";
-        case T_AT_INDEX: return "T_AT_INDEX";
-        case T_LIKES: return "T_LIKES";
-        case T_FOLLOWERS: return "T_FOLLOWERS";
-        case T_VIEWS: return "T_VIEWS";
-        case T_COMMENTS: return "T_COMMENTS";
-        case T_SHARES: return "T_SHARES";
-        case T_POSTS: return "T_POSTS";
-        case T_STORIES: return "T_STORIES";
-        case T_ENGAGEMENT_RATE: return "T_ENGAGEMENT_RATE";
-        case T_REACH: return "T_REACH";
-        case T_GROWTH_RATE: return "T_GROWTH_RATE";
-        case T_WHEN: return "T_WHEN";
-        case T_OTHERWISE_IF: return "T_OTHERWISE_IF";
-        case T_OTHERWISE: return "T_OTHERWISE";
-        case T_WENT_VIRAL: return "T_WENT_VIRAL";
-        case T_REACHED: return "T_REACHED";
-        case T_EXCEEDED: return "T_EXCEEDED";
-        case T_DROPPED_BELOW: return "T_DROPPED_BELOW";
-        case T_STAYED_AT: return "T_STAYED_AT";
-        case T_MORE_THAN: return "T_MORE_THAN";
-        case T_LESS_THAN: return "T_LESS_THAN";
-        case T_EXACTLY: return "T_EXACTLY";
-        case T_AT_LEAST: return "T_AT_LEAST";
-        case T_AT_MOST: return "T_AT_MOST";
-        case T_DIFFERENT_FROM: return "T_DIFFERENT_FROM";
-        case T_EQUAL_TO: return "T_EQUAL_TO";
-        case T_NOT_EQUAL_TO: return "T_NOT_EQUAL_TO";
-        case T_EVERY_DAY_FOR: return "T_EVERY_DAY_FOR";
-        case T_EVERY: return "T_EVERY";
-        case T_DAYS: return "T_DAYS";
-        case T_INCREMENTING_BY: return "T_INCREMENTING_BY";
-        case T_DECREMENTING_BY: return "T_DECREMENTING_BY";
-        case T_FOR_EACH: return "T_FOR_EACH";
-        case T_POST_IN: return "T_POST_IN";
-        case T_STORY_IN: return "T_STORY_IN";
-        case T_FOLLOWER_FROM: return "T_FOLLOWER_FROM";
-        case T_TO: return "T_TO";
-        case T_TRENDING_LOOP: return "T_TRENDING_LOOP";
-        case T_UNTIL: return "T_UNTIL";
-        case T_STOP_THE_STORY: return "T_STOP_THE_STORY";
-        case T_SKIP_THIS_POST: return "T_SKIP_THIS_POST";
-        case T_THE_STORY_OF: return "T_THE_STORY_OF";
-        case T_BEGINS_WITH: return "T_BEGINS_WITH";
-        case T_TELL_BACK: return "T_TELL_BACK";
-        case T_THE_STORY_ENDS: return "T_THE_STORY_ENDS";
-        case T_TELL: return "T_TELL";
-        case T_ANNOUNCE: return "T_ANNOUNCE";
-        case T_ASK_FOR: return "T_ASK_FOR";
-        case T_DISPLAY: return "T_DISPLAY";
-        case T_CALCULATE_VIRALITY: return "T_CALCULATE_VIRALITY";
-        case T_CALCULATE_ENGAGEMENT: return "T_CALCULATE_ENGAGEMENT";
-        case T_FIND_TOP_POST: return "T_FIND_TOP_POST";
-        case T_FIND_HIGHEST_REACH: return "T_FIND_HIGHEST_REACH";
-        case T_FIND_TOTAL_REACH: return "T_FIND_TOTAL_REACH";
-        case T_COUNT_TOTAL_ENGAGEMENT: return "T_COUNT_TOTAL_ENGAGEMENT";
-        case T_CHECK_IF_TRENDING: return "T_CHECK_IF_TRENDING";
-        case T_ANALYZE_GROWTH: return "T_ANALYZE_GROWTH";
-        case T_FIND_MAX_VIRAL_ACCOUNT: return "T_FIND_MAX_VIRAL_ACCOUNT";
-        case T_REVERSE_THE_CAPTION: return "T_REVERSE_THE_CAPTION";
-        case T_DETECT_SPAM: return "T_DETECT_SPAM";
-        case T_CLAMP_ENGAGEMENT: return "T_CLAMP_ENGAGEMENT";
-        case T_BETWEEN: return "T_BETWEEN";
-        case T_REVERSE_GROWTH: return "T_REVERSE_GROWTH";
-        case T_TRUE_STORY: return "T_TRUE_STORY";
-        case T_FALSE_ALARM: return "T_FALSE_ALARM";
-        case T_ALSO: return "T_ALSO";
-        case T_EITHER: return "T_EITHER";
-        case T_OPPOSITE: return "T_OPPOSITE";
-        case T_LPAREN: return "T_LPAREN";
-        case T_RPAREN: return "T_RPAREN";
-        case T_LBRACE: return "T_LBRACE";
-        case T_RBRACE: return "T_RBRACE";
-        case T_LBRACKET: return "T_LBRACKET";
-        case T_RBRACKET: return "T_RBRACKET";
-        case T_COMMA: return "T_COMMA";
-        case T_DOT: return "T_DOT";
-        case T_COLON: return "T_COLON";
-        case T_NUMBER: return "T_NUMBER";
-        case T_DECIMAL: return "T_DECIMAL";
-        case T_TEXT: return "T_TEXT";
-        case T_CHAR: return "T_CHAR";
-        case T_ID: return "T_ID";
-        default: return "T_UNKNOWN";
-    }
-}
-
-/* Lexer has no main; parser provides main in socialstory_parser.y */

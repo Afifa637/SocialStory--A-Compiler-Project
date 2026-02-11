@@ -1,0 +1,147 @@
+🚀 SocialStoryScript Compiler
+==============================
+Parsing: test_parser.txt
+==============================
+
+
+✅ Parse successful! AST built.
+
+🌲 Abstract Syntax Tree:
+├─ PROGRAM
+  Body:
+    ├─ ACCOUNT_CREATE (TechWorld)
+    ├─ ACCOUNT_CREATE (FashionBlogger)
+    ├─ ACCOUNT_CREATE (FoodieLife)
+    ├─ ACCOUNT_INIT (TechWorld)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (TechWorld)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (TechWorld)
+      ├─ METRIC (views)
+    ├─ ACCOUNT_INIT (FashionBlogger)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (FashionBlogger)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (FoodieLife)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_UPDATE (TechWorld)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_UPDATE (TechWorld)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_UPDATE (FashionBlogger)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_UPDATE (FoodieLife)
+      ├─ METRIC (likes)
+    ├─ STORY_POST (TechWorld)
+      ├─ LITERAL_STRING (AI Revolution)
+    ├─ STORY_POST (FashionBlogger)
+      ├─ LITERAL_STRING (Summer Trends 2026)
+    ├─ ANNOUNCE (Welcome to SocialStoryScript!)
+    ├─ ANNOUNCE (Testing the compiler...)
+    ├─ DISPLAY (TechWorld)
+    ├─ DISPLAY (FashionBlogger)
+    ├─ DISPLAY (FoodieLife)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ COMPARISON
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [100]
+      Body:
+        ├─ ANNOUNCE (Great engagement!)
+        ├─ ACCOUNT_UPDATE (TechWorld)
+          ├─ METRIC (likes)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ COMPARISON
+          ├─ METRIC (followers)
+          ├─ LITERAL_INT [500]
+      Body:
+        ├─ ANNOUNCE (Time to grow!)
+      Else:
+        ├─ ANNOUNCE (Solid follower base!)
+    ├─ LOOP [start:1, end:3, step:1]
+      Body:
+        ├─ ACCOUNT_UPDATE (TechWorld)
+          ├─ METRIC (likes)
+        ├─ ANNOUNCE (Daily growth!)
+    ├─ LOOP_INCREMENT [start:1, end:5, step:1]
+      Body:
+        ├─ ACCOUNT_UPDATE (FashionBlogger)
+          ├─ METRIC (followers)
+    ├─ LOOP_DECREMENT [start:4, end:1, step:1]
+      Body:
+        ├─ ANNOUNCE (Countdown active!)
+    ├─ BUILTIN_CALL (calculate_virality) [Account: TechWorld]
+    ├─ BUILTIN_CALL (calculate_engagement) [Account: FashionBlogger]
+    ├─ BUILTIN_CALL (analyze_growth) [Account: FoodieLife]
+    ├─ BUILTIN_CALL (find_max_viral_account)
+    ├─ ANNOUNCE (Final Statistics:)
+    ├─ DISPLAY (TechWorld)
+    ├─ DISPLAY (FashionBlogger)
+    ├─ DISPLAY (FoodieLife)
+
+📋 Symbol Table:
+================
+FoodieLife           | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+FashionBlogger       | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+TechWorld            | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 4] ✨ Created account: TechWorld
+[Line 5] ✨ Created account: FashionBlogger
+[Line 6] ✨ Created account: FoodieLife
+[Line 9] 👥 TechWorld started with 500 followers
+[Line 10] 📊 TechWorld started with 100 likes
+[Line 11] 👁️  TechWorld started with 250 views
+[Line 13] 👥 FashionBlogger started with 1000 followers
+[Line 14] 📊 FashionBlogger started with 300 likes
+[Line 16] 👥 FoodieLife started with 750 followers
+[Line 19] ❤️  TechWorld gained 50 likes (now: 150)
+[Line 20] 👥 TechWorld gained 100 followers (now: 600)
+[Line 21] 👥 FashionBlogger lost 25 followers (now: 975)
+[Line 22] ❤️  FoodieLife gained 80 likes (now: 80)
+[Line 25] 📱 TechWorld posted story: "AI Revolution" (5000 views)
+[Line 26] 📱 FashionBlogger posted story: "Summer Trends 2026" (3500 views)
+[Line 29] 📢 Announcement: Welcome to SocialStoryScript!
+[Line 30] 📢 Announcement: Testing the compiler...
+[Line 33] 📊 Account TechWorld: Likes=150, Followers=600, Views=250, Comments=0, Shares=0
+[Line 34] 📊 Account FashionBlogger: Likes=300, Followers=975, Views=0, Comments=0, Shares=0
+[Line 35] 📊 Account FoodieLife: Likes=80, Followers=750, Views=0, Comments=0, Shares=0
+[Line 46] 📢 Announcement: Time to grow!
+[Line 58] 🔄 Loop: days 1 to 3, step 1
+[Line 56] ❤️  TechWorld gained 10 likes (now: 160)
+[Line 57] 📢 Announcement: Daily growth!
+[Line 56] ❤️  TechWorld gained 10 likes (now: 170)
+[Line 57] 📢 Announcement: Daily growth!
+[Line 56] ❤️  TechWorld gained 10 likes (now: 180)
+[Line 57] 📢 Announcement: Daily growth!
+[Line 63] 🔄 Loop incrementing: start 1, end 5, step 1
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 980)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 985)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 990)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 995)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 1000)
+[Line 68] 🔄 Loop decrementing: start 4, end 1, step 1
+[Line 67] 📢 Announcement: Countdown active!
+[Line 67] 📢 Announcement: Countdown active!
+[Line 67] 📢 Announcement: Countdown active!
+[Line 67] 📢 Announcement: Countdown active!
+[Line 71] 📊 RESULT: Virality score for 'TechWorld' = 1030 (VIRAL!)
+[Line 72] 📈 RESULT: Engagement rate for 'FashionBlogger' = 30.00%
+[Line 73] 📊 RESULT: Growth rate for 'FoodieLife' = 75.00%
+[Line 74] 🏆 RESULT: Most viral account is 'FashionBlogger' with viral score: 1300
+[Line 77] 📢 Announcement: Final Statistics:
+[Line 78] 📊 Account TechWorld: Likes=180, Followers=600, Views=250, Comments=0, Shares=0
+[Line 79] 📊 Account FashionBlogger: Likes=300, Followers=1000, Views=0, Comments=0, Shares=0
+        Engagement Rate: 30.00%
+[Line 80] 📊 Account FoodieLife: Likes=80, Followers=750, Views=0, Comments=0, Shares=0
+        Growth Rate: 75.00%
+==========================================
+✅ Program execution complete!
+
+✅ Compilation successful!
+   Lexical errors: 0
+   Syntax errors: 0
+   Semantic errors: 0

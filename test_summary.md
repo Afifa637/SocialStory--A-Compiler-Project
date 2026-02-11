@@ -155,6 +155,16 @@ gcc lex.yy.c -o socialstory.exe
 ./socialstory.exe complete_test.txt output.txt
 cat output.txt
 ```
+# RUN
+```bash
+/f/Compiler Design/SocialStory
+bison -d socialstory_parser.y
+flex socialstory.l
+gcc socialstory_parser.tab.c lex.yy.c -o socialstory.exe
+./socialstory.exe test_parser.txt > output2.txt
+
+
+```
 
 ### Expected Output Sample:
 ```

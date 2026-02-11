@@ -91,90 +91,91 @@ extern int yydebug;
     T_MODULO = 292,                /* T_MODULO  */
     T_WITH = 293,                  /* T_WITH  */
     T_AND_THEN = 294,              /* T_AND_THEN  */
-    T_THE_FEED = 295,              /* T_THE_FEED  */
-    T_CONTAINS = 296,              /* T_CONTAINS  */
-    T_AT_INDEX = 297,              /* T_AT_INDEX  */
-    T_LIKES = 298,                 /* T_LIKES  */
-    T_FOLLOWERS = 299,             /* T_FOLLOWERS  */
-    T_VIEWS = 300,                 /* T_VIEWS  */
-    T_COMMENTS = 301,              /* T_COMMENTS  */
-    T_SHARES = 302,                /* T_SHARES  */
-    T_POSTS = 303,                 /* T_POSTS  */
-    T_STORIES = 304,               /* T_STORIES  */
-    T_ENGAGEMENT_RATE = 305,       /* T_ENGAGEMENT_RATE  */
-    T_REACH = 306,                 /* T_REACH  */
-    T_GROWTH_RATE = 307,           /* T_GROWTH_RATE  */
-    T_WHEN = 308,                  /* T_WHEN  */
-    T_OTHERWISE_IF = 309,          /* T_OTHERWISE_IF  */
-    T_OTHERWISE = 310,             /* T_OTHERWISE  */
-    T_WENT_VIRAL = 311,            /* T_WENT_VIRAL  */
-    T_REACHED = 312,               /* T_REACHED  */
-    T_EXCEEDED = 313,              /* T_EXCEEDED  */
-    T_DROPPED_BELOW = 314,         /* T_DROPPED_BELOW  */
-    T_STAYED_AT = 315,             /* T_STAYED_AT  */
-    T_MORE_THAN = 316,             /* T_MORE_THAN  */
-    T_LESS_THAN = 317,             /* T_LESS_THAN  */
-    T_EXACTLY = 318,               /* T_EXACTLY  */
-    T_AT_LEAST = 319,              /* T_AT_LEAST  */
-    T_AT_MOST = 320,               /* T_AT_MOST  */
-    T_DIFFERENT_FROM = 321,        /* T_DIFFERENT_FROM  */
-    T_EQUAL_TO = 322,              /* T_EQUAL_TO  */
-    T_NOT_EQUAL_TO = 323,          /* T_NOT_EQUAL_TO  */
-    T_EVERY_DAY_FOR = 324,         /* T_EVERY_DAY_FOR  */
-    T_EVERY = 325,                 /* T_EVERY  */
-    T_DAYS = 326,                  /* T_DAYS  */
-    T_INCREMENTING_BY = 327,       /* T_INCREMENTING_BY  */
-    T_DECREMENTING_BY = 328,       /* T_DECREMENTING_BY  */
-    T_FOR_EACH = 329,              /* T_FOR_EACH  */
-    T_POST_IN = 330,               /* T_POST_IN  */
-    T_STORY_IN = 331,              /* T_STORY_IN  */
-    T_FOLLOWER_FROM = 332,         /* T_FOLLOWER_FROM  */
-    T_TO = 333,                    /* T_TO  */
-    T_TRENDING_LOOP = 334,         /* T_TRENDING_LOOP  */
-    T_UNTIL = 335,                 /* T_UNTIL  */
-    T_STOP_THE_STORY = 336,        /* T_STOP_THE_STORY  */
-    T_SKIP_THIS_POST = 337,        /* T_SKIP_THIS_POST  */
-    T_THE_STORY_OF = 338,          /* T_THE_STORY_OF  */
-    T_BEGINS_WITH = 339,           /* T_BEGINS_WITH  */
-    T_TELL_BACK = 340,             /* T_TELL_BACK  */
-    T_THE_STORY_ENDS = 341,        /* T_THE_STORY_ENDS  */
-    T_TELL = 342,                  /* T_TELL  */
-    T_ANNOUNCE = 343,              /* T_ANNOUNCE  */
-    T_ASK_FOR = 344,               /* T_ASK_FOR  */
-    T_DISPLAY = 345,               /* T_DISPLAY  */
-    T_CALCULATE_VIRALITY = 346,    /* T_CALCULATE_VIRALITY  */
-    T_CALCULATE_ENGAGEMENT = 347,  /* T_CALCULATE_ENGAGEMENT  */
-    T_FIND_TOP_POST = 348,         /* T_FIND_TOP_POST  */
-    T_FIND_HIGHEST_REACH = 349,    /* T_FIND_HIGHEST_REACH  */
-    T_FIND_TOTAL_REACH = 350,      /* T_FIND_TOTAL_REACH  */
-    T_COUNT_TOTAL_ENGAGEMENT = 351, /* T_COUNT_TOTAL_ENGAGEMENT  */
-    T_CHECK_IF_TRENDING = 352,     /* T_CHECK_IF_TRENDING  */
-    T_ANALYZE_GROWTH = 353,        /* T_ANALYZE_GROWTH  */
-    T_FIND_MAX_VIRAL_ACCOUNT = 354, /* T_FIND_MAX_VIRAL_ACCOUNT  */
-    T_REVERSE_THE_CAPTION = 355,   /* T_REVERSE_THE_CAPTION  */
-    T_DETECT_SPAM = 356,           /* T_DETECT_SPAM  */
-    T_CLAMP_ENGAGEMENT = 357,      /* T_CLAMP_ENGAGEMENT  */
-    T_BETWEEN = 358,               /* T_BETWEEN  */
-    T_REVERSE_GROWTH = 359,        /* T_REVERSE_GROWTH  */
-    T_ALSO = 360,                  /* T_ALSO  */
-    T_EITHER = 361,                /* T_EITHER  */
-    T_OPPOSITE = 362,              /* T_OPPOSITE  */
-    T_LPAREN = 363,                /* T_LPAREN  */
-    T_RPAREN = 364,                /* T_RPAREN  */
-    T_LBRACE = 365,                /* T_LBRACE  */
-    T_RBRACE = 366,                /* T_RBRACE  */
-    T_LBRACKET = 367,              /* T_LBRACKET  */
-    T_RBRACKET = 368,              /* T_RBRACKET  */
-    T_COMMA = 369,                 /* T_COMMA  */
-    T_DOT = 370,                   /* T_DOT  */
-    T_COLON = 371,                 /* T_COLON  */
-    T_NUMBER = 372,                /* T_NUMBER  */
-    T_DECIMAL = 373,               /* T_DECIMAL  */
-    T_TEXT = 374,                  /* T_TEXT  */
-    T_ID = 375,                    /* T_ID  */
-    T_CHAR = 376,                  /* T_CHAR  */
-    T_TRUE_STORY = 377,            /* T_TRUE_STORY  */
-    T_FALSE_ALARM = 378            /* T_FALSE_ALARM  */
+    T_FOR = 295,                   /* T_FOR  */
+    T_THE_FEED = 296,              /* T_THE_FEED  */
+    T_CONTAINS = 297,              /* T_CONTAINS  */
+    T_AT_INDEX = 298,              /* T_AT_INDEX  */
+    T_LIKES = 299,                 /* T_LIKES  */
+    T_FOLLOWERS = 300,             /* T_FOLLOWERS  */
+    T_VIEWS = 301,                 /* T_VIEWS  */
+    T_COMMENTS = 302,              /* T_COMMENTS  */
+    T_SHARES = 303,                /* T_SHARES  */
+    T_POSTS = 304,                 /* T_POSTS  */
+    T_STORIES = 305,               /* T_STORIES  */
+    T_ENGAGEMENT_RATE = 306,       /* T_ENGAGEMENT_RATE  */
+    T_REACH = 307,                 /* T_REACH  */
+    T_GROWTH_RATE = 308,           /* T_GROWTH_RATE  */
+    T_WHEN = 309,                  /* T_WHEN  */
+    T_OTHERWISE_IF = 310,          /* T_OTHERWISE_IF  */
+    T_OTHERWISE = 311,             /* T_OTHERWISE  */
+    T_WENT_VIRAL = 312,            /* T_WENT_VIRAL  */
+    T_REACHED = 313,               /* T_REACHED  */
+    T_EXCEEDED = 314,              /* T_EXCEEDED  */
+    T_DROPPED_BELOW = 315,         /* T_DROPPED_BELOW  */
+    T_STAYED_AT = 316,             /* T_STAYED_AT  */
+    T_MORE_THAN = 317,             /* T_MORE_THAN  */
+    T_LESS_THAN = 318,             /* T_LESS_THAN  */
+    T_EXACTLY = 319,               /* T_EXACTLY  */
+    T_AT_LEAST = 320,              /* T_AT_LEAST  */
+    T_AT_MOST = 321,               /* T_AT_MOST  */
+    T_DIFFERENT_FROM = 322,        /* T_DIFFERENT_FROM  */
+    T_EQUAL_TO = 323,              /* T_EQUAL_TO  */
+    T_NOT_EQUAL_TO = 324,          /* T_NOT_EQUAL_TO  */
+    T_EVERY_DAY_FOR = 325,         /* T_EVERY_DAY_FOR  */
+    T_EVERY = 326,                 /* T_EVERY  */
+    T_DAYS = 327,                  /* T_DAYS  */
+    T_INCREMENTING_BY = 328,       /* T_INCREMENTING_BY  */
+    T_DECREMENTING_BY = 329,       /* T_DECREMENTING_BY  */
+    T_FOR_EACH = 330,              /* T_FOR_EACH  */
+    T_POST_IN = 331,               /* T_POST_IN  */
+    T_STORY_IN = 332,              /* T_STORY_IN  */
+    T_FOLLOWER_FROM = 333,         /* T_FOLLOWER_FROM  */
+    T_TO = 334,                    /* T_TO  */
+    T_TRENDING_LOOP = 335,         /* T_TRENDING_LOOP  */
+    T_UNTIL = 336,                 /* T_UNTIL  */
+    T_STOP_THE_STORY = 337,        /* T_STOP_THE_STORY  */
+    T_SKIP_THIS_POST = 338,        /* T_SKIP_THIS_POST  */
+    T_THE_STORY_OF = 339,          /* T_THE_STORY_OF  */
+    T_BEGINS_WITH = 340,           /* T_BEGINS_WITH  */
+    T_TELL_BACK = 341,             /* T_TELL_BACK  */
+    T_THE_STORY_ENDS = 342,        /* T_THE_STORY_ENDS  */
+    T_TELL = 343,                  /* T_TELL  */
+    T_ANNOUNCE = 344,              /* T_ANNOUNCE  */
+    T_ASK_FOR = 345,               /* T_ASK_FOR  */
+    T_DISPLAY = 346,               /* T_DISPLAY  */
+    T_CALCULATE_VIRALITY = 347,    /* T_CALCULATE_VIRALITY  */
+    T_CALCULATE_ENGAGEMENT = 348,  /* T_CALCULATE_ENGAGEMENT  */
+    T_FIND_TOP_POST = 349,         /* T_FIND_TOP_POST  */
+    T_FIND_HIGHEST_REACH = 350,    /* T_FIND_HIGHEST_REACH  */
+    T_FIND_TOTAL_REACH = 351,      /* T_FIND_TOTAL_REACH  */
+    T_COUNT_TOTAL_ENGAGEMENT = 352, /* T_COUNT_TOTAL_ENGAGEMENT  */
+    T_CHECK_IF_TRENDING = 353,     /* T_CHECK_IF_TRENDING  */
+    T_ANALYZE_GROWTH = 354,        /* T_ANALYZE_GROWTH  */
+    T_FIND_MAX_VIRAL_ACCOUNT = 355, /* T_FIND_MAX_VIRAL_ACCOUNT  */
+    T_REVERSE_THE_CAPTION = 356,   /* T_REVERSE_THE_CAPTION  */
+    T_DETECT_SPAM = 357,           /* T_DETECT_SPAM  */
+    T_CLAMP_ENGAGEMENT = 358,      /* T_CLAMP_ENGAGEMENT  */
+    T_BETWEEN = 359,               /* T_BETWEEN  */
+    T_REVERSE_GROWTH = 360,        /* T_REVERSE_GROWTH  */
+    T_ALSO = 361,                  /* T_ALSO  */
+    T_EITHER = 362,                /* T_EITHER  */
+    T_OPPOSITE = 363,              /* T_OPPOSITE  */
+    T_LPAREN = 364,                /* T_LPAREN  */
+    T_RPAREN = 365,                /* T_RPAREN  */
+    T_LBRACE = 366,                /* T_LBRACE  */
+    T_RBRACE = 367,                /* T_RBRACE  */
+    T_LBRACKET = 368,              /* T_LBRACKET  */
+    T_RBRACKET = 369,              /* T_RBRACKET  */
+    T_COMMA = 370,                 /* T_COMMA  */
+    T_DOT = 371,                   /* T_DOT  */
+    T_COLON = 372,                 /* T_COLON  */
+    T_NUMBER = 373,                /* T_NUMBER  */
+    T_DECIMAL = 374,               /* T_DECIMAL  */
+    T_TEXT = 375,                  /* T_TEXT  */
+    T_ID = 376,                    /* T_ID  */
+    T_CHAR = 377,                  /* T_CHAR  */
+    T_TRUE_STORY = 378,            /* T_TRUE_STORY  */
+    T_FALSE_ALARM = 379            /* T_FALSE_ALARM  */
   };
   typedef enum yytokentype yytoken_kind_t;
 #endif
@@ -183,7 +184,7 @@ extern int yydebug;
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
 union YYSTYPE
 {
-#line 120 "socialstory_parser.y"
+#line 136 "socialstory_parser.y"
 
     int ival;
     float fval;
@@ -192,7 +193,7 @@ union YYSTYPE
     int bval;
     struct ASTNode* node;
 
-#line 196 "socialstory_parser.tab.h"
+#line 197 "socialstory_parser.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

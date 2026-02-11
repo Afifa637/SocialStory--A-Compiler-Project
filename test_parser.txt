@@ -1,4 +1,4 @@
-Go live
+Go live.
 
 # Test 1: Account Creation
 The account TechWorld was created.
@@ -67,10 +67,11 @@ Every 4 days decrementing by 1
     Announce "Countdown active!".
 }
 
-# Test 9: Built-in Functions
-Calculate virality.
+# Test 9: Built-in Functions (CORRECTED SYNTAX)
+Calculate virality for the account TechWorld.
+Calculate engagement for the account FashionBlogger.
+Analyze growth for the account FoodieLife.
 Find max viral account.
-Analyze growth.
 
 # Test 10: Final Stats
 Announce "Final Statistics:".

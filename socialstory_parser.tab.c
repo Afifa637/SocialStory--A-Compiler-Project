@@ -72,6 +72,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "socialstory_tokens.h"
 
 /* Forward declarations */
@@ -80,6 +81,10 @@ int yylex(void);
 extern int yylineno;
 extern FILE *yyin;
 extern int error_count;
+extern char* yytext;
+
+/* Output file for structured output */
+FILE* output_file = NULL;
 
 /* AST Node Types */
 typedef enum {
@@ -111,7 +116,8 @@ typedef enum {
     AST_LITERAL_STRING,
     AST_LITERAL_BOOL,
     AST_IDENTIFIER,
-    AST_METRIC
+    AST_METRIC,
+    AST_ACCOUNT_REF
 } ASTNodeType;
 
 /* AST Node Structure */
@@ -120,8 +126,11 @@ typedef struct ASTNode {
     
     /* Value holders */
     int ival;
+    int ival2;  /* For loop end value */
+    int step;   /* For loop step */
     float fval;
     char* sval;
+    char* sval2; /* For additional string (like account name in builtin) */
     
     /* Node connections */
     struct ASTNode* left;
@@ -130,6 +139,7 @@ typedef struct ASTNode {
     struct ASTNode* body;
     struct ASTNode* else_body;
     struct ASTNode* next;
+    struct ASTNode* param;  /* For function parameters */
     
     /* Additional info */
     int line_number;
@@ -175,6 +185,7 @@ void free_ast(ASTNode* node);
 SymbolEntry* lookup_symbol(const char* name);
 SymbolEntry* insert_symbol(const char* name, int sym_type);
 void print_symbol_table();
+void print_symbol_table_to_file(FILE* fp);
 void free_symbol_table();
 
 /* Semantic analysis */
@@ -184,9 +195,14 @@ void check_duplicate_account(const char* name, int line);
 /* Interpreter */
 void execute(ASTNode* node);
 void execute_statements(ASTNode* node);
+int evaluate_expression(ASTNode* node);
+
+/* Output functions */
+void output_to_terminal(const char* format, ...);
+void output_to_file(const char* format, ...);
 
 
-#line 190 "socialstory_parser.tab.c"
+#line 206 "socialstory_parser.tab.c"
 
 # ifndef YY_CAST
 #  ifdef __cplusplus
@@ -254,113 +270,115 @@ enum yysymbol_kind_t
   YYSYMBOL_T_MODULO = 37,                  /* T_MODULO  */
   YYSYMBOL_T_WITH = 38,                    /* T_WITH  */
   YYSYMBOL_T_AND_THEN = 39,                /* T_AND_THEN  */
-  YYSYMBOL_T_THE_FEED = 40,                /* T_THE_FEED  */
-  YYSYMBOL_T_CONTAINS = 41,                /* T_CONTAINS  */
-  YYSYMBOL_T_AT_INDEX = 42,                /* T_AT_INDEX  */
-  YYSYMBOL_T_LIKES = 43,                   /* T_LIKES  */
-  YYSYMBOL_T_FOLLOWERS = 44,               /* T_FOLLOWERS  */
-  YYSYMBOL_T_VIEWS = 45,                   /* T_VIEWS  */
-  YYSYMBOL_T_COMMENTS = 46,                /* T_COMMENTS  */
-  YYSYMBOL_T_SHARES = 47,                  /* T_SHARES  */
-  YYSYMBOL_T_POSTS = 48,                   /* T_POSTS  */
-  YYSYMBOL_T_STORIES = 49,                 /* T_STORIES  */
-  YYSYMBOL_T_ENGAGEMENT_RATE = 50,         /* T_ENGAGEMENT_RATE  */
-  YYSYMBOL_T_REACH = 51,                   /* T_REACH  */
-  YYSYMBOL_T_GROWTH_RATE = 52,             /* T_GROWTH_RATE  */
-  YYSYMBOL_T_WHEN = 53,                    /* T_WHEN  */
-  YYSYMBOL_T_OTHERWISE_IF = 54,            /* T_OTHERWISE_IF  */
-  YYSYMBOL_T_OTHERWISE = 55,               /* T_OTHERWISE  */
-  YYSYMBOL_T_WENT_VIRAL = 56,              /* T_WENT_VIRAL  */
-  YYSYMBOL_T_REACHED = 57,                 /* T_REACHED  */
-  YYSYMBOL_T_EXCEEDED = 58,                /* T_EXCEEDED  */
-  YYSYMBOL_T_DROPPED_BELOW = 59,           /* T_DROPPED_BELOW  */
-  YYSYMBOL_T_STAYED_AT = 60,               /* T_STAYED_AT  */
-  YYSYMBOL_T_MORE_THAN = 61,               /* T_MORE_THAN  */
-  YYSYMBOL_T_LESS_THAN = 62,               /* T_LESS_THAN  */
-  YYSYMBOL_T_EXACTLY = 63,                 /* T_EXACTLY  */
-  YYSYMBOL_T_AT_LEAST = 64,                /* T_AT_LEAST  */
-  YYSYMBOL_T_AT_MOST = 65,                 /* T_AT_MOST  */
-  YYSYMBOL_T_DIFFERENT_FROM = 66,          /* T_DIFFERENT_FROM  */
-  YYSYMBOL_T_EQUAL_TO = 67,                /* T_EQUAL_TO  */
-  YYSYMBOL_T_NOT_EQUAL_TO = 68,            /* T_NOT_EQUAL_TO  */
-  YYSYMBOL_T_EVERY_DAY_FOR = 69,           /* T_EVERY_DAY_FOR  */
-  YYSYMBOL_T_EVERY = 70,                   /* T_EVERY  */
-  YYSYMBOL_T_DAYS = 71,                    /* T_DAYS  */
-  YYSYMBOL_T_INCREMENTING_BY = 72,         /* T_INCREMENTING_BY  */
-  YYSYMBOL_T_DECREMENTING_BY = 73,         /* T_DECREMENTING_BY  */
-  YYSYMBOL_T_FOR_EACH = 74,                /* T_FOR_EACH  */
-  YYSYMBOL_T_POST_IN = 75,                 /* T_POST_IN  */
-  YYSYMBOL_T_STORY_IN = 76,                /* T_STORY_IN  */
-  YYSYMBOL_T_FOLLOWER_FROM = 77,           /* T_FOLLOWER_FROM  */
-  YYSYMBOL_T_TO = 78,                      /* T_TO  */
-  YYSYMBOL_T_TRENDING_LOOP = 79,           /* T_TRENDING_LOOP  */
-  YYSYMBOL_T_UNTIL = 80,                   /* T_UNTIL  */
-  YYSYMBOL_T_STOP_THE_STORY = 81,          /* T_STOP_THE_STORY  */
-  YYSYMBOL_T_SKIP_THIS_POST = 82,          /* T_SKIP_THIS_POST  */
-  YYSYMBOL_T_THE_STORY_OF = 83,            /* T_THE_STORY_OF  */
-  YYSYMBOL_T_BEGINS_WITH = 84,             /* T_BEGINS_WITH  */
-  YYSYMBOL_T_TELL_BACK = 85,               /* T_TELL_BACK  */
-  YYSYMBOL_T_THE_STORY_ENDS = 86,          /* T_THE_STORY_ENDS  */
-  YYSYMBOL_T_TELL = 87,                    /* T_TELL  */
-  YYSYMBOL_T_ANNOUNCE = 88,                /* T_ANNOUNCE  */
-  YYSYMBOL_T_ASK_FOR = 89,                 /* T_ASK_FOR  */
-  YYSYMBOL_T_DISPLAY = 90,                 /* T_DISPLAY  */
-  YYSYMBOL_T_CALCULATE_VIRALITY = 91,      /* T_CALCULATE_VIRALITY  */
-  YYSYMBOL_T_CALCULATE_ENGAGEMENT = 92,    /* T_CALCULATE_ENGAGEMENT  */
-  YYSYMBOL_T_FIND_TOP_POST = 93,           /* T_FIND_TOP_POST  */
-  YYSYMBOL_T_FIND_HIGHEST_REACH = 94,      /* T_FIND_HIGHEST_REACH  */
-  YYSYMBOL_T_FIND_TOTAL_REACH = 95,        /* T_FIND_TOTAL_REACH  */
-  YYSYMBOL_T_COUNT_TOTAL_ENGAGEMENT = 96,  /* T_COUNT_TOTAL_ENGAGEMENT  */
-  YYSYMBOL_T_CHECK_IF_TRENDING = 97,       /* T_CHECK_IF_TRENDING  */
-  YYSYMBOL_T_ANALYZE_GROWTH = 98,          /* T_ANALYZE_GROWTH  */
-  YYSYMBOL_T_FIND_MAX_VIRAL_ACCOUNT = 99,  /* T_FIND_MAX_VIRAL_ACCOUNT  */
-  YYSYMBOL_T_REVERSE_THE_CAPTION = 100,    /* T_REVERSE_THE_CAPTION  */
-  YYSYMBOL_T_DETECT_SPAM = 101,            /* T_DETECT_SPAM  */
-  YYSYMBOL_T_CLAMP_ENGAGEMENT = 102,       /* T_CLAMP_ENGAGEMENT  */
-  YYSYMBOL_T_BETWEEN = 103,                /* T_BETWEEN  */
-  YYSYMBOL_T_REVERSE_GROWTH = 104,         /* T_REVERSE_GROWTH  */
-  YYSYMBOL_T_ALSO = 105,                   /* T_ALSO  */
-  YYSYMBOL_T_EITHER = 106,                 /* T_EITHER  */
-  YYSYMBOL_T_OPPOSITE = 107,               /* T_OPPOSITE  */
-  YYSYMBOL_T_LPAREN = 108,                 /* T_LPAREN  */
-  YYSYMBOL_T_RPAREN = 109,                 /* T_RPAREN  */
-  YYSYMBOL_T_LBRACE = 110,                 /* T_LBRACE  */
-  YYSYMBOL_T_RBRACE = 111,                 /* T_RBRACE  */
-  YYSYMBOL_T_LBRACKET = 112,               /* T_LBRACKET  */
-  YYSYMBOL_T_RBRACKET = 113,               /* T_RBRACKET  */
-  YYSYMBOL_T_COMMA = 114,                  /* T_COMMA  */
-  YYSYMBOL_T_DOT = 115,                    /* T_DOT  */
-  YYSYMBOL_T_COLON = 116,                  /* T_COLON  */
-  YYSYMBOL_T_NUMBER = 117,                 /* T_NUMBER  */
-  YYSYMBOL_T_DECIMAL = 118,                /* T_DECIMAL  */
-  YYSYMBOL_T_TEXT = 119,                   /* T_TEXT  */
-  YYSYMBOL_T_ID = 120,                     /* T_ID  */
-  YYSYMBOL_T_CHAR = 121,                   /* T_CHAR  */
-  YYSYMBOL_T_TRUE_STORY = 122,             /* T_TRUE_STORY  */
-  YYSYMBOL_T_FALSE_ALARM = 123,            /* T_FALSE_ALARM  */
-  YYSYMBOL_YYACCEPT = 124,                 /* $accept  */
-  YYSYMBOL_program = 125,                  /* program  */
-  YYSYMBOL_statements = 126,               /* statements  */
-  YYSYMBOL_statement = 127,                /* statement  */
-  YYSYMBOL_account_create = 128,           /* account_create  */
-  YYSYMBOL_account_init = 129,             /* account_init  */
-  YYSYMBOL_account_update = 130,           /* account_update  */
-  YYSYMBOL_story_post = 131,               /* story_post  */
-  YYSYMBOL_conditional = 132,              /* conditional  */
-  YYSYMBOL_optional_else = 133,            /* optional_else  */
-  YYSYMBOL_else_if_chain = 134,            /* else_if_chain  */
-  YYSYMBOL_loop = 135,                     /* loop  */
-  YYSYMBOL_loop_control = 136,             /* loop_control  */
-  YYSYMBOL_function_def = 137,             /* function_def  */
-  YYSYMBOL_function_call = 138,            /* function_call  */
-  YYSYMBOL_builtin_call = 139,             /* builtin_call  */
-  YYSYMBOL_io_statement = 140,             /* io_statement  */
-  YYSYMBOL_expression = 141,               /* expression  */
-  YYSYMBOL_term = 142,                     /* term  */
-  YYSYMBOL_factor = 143,                   /* factor  */
-  YYSYMBOL_comparison = 144,               /* comparison  */
-  YYSYMBOL_metric = 145,                   /* metric  */
-  YYSYMBOL_literal = 146                   /* literal  */
+  YYSYMBOL_T_FOR = 40,                     /* T_FOR  */
+  YYSYMBOL_T_THE_FEED = 41,                /* T_THE_FEED  */
+  YYSYMBOL_T_CONTAINS = 42,                /* T_CONTAINS  */
+  YYSYMBOL_T_AT_INDEX = 43,                /* T_AT_INDEX  */
+  YYSYMBOL_T_LIKES = 44,                   /* T_LIKES  */
+  YYSYMBOL_T_FOLLOWERS = 45,               /* T_FOLLOWERS  */
+  YYSYMBOL_T_VIEWS = 46,                   /* T_VIEWS  */
+  YYSYMBOL_T_COMMENTS = 47,                /* T_COMMENTS  */
+  YYSYMBOL_T_SHARES = 48,                  /* T_SHARES  */
+  YYSYMBOL_T_POSTS = 49,                   /* T_POSTS  */
+  YYSYMBOL_T_STORIES = 50,                 /* T_STORIES  */
+  YYSYMBOL_T_ENGAGEMENT_RATE = 51,         /* T_ENGAGEMENT_RATE  */
+  YYSYMBOL_T_REACH = 52,                   /* T_REACH  */
+  YYSYMBOL_T_GROWTH_RATE = 53,             /* T_GROWTH_RATE  */
+  YYSYMBOL_T_WHEN = 54,                    /* T_WHEN  */
+  YYSYMBOL_T_OTHERWISE_IF = 55,            /* T_OTHERWISE_IF  */
+  YYSYMBOL_T_OTHERWISE = 56,               /* T_OTHERWISE  */
+  YYSYMBOL_T_WENT_VIRAL = 57,              /* T_WENT_VIRAL  */
+  YYSYMBOL_T_REACHED = 58,                 /* T_REACHED  */
+  YYSYMBOL_T_EXCEEDED = 59,                /* T_EXCEEDED  */
+  YYSYMBOL_T_DROPPED_BELOW = 60,           /* T_DROPPED_BELOW  */
+  YYSYMBOL_T_STAYED_AT = 61,               /* T_STAYED_AT  */
+  YYSYMBOL_T_MORE_THAN = 62,               /* T_MORE_THAN  */
+  YYSYMBOL_T_LESS_THAN = 63,               /* T_LESS_THAN  */
+  YYSYMBOL_T_EXACTLY = 64,                 /* T_EXACTLY  */
+  YYSYMBOL_T_AT_LEAST = 65,                /* T_AT_LEAST  */
+  YYSYMBOL_T_AT_MOST = 66,                 /* T_AT_MOST  */
+  YYSYMBOL_T_DIFFERENT_FROM = 67,          /* T_DIFFERENT_FROM  */
+  YYSYMBOL_T_EQUAL_TO = 68,                /* T_EQUAL_TO  */
+  YYSYMBOL_T_NOT_EQUAL_TO = 69,            /* T_NOT_EQUAL_TO  */
+  YYSYMBOL_T_EVERY_DAY_FOR = 70,           /* T_EVERY_DAY_FOR  */
+  YYSYMBOL_T_EVERY = 71,                   /* T_EVERY  */
+  YYSYMBOL_T_DAYS = 72,                    /* T_DAYS  */
+  YYSYMBOL_T_INCREMENTING_BY = 73,         /* T_INCREMENTING_BY  */
+  YYSYMBOL_T_DECREMENTING_BY = 74,         /* T_DECREMENTING_BY  */
+  YYSYMBOL_T_FOR_EACH = 75,                /* T_FOR_EACH  */
+  YYSYMBOL_T_POST_IN = 76,                 /* T_POST_IN  */
+  YYSYMBOL_T_STORY_IN = 77,                /* T_STORY_IN  */
+  YYSYMBOL_T_FOLLOWER_FROM = 78,           /* T_FOLLOWER_FROM  */
+  YYSYMBOL_T_TO = 79,                      /* T_TO  */
+  YYSYMBOL_T_TRENDING_LOOP = 80,           /* T_TRENDING_LOOP  */
+  YYSYMBOL_T_UNTIL = 81,                   /* T_UNTIL  */
+  YYSYMBOL_T_STOP_THE_STORY = 82,          /* T_STOP_THE_STORY  */
+  YYSYMBOL_T_SKIP_THIS_POST = 83,          /* T_SKIP_THIS_POST  */
+  YYSYMBOL_T_THE_STORY_OF = 84,            /* T_THE_STORY_OF  */
+  YYSYMBOL_T_BEGINS_WITH = 85,             /* T_BEGINS_WITH  */
+  YYSYMBOL_T_TELL_BACK = 86,               /* T_TELL_BACK  */
+  YYSYMBOL_T_THE_STORY_ENDS = 87,          /* T_THE_STORY_ENDS  */
+  YYSYMBOL_T_TELL = 88,                    /* T_TELL  */
+  YYSYMBOL_T_ANNOUNCE = 89,                /* T_ANNOUNCE  */
+  YYSYMBOL_T_ASK_FOR = 90,                 /* T_ASK_FOR  */
+  YYSYMBOL_T_DISPLAY = 91,                 /* T_DISPLAY  */
+  YYSYMBOL_T_CALCULATE_VIRALITY = 92,      /* T_CALCULATE_VIRALITY  */
+  YYSYMBOL_T_CALCULATE_ENGAGEMENT = 93,    /* T_CALCULATE_ENGAGEMENT  */
+  YYSYMBOL_T_FIND_TOP_POST = 94,           /* T_FIND_TOP_POST  */
+  YYSYMBOL_T_FIND_HIGHEST_REACH = 95,      /* T_FIND_HIGHEST_REACH  */
+  YYSYMBOL_T_FIND_TOTAL_REACH = 96,        /* T_FIND_TOTAL_REACH  */
+  YYSYMBOL_T_COUNT_TOTAL_ENGAGEMENT = 97,  /* T_COUNT_TOTAL_ENGAGEMENT  */
+  YYSYMBOL_T_CHECK_IF_TRENDING = 98,       /* T_CHECK_IF_TRENDING  */
+  YYSYMBOL_T_ANALYZE_GROWTH = 99,          /* T_ANALYZE_GROWTH  */
+  YYSYMBOL_T_FIND_MAX_VIRAL_ACCOUNT = 100, /* T_FIND_MAX_VIRAL_ACCOUNT  */
+  YYSYMBOL_T_REVERSE_THE_CAPTION = 101,    /* T_REVERSE_THE_CAPTION  */
+  YYSYMBOL_T_DETECT_SPAM = 102,            /* T_DETECT_SPAM  */
+  YYSYMBOL_T_CLAMP_ENGAGEMENT = 103,       /* T_CLAMP_ENGAGEMENT  */
+  YYSYMBOL_T_BETWEEN = 104,                /* T_BETWEEN  */
+  YYSYMBOL_T_REVERSE_GROWTH = 105,         /* T_REVERSE_GROWTH  */
+  YYSYMBOL_T_ALSO = 106,                   /* T_ALSO  */
+  YYSYMBOL_T_EITHER = 107,                 /* T_EITHER  */
+  YYSYMBOL_T_OPPOSITE = 108,               /* T_OPPOSITE  */
+  YYSYMBOL_T_LPAREN = 109,                 /* T_LPAREN  */
+  YYSYMBOL_T_RPAREN = 110,                 /* T_RPAREN  */
+  YYSYMBOL_T_LBRACE = 111,                 /* T_LBRACE  */
+  YYSYMBOL_T_RBRACE = 112,                 /* T_RBRACE  */
+  YYSYMBOL_T_LBRACKET = 113,               /* T_LBRACKET  */
+  YYSYMBOL_T_RBRACKET = 114,               /* T_RBRACKET  */
+  YYSYMBOL_T_COMMA = 115,                  /* T_COMMA  */
+  YYSYMBOL_T_DOT = 116,                    /* T_DOT  */
+  YYSYMBOL_T_COLON = 117,                  /* T_COLON  */
+  YYSYMBOL_T_NUMBER = 118,                 /* T_NUMBER  */
+  YYSYMBOL_T_DECIMAL = 119,                /* T_DECIMAL  */
+  YYSYMBOL_T_TEXT = 120,                   /* T_TEXT  */
+  YYSYMBOL_T_ID = 121,                     /* T_ID  */
+  YYSYMBOL_T_CHAR = 122,                   /* T_CHAR  */
+  YYSYMBOL_T_TRUE_STORY = 123,             /* T_TRUE_STORY  */
+  YYSYMBOL_T_FALSE_ALARM = 124,            /* T_FALSE_ALARM  */
+  YYSYMBOL_YYACCEPT = 125,                 /* $accept  */
+  YYSYMBOL_program = 126,                  /* program  */
+  YYSYMBOL_statements = 127,               /* statements  */
+  YYSYMBOL_statement = 128,                /* statement  */
+  YYSYMBOL_account_create = 129,           /* account_create  */
+  YYSYMBOL_account_init = 130,             /* account_init  */
+  YYSYMBOL_account_update = 131,           /* account_update  */
+  YYSYMBOL_story_post = 132,               /* story_post  */
+  YYSYMBOL_conditional = 133,              /* conditional  */
+  YYSYMBOL_optional_else = 134,            /* optional_else  */
+  YYSYMBOL_else_if_chain = 135,            /* else_if_chain  */
+  YYSYMBOL_loop = 136,                     /* loop  */
+  YYSYMBOL_loop_control = 137,             /* loop_control  */
+  YYSYMBOL_account_ref = 138,              /* account_ref  */
+  YYSYMBOL_function_def = 139,             /* function_def  */
+  YYSYMBOL_function_call = 140,            /* function_call  */
+  YYSYMBOL_builtin_call = 141,             /* builtin_call  */
+  YYSYMBOL_io_statement = 142,             /* io_statement  */
+  YYSYMBOL_expression = 143,               /* expression  */
+  YYSYMBOL_term = 144,                     /* term  */
+  YYSYMBOL_factor = 145,                   /* factor  */
+  YYSYMBOL_comparison = 146,               /* comparison  */
+  YYSYMBOL_metric = 147,                   /* metric  */
+  YYSYMBOL_literal = 148                   /* literal  */
 };
 typedef enum yysymbol_kind_t yysymbol_kind_t;
 
@@ -686,21 +704,21 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  36
+#define YYFINAL  4
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   590
+#define YYLAST   778
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  124
+#define YYNTOKENS  125
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  23
+#define YYNNTS  24
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  85
+#define YYNRULES  89
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  204
+#define YYNSTATES  216
 
 /* YYMAXUTOK -- Last valid token kind.  */
-#define YYMAXUTOK   378
+#define YYMAXUTOK   379
 
 
 /* YYTRANSLATE(TOKEN-NUM) -- Symbol number corresponding to TOKEN-NUM
@@ -751,22 +769,22 @@ static const yytype_int8 yytranslate[] =
       85,    86,    87,    88,    89,    90,    91,    92,    93,    94,
       95,    96,    97,    98,    99,   100,   101,   102,   103,   104,
      105,   106,   107,   108,   109,   110,   111,   112,   113,   114,
-     115,   116,   117,   118,   119,   120,   121,   122,   123
+     115,   116,   117,   118,   119,   120,   121,   122,   123,   124
 };
 
 #if YYDEBUG
 /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int16 yyrline[] =
 {
-       0,   187,   187,   194,   204,   215,   222,   223,   224,   225,
-     226,   227,   228,   229,   230,   231,   232,   233,   243,   254,
-     263,   272,   284,   293,   302,   311,   323,   336,   347,   348,
-     352,   356,   368,   375,   383,   391,   399,   409,   414,   423,
-     435,   445,   451,   459,   465,   471,   477,   487,   493,   499,
-     509,   514,   519,   523,   528,   533,   538,   542,   543,   544,
-     549,   554,   559,   564,   569,   574,   579,   584,   589,   594,
-     600,   609,   610,   611,   612,   613,   614,   615,   616,   617,
-     618,   623,   624,   625,   626,   627
+       0,   203,   203,   210,   220,   231,   238,   239,   240,   241,
+     242,   243,   244,   245,   246,   247,   248,   249,   253,   265,
+     276,   285,   294,   306,   315,   324,   333,   345,   358,   369,
+     370,   374,   378,   390,   399,   408,   417,   426,   436,   441,
+     450,   461,   473,   484,   492,   500,   508,   515,   523,   531,
+     543,   549,   555,   565,   570,   575,   579,   584,   589,   594,
+     598,   599,   600,   605,   610,   615,   620,   625,   630,   635,
+     640,   645,   650,   656,   661,   670,   671,   672,   673,   674,
+     675,   676,   677,   678,   679,   684,   685,   686,   687,   688
 };
 #endif
 
@@ -790,7 +808,7 @@ static const char *const yytname[] =
   "T_ADDED", "T_REMOVED", "T_INCREASED_BY", "T_DECREASED_BY",
   "T_WAS_UPDATED_TO", "T_BECAME", "T_MULTIPLIED_BY", "T_DIVIDED_BY",
   "T_PLUS", "T_MINUS", "T_TIMES", "T_MULTIPLY", "T_DIVIDED_EVENLY_BY",
-  "T_DIVIDE", "T_MODULO", "T_WITH", "T_AND_THEN", "T_THE_FEED",
+  "T_DIVIDE", "T_MODULO", "T_WITH", "T_AND_THEN", "T_FOR", "T_THE_FEED",
   "T_CONTAINS", "T_AT_INDEX", "T_LIKES", "T_FOLLOWERS", "T_VIEWS",
   "T_COMMENTS", "T_SHARES", "T_POSTS", "T_STORIES", "T_ENGAGEMENT_RATE",
   "T_REACH", "T_GROWTH_RATE", "T_WHEN", "T_OTHERWISE_IF", "T_OTHERWISE",
@@ -813,8 +831,9 @@ static const char *const yytname[] =
   "T_FALSE_ALARM", "$accept", "program", "statements", "statement",
   "account_create", "account_init", "account_update", "story_post",
   "conditional", "optional_else", "else_if_chain", "loop", "loop_control",
-  "function_def", "function_call", "builtin_call", "io_statement",
-  "expression", "term", "factor", "comparison", "metric", "literal", YY_NULLPTR
+  "account_ref", "function_def", "function_call", "builtin_call",
+  "io_statement", "expression", "term", "factor", "comparison", "metric",
+  "literal", YY_NULLPTR
 };
 
 static const char *
@@ -824,12 +843,12 @@ yysymbol_name (yysymbol_kind_t yysymbol)
 }
 #endif
 
-#define YYPACT_NINF (-86)
+#define YYPACT_NINF (-87)
 
 #define yypact_value_is_default(Yyn) \
   ((Yyn) == YYPACT_NINF)
 
-#define YYTABLE_NINF (-71)
+#define YYTABLE_NINF (-1)
 
 #define yytable_value_is_error(Yyn) \
   0
@@ -838,27 +857,28 @@ yysymbol_name (yysymbol_kind_t yysymbol)
    STATE-NUM.  */
 static const yytype_int16 yypact[] =
 {
-       1,   339,    12,   -84,   -76,   -78,   424,   -66,   -65,   -43,
-     -42,   -40,   -48,   -44,   -41,   -34,   -24,   -86,    39,   -86,
-     -86,   -86,   -86,   366,   -86,   -86,   -86,   -86,   -86,   -86,
-     -86,   -86,   -86,   -36,   -20,   -86,   -86,   -86,   -86,     4,
-     -86,   -86,   -86,   -86,   -86,   -86,   -86,   -86,   -86,   -86,
-     467,   -86,   -86,   -86,   -13,   -86,   -86,   -18,    -9,   -86,
-      -7,   -86,   -86,    34,    36,    69,    -5,   -86,   -86,    26,
-       9,     3,    11,    13,    10,    14,   -86,   -86,   -86,    19,
-     123,    21,    23,    22,    25,    27,    28,    29,   -86,   -29,
-     467,   467,   -86,   467,   467,   467,   467,   467,   467,   467,
-     467,   467,   467,   467,   409,    35,   -64,    38,    72,    31,
-     467,   -86,   -86,   -86,    41,   -86,   -86,    42,   477,   477,
-     477,   477,   477,   477,   477,   -86,    -9,    -9,    18,    18,
-      18,    18,    18,    18,    18,    18,   -86,   -86,   -86,     0,
-      43,    40,    45,   409,    57,    48,   -25,    61,   147,    64,
-      65,    66,    68,    74,    82,    83,   -32,   409,    77,    89,
-      32,    90,   409,   -86,   -86,    91,   -86,   -86,   -86,   -86,
-     -86,   -86,   -86,   424,    97,   -86,   -86,   103,   409,   409,
-     -86,   409,   135,   166,   102,   409,   -86,   162,   205,   237,
-     127,   104,   409,   264,   -86,   -86,   -86,   105,   -86,   307,
-     -86,   -86,   -32,   -86
+      -1,   -86,    37,     0,   -87,   -76,   -68,   -71,   654,   -65,
+     -59,   -29,   -47,   -44,   -45,   -43,   -39,   -35,   -24,    39,
+      39,    39,    39,    39,   -87,    39,   -87,   106,   -87,   -87,
+     -87,   -87,   -87,   -87,   -87,   -87,   -87,   -20,   -18,   -87,
+     -87,   -87,     7,   -87,   -87,   -87,   -87,   -87,   -87,   -87,
+     -87,   -87,   -87,   654,   -87,   -87,   -87,   -87,   -87,   -87,
+     -21,    -2,   -87,   -34,   -42,   -87,    30,    32,    64,   -12,
+     -87,   -87,    23,     3,    -7,    -3,     4,   109,   -87,   -87,
+     -87,   -87,   -87,   -87,     5,   -87,   -87,   -87,    15,   103,
+       1,    13,    16,    17,    18,    21,    25,   -25,   -87,   654,
+     654,   -87,   654,   654,   654,   654,   654,   654,   654,   654,
+     654,   654,   654,   596,    27,    29,    26,   -22,    22,    63,
+      31,   654,   -87,   -87,   -87,    33,   -87,   -87,    28,   669,
+     669,   669,   669,   669,   669,   669,   -87,    -2,    -2,    24,
+      24,    24,    24,    24,    24,    24,    24,   -87,   -87,   -87,
+     148,   -87,   -87,    44,    38,    40,   596,    41,    46,   -23,
+     -87,   105,    34,    45,    47,    48,    49,    50,    52,     2,
+     596,    58,    59,   203,    60,   596,   -87,    57,   -87,   -87,
+     -87,   -87,   -87,   -87,   -87,   654,    68,   -87,   -87,   251,
+     596,   596,   -87,   596,   305,   136,    72,   596,   -87,   348,
+     402,   445,    98,    70,   596,   499,   -87,   -87,   -87,    71,
+     -87,   542,   -87,   -87,     2,   -87
 };
 
 /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -866,229 +886,267 @@ static const yytype_int16 yypact[] =
    means the default is an error.  */
 static const yytype_int8 yydefact[] =
 {
+       0,     0,     0,     0,     1,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    41,     0,    43,
-      46,    44,    45,     0,     5,     6,     7,     8,     9,    10,
-      11,    12,    13,     0,     0,    16,     1,    17,     3,     0,
-      71,    72,    73,    74,    75,    76,    77,    78,    79,    80,
-       0,    81,    82,    83,    59,    84,    85,     0,    52,    56,
-       0,    60,    58,     0,     0,     0,     0,    37,    38,     0,
-       0,     0,     0,     0,     0,     0,     4,    14,    15,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,    59,     0,
-       0,     0,    69,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,    46,     0,    17,     0,     5,     6,
+       7,     8,     9,    10,    11,    12,    13,     0,     0,    16,
+      18,     3,     0,    75,    76,    77,    78,    79,    80,    81,
+      82,    83,    84,     0,    85,    86,    87,    62,    88,    89,
+       0,    55,    59,     0,    63,    61,     0,     0,     0,     0,
+      38,    39,     0,     0,     0,     0,     0,     0,    43,    44,
+      45,    49,    48,    47,     0,     4,    14,    15,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,    63,     0,
+       0,    72,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,    47,    49,    48,     0,     2,    18,     0,     0,     0,
-       0,     0,     0,     0,     0,    57,    50,    51,    67,    68,
-      61,    62,    63,    64,    65,    66,    53,    54,    55,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,    28,     0,     0,     0,
-       0,     0,     0,    40,    42,     0,    19,    20,    21,    22,
-      23,    24,    25,     0,     0,    27,    30,     0,     0,     0,
-      36,     0,     0,     0,     0,     0,    32,     0,     0,     0,
-       0,     0,     0,     0,    33,    34,    35,     0,    26,     0,
-      29,    39,    28,    31
+       0,     0,    50,    52,    51,     0,     2,    19,     0,     0,
+       0,     0,     0,     0,     0,     0,    60,    53,    54,    70,
+      71,    64,    65,    66,    67,    68,    69,    56,    57,    58,
+       0,    73,    74,     0,     0,     0,     0,     0,     0,     0,
+      40,     0,     0,     0,     0,     0,     0,     0,     0,    29,
+       0,     0,     0,     0,     0,     0,    42,     0,    20,    21,
+      22,    23,    24,    25,    26,     0,     0,    28,    31,     0,
+       0,     0,    37,     0,     0,     0,     0,     0,    33,     0,
+       0,     0,     0,     0,     0,     0,    34,    35,    36,     0,
+      27,     0,    30,    41,    29,    32
 };
 
 /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -86,   -86,   -10,   -23,   -86,   -86,   -86,   -86,   -86,    37,
-     -86,   -86,   -86,   -86,   -86,   -86,   -86,   -39,   -55,   -85,
-      56,   -56,   -86
+     -87,   -87,   -53,   -27,   -87,   -87,   -87,   -87,   -87,   -11,
+     -87,   -87,   -87,    -6,   -87,   -87,   -87,   -87,   -41,   -26,
+     -85,     6,    -5,   -87
 };
 
 /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_uint8 yydefgoto[] =
 {
-       0,     2,    23,    24,    25,    26,    27,    28,    29,   175,
-     176,    30,    31,    32,    33,    34,    35,    57,    58,    59,
-      60,    61,    62
+       0,     2,    27,    28,    29,    30,    31,    32,    33,   187,
+     188,    34,    35,    78,    36,    37,    38,    39,    60,    61,
+      62,    63,    98,    65
 };
 
 /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
    positive, shift that token.  If negative, reduce the rule whose
    number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int16 yytable[] =
+static const yytype_uint8 yytable[] =
 {
-      76,     3,    90,    91,     1,     5,    90,    91,   141,   142,
-      79,    89,    36,    90,    91,    80,   136,   137,   138,    81,
-      82,    83,   173,   174,   101,    84,    85,   102,   103,    86,
-      87,    37,    65,     3,    66,   126,   127,     5,    92,    38,
-      93,    94,    39,    95,    96,    97,    98,    99,   100,    90,
-      91,    63,    64,     6,   128,   129,   130,   131,   132,   133,
-     134,   135,   149,   150,   151,   152,   153,   154,   155,     7,
-       8,   146,    69,    67,     9,    68,    70,    74,    71,    77,
-     125,    10,    11,    12,   163,     6,    72,    13,    14,    15,
-      16,    17,    18,    19,   139,    78,    73,   -70,    20,    21,
-      22,     7,     8,   104,     3,   105,     9,   106,     5,   107,
-     109,   156,   108,    10,    11,    12,    76,   110,   111,    13,
-      14,    15,    16,    17,    18,    19,   112,   114,   113,   115,
-      20,    21,    22,   160,   116,   117,     3,    76,   118,   120,
-       5,   119,   121,   180,   122,   123,   124,   177,   143,   140,
-     144,   145,   182,   157,    76,   147,     6,   158,   162,    76,
-     165,   148,   159,     3,    76,    76,    76,     5,   187,   188,
-      76,   189,     7,     8,   161,   193,    76,     9,   164,   166,
-     167,   168,   199,   169,    10,    11,    12,   178,     6,   170,
-      13,    14,    15,    16,    17,    18,    19,   171,   172,   179,
-     181,    20,    21,    22,     7,     8,     3,   185,   183,     9,
-       5,   191,   192,   197,   186,     6,    10,    11,    12,   198,
-     201,     0,    13,    14,    15,    16,    17,    18,    19,   184,
-       0,     7,     8,    20,    21,    22,     9,     0,     3,   203,
-       0,     0,     5,    10,    11,    12,   190,     0,     0,    13,
-      14,    15,    16,    17,    18,    19,     0,     0,     6,     0,
-      20,    21,    22,     0,     0,     3,     0,     0,     0,     5,
-       0,     0,     0,   194,     7,     8,     0,     0,     0,     9,
-       0,     0,     0,     0,     0,     0,    10,    11,    12,     0,
-       6,     0,    13,    14,    15,    16,    17,    18,    19,     0,
-       0,     0,     0,    20,    21,    22,     7,     8,     3,     0,
-       0,     9,     5,     0,     0,     0,   195,     6,    10,    11,
-      12,     0,     0,     0,    13,    14,    15,    16,    17,    18,
-      19,     0,     0,     7,     8,    20,    21,    22,     9,     0,
-       3,     0,     0,     4,     5,    10,    11,    12,   196,     0,
-       0,    13,    14,    15,    16,    17,    18,    19,     0,     0,
-       6,     0,    20,    21,    22,     0,     0,     3,     0,     0,
-      75,     5,     0,     0,     0,   200,     7,     8,     0,     0,
-       0,     9,     0,     0,     0,     0,     0,     0,    10,    11,
-      12,     0,     6,     0,    13,    14,    15,    16,    17,    18,
-      19,     0,     0,     0,     0,    20,    21,    22,     7,     8,
-       3,     0,     0,     9,     5,     0,     0,     0,   202,     6,
-      10,    11,    12,     0,     0,     0,    13,    14,    15,    16,
-      17,    18,    19,     0,     0,     7,     8,    20,    21,    22,
-       9,     0,     0,     0,     0,     0,     0,    10,    11,    12,
-       0,     0,     0,    13,    14,    15,    16,    17,    18,    19,
-       0,     0,     6,     0,    20,    21,    22,    40,    41,    42,
-      43,    44,    45,    46,    47,    48,    49,     0,     7,     8,
-       0,     0,     0,     9,     0,     0,     0,     0,     0,     0,
-      10,    11,    12,     0,     0,     0,    13,    14,    15,    16,
-      17,    18,    19,     0,     0,     0,     0,    20,    21,    22,
-      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-      40,    41,    42,    43,    44,    45,    46,    47,    48,    49,
-       0,     0,    50,     0,     0,     0,     0,     0,     0,     0,
-       0,    51,    52,    53,    54,     0,    55,    56,     0,     0,
+      85,     5,     1,    64,     6,     7,    99,   100,    99,   100,
+      99,   100,    97,    88,    79,    80,    81,    82,    89,    83,
+     114,   115,    90,    91,    92,   147,   148,   149,    93,    94,
+       3,   110,    95,    96,   111,   112,   101,     4,   102,   103,
+      40,   104,   105,   106,   107,   108,   109,    68,    41,    69,
+      42,   154,   155,    66,     8,    99,   100,   185,   186,    67,
+     150,   139,   140,   141,   142,   143,   144,   145,   146,    70,
+       9,    10,    71,   137,   138,    11,    72,   113,    73,    77,
+     159,    74,    12,    13,    14,   136,    75,   176,    15,    16,
+      17,    18,    19,    20,    21,    22,    86,    76,    87,    23,
+      24,    25,   116,   173,   117,   118,   119,     5,   120,   122,
+      84,     7,   121,   123,   125,   128,    26,   189,   177,   129,
+     124,   126,   194,    85,   162,   163,   164,   165,   166,   167,
+     168,   127,   130,   156,   131,   132,   133,   199,   200,   134,
+     201,   153,   157,   135,   205,   151,    85,   152,   161,     5,
+     178,   211,   158,     7,   160,   170,   171,   175,   172,   174,
+       8,   179,    85,   180,   181,   182,   183,    85,   184,   190,
+     191,   193,    85,    85,    85,   195,     9,    10,    85,   197,
+      64,    11,   203,   204,    85,   209,   210,   213,    12,    13,
+      14,   196,     0,     0,    15,    16,    17,    18,    19,    20,
+      21,    22,     8,   215,     5,    23,    24,    25,     7,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     9,    10,
+       0,     0,    26,    11,     0,     0,     0,     0,     0,     0,
+      12,    13,    14,     0,     0,     0,    15,    16,    17,    18,
+      19,    20,    21,    22,     0,     0,     0,    23,    24,    25,
+       0,     0,     5,     0,     0,     0,     7,     8,     0,     0,
+     169,     0,     0,     0,    26,     0,     0,     0,     0,     0,
+       0,     0,     0,     9,    10,     0,     0,     0,    11,     0,
+       0,     0,     0,     0,     0,    12,    13,    14,     0,     0,
+       0,    15,    16,    17,    18,    19,    20,    21,    22,     0,
+       0,     0,    23,    24,    25,     8,     5,     0,     0,     0,
+       7,     0,     0,     0,     0,   192,     0,     0,     0,    26,
+       0,     9,    10,     0,     0,     0,    11,     0,     0,     0,
+       0,     0,     0,    12,    13,    14,     0,     0,     0,    15,
+      16,    17,    18,    19,    20,    21,    22,     0,     0,     5,
+      23,    24,    25,     7,     0,     0,     0,     0,     0,     8,
+       0,     0,     0,   198,     0,     0,     0,    26,     0,     0,
+       0,     0,     0,     0,     0,     9,    10,     0,     0,     0,
+      11,     0,     0,     0,     0,     0,     0,    12,    13,    14,
+       0,     0,     0,    15,    16,    17,    18,    19,    20,    21,
+      22,     0,     8,     5,    23,    24,    25,     7,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,   202,     9,    10,
+       0,    26,     0,    11,     0,     0,     0,     0,     0,     0,
+      12,    13,    14,     0,     0,     0,    15,    16,    17,    18,
+      19,    20,    21,    22,     0,     0,     5,    23,    24,    25,
+       7,     0,     0,     0,     0,     0,     8,     0,     0,     0,
+     206,     0,     0,     0,    26,     0,     0,     0,     0,     0,
+       0,     0,     9,    10,     0,     0,     0,    11,     0,     0,
+       0,     0,     0,     0,    12,    13,    14,     0,     0,     0,
+      15,    16,    17,    18,    19,    20,    21,    22,     0,     8,
+       5,    23,    24,    25,     7,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,   207,     9,    10,     0,    26,     0,
+      11,     0,     0,     0,     0,     0,     0,    12,    13,    14,
+       0,     0,     0,    15,    16,    17,    18,    19,    20,    21,
+      22,     0,     0,     5,    23,    24,    25,     7,     0,     0,
+       0,     0,     0,     8,     0,     0,     0,   208,     0,     0,
+       0,    26,     0,     0,     0,     0,     0,     0,     0,     9,
+      10,     0,     0,     0,    11,     0,     0,     0,     0,     0,
+       0,    12,    13,    14,     0,     0,     0,    15,    16,    17,
+      18,    19,    20,    21,    22,     0,     8,     5,    23,    24,
+      25,     7,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,   212,     9,    10,     0,    26,     0,    11,     0,     0,
+       0,     0,     0,     0,    12,    13,    14,     0,     0,     0,
+      15,    16,    17,    18,    19,    20,    21,    22,     0,     0,
+       0,    23,    24,    25,     0,     0,     0,     0,     0,     0,
+       8,     0,     0,     0,   214,     0,     0,     0,    26,     0,
+       0,     0,     0,     0,     0,     0,     9,    10,     0,     0,
+       0,    11,     0,     0,     0,     0,     0,     0,    12,    13,
+      14,     0,     0,     0,    15,    16,    17,    18,    19,    20,
+      21,    22,     0,     0,     0,    23,    24,    25,    43,    44,
+      45,    46,    47,    48,    49,    50,    51,    52,     0,     0,
+       0,     0,    26,    43,    44,    45,    46,    47,    48,    49,
+      50,    51,    52,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
        0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,    50,     0,     0,     0,     0,
-       0,     0,     0,     0,    51,    52,    53,    88,     0,    55,
-      56
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,    53,     0,     0,     0,     0,     0,     0,
+       0,     0,    54,    55,    56,    57,     0,    58,    59
 };
 
 static const yytype_int16 yycheck[] =
 {
-      23,     1,    31,    32,     3,     5,    31,    32,    72,    73,
-       6,    50,     0,    31,    32,    11,   101,   102,   103,    15,
-      16,    17,    54,    55,    33,    21,    22,    36,    37,    25,
-      26,   115,    75,     1,    77,    90,    91,     5,    56,   115,
-      58,    59,   120,    61,    62,    63,    64,    65,    66,    31,
-      32,   117,   117,    53,    93,    94,    95,    96,    97,    98,
-      99,   100,   118,   119,   120,   121,   122,   123,   124,    69,
-      70,   110,   120,   115,    74,   115,   120,    38,   119,   115,
-     109,    81,    82,    83,   109,    53,   120,    87,    88,    89,
-      90,    91,    92,    93,   104,   115,   120,   110,    98,    99,
-     100,    69,    70,   110,     1,    71,    74,    71,     5,    40,
-      84,   111,   117,    81,    82,    83,   139,   108,   115,    87,
-      88,    89,    90,    91,    92,    93,   115,   117,   115,   115,
-      98,    99,   100,   143,   115,    12,     1,   160,   117,   117,
-       5,   118,   117,   111,   117,   117,   117,   157,   110,   114,
-      78,   120,   162,   110,   177,   114,    53,   117,   110,   182,
-      13,   119,   117,     1,   187,   188,   189,     5,   178,   179,
-     193,   181,    69,    70,   117,   185,   199,    74,   117,   115,
-     115,   115,   192,   115,    81,    82,    83,   110,    53,   115,
-      87,    88,    89,    90,    91,    92,    93,   115,   115,   110,
-     110,    98,    99,   100,    69,    70,     1,   110,   117,    74,
-       5,    45,   110,    86,   111,    53,    81,    82,    83,   115,
-     115,    -1,    87,    88,    89,    90,    91,    92,    93,   173,
-      -1,    69,    70,    98,    99,   100,    74,    -1,     1,   202,
-      -1,    -1,     5,    81,    82,    83,   111,    -1,    -1,    87,
-      88,    89,    90,    91,    92,    93,    -1,    -1,    53,    -1,
-      98,    99,   100,    -1,    -1,     1,    -1,    -1,    -1,     5,
-      -1,    -1,    -1,   111,    69,    70,    -1,    -1,    -1,    74,
-      -1,    -1,    -1,    -1,    -1,    -1,    81,    82,    83,    -1,
-      53,    -1,    87,    88,    89,    90,    91,    92,    93,    -1,
-      -1,    -1,    -1,    98,    99,   100,    69,    70,     1,    -1,
-      -1,    74,     5,    -1,    -1,    -1,   111,    53,    81,    82,
-      83,    -1,    -1,    -1,    87,    88,    89,    90,    91,    92,
-      93,    -1,    -1,    69,    70,    98,    99,   100,    74,    -1,
-       1,    -1,    -1,     4,     5,    81,    82,    83,   111,    -1,
-      -1,    87,    88,    89,    90,    91,    92,    93,    -1,    -1,
-      53,    -1,    98,    99,   100,    -1,    -1,     1,    -1,    -1,
-       4,     5,    -1,    -1,    -1,   111,    69,    70,    -1,    -1,
-      -1,    74,    -1,    -1,    -1,    -1,    -1,    -1,    81,    82,
-      83,    -1,    53,    -1,    87,    88,    89,    90,    91,    92,
-      93,    -1,    -1,    -1,    -1,    98,    99,   100,    69,    70,
-       1,    -1,    -1,    74,     5,    -1,    -1,    -1,   111,    53,
-      81,    82,    83,    -1,    -1,    -1,    87,    88,    89,    90,
-      91,    92,    93,    -1,    -1,    69,    70,    98,    99,   100,
-      74,    -1,    -1,    -1,    -1,    -1,    -1,    81,    82,    83,
-      -1,    -1,    -1,    87,    88,    89,    90,    91,    92,    93,
-      -1,    -1,    53,    -1,    98,    99,   100,    43,    44,    45,
-      46,    47,    48,    49,    50,    51,    52,    -1,    69,    70,
-      -1,    -1,    -1,    74,    -1,    -1,    -1,    -1,    -1,    -1,
-      81,    82,    83,    -1,    -1,    -1,    87,    88,    89,    90,
-      91,    92,    93,    -1,    -1,    -1,    -1,    98,    99,   100,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-      -1,    -1,   108,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,   117,   118,   119,   120,    -1,   122,   123,    -1,    -1,
+      27,     1,     3,     8,     4,     5,    31,    32,    31,    32,
+      31,    32,    53,     6,    20,    21,    22,    23,    11,    25,
+      62,    63,    15,    16,    17,   110,   111,   112,    21,    22,
+     116,    33,    25,    26,    36,    37,    57,     0,    59,    60,
+     116,    62,    63,    64,    65,    66,    67,    76,   116,    78,
+     121,    73,    74,   118,    54,    31,    32,    55,    56,   118,
+     113,   102,   103,   104,   105,   106,   107,   108,   109,   116,
+      70,    71,   116,    99,   100,    75,   121,   111,   121,    40,
+     121,   120,    82,    83,    84,   110,   121,   110,    88,    89,
+      90,    91,    92,    93,    94,    95,   116,   121,   116,    99,
+     100,   101,    72,   156,    72,    41,   118,     1,    85,   116,
+       4,     5,   109,   116,     5,    12,   116,   170,    13,   118,
+     116,   116,   175,   150,   129,   130,   131,   132,   133,   134,
+     135,   116,   119,   111,   118,   118,   118,   190,   191,   118,
+     193,   115,    79,   118,   197,   118,   173,   118,   120,     1,
+     116,   204,   121,     5,   121,   111,   118,   111,   118,   118,
+      54,   116,   189,   116,   116,   116,   116,   194,   116,   111,
+     111,   111,   199,   200,   201,   118,    70,    71,   205,   111,
+     185,    75,    46,   111,   211,    87,   116,   116,    82,    83,
+      84,   185,    -1,    -1,    88,    89,    90,    91,    92,    93,
+      94,    95,    54,   214,     1,    99,   100,   101,     5,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    70,    71,
+      -1,    -1,   116,    75,    -1,    -1,    -1,    -1,    -1,    -1,
+      82,    83,    84,    -1,    -1,    -1,    88,    89,    90,    91,
+      92,    93,    94,    95,    -1,    -1,    -1,    99,   100,   101,
+      -1,    -1,     1,    -1,    -1,    -1,     5,    54,    -1,    -1,
+     112,    -1,    -1,    -1,   116,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    70,    71,    -1,    -1,    -1,    75,    -1,
+      -1,    -1,    -1,    -1,    -1,    82,    83,    84,    -1,    -1,
+      -1,    88,    89,    90,    91,    92,    93,    94,    95,    -1,
+      -1,    -1,    99,   100,   101,    54,     1,    -1,    -1,    -1,
+       5,    -1,    -1,    -1,    -1,   112,    -1,    -1,    -1,   116,
+      -1,    70,    71,    -1,    -1,    -1,    75,    -1,    -1,    -1,
+      -1,    -1,    -1,    82,    83,    84,    -1,    -1,    -1,    88,
+      89,    90,    91,    92,    93,    94,    95,    -1,    -1,     1,
+      99,   100,   101,     5,    -1,    -1,    -1,    -1,    -1,    54,
+      -1,    -1,    -1,   112,    -1,    -1,    -1,   116,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    70,    71,    -1,    -1,    -1,
+      75,    -1,    -1,    -1,    -1,    -1,    -1,    82,    83,    84,
+      -1,    -1,    -1,    88,    89,    90,    91,    92,    93,    94,
+      95,    -1,    54,     1,    99,   100,   101,     5,    -1,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,   112,    70,    71,
+      -1,   116,    -1,    75,    -1,    -1,    -1,    -1,    -1,    -1,
+      82,    83,    84,    -1,    -1,    -1,    88,    89,    90,    91,
+      92,    93,    94,    95,    -1,    -1,     1,    99,   100,   101,
+       5,    -1,    -1,    -1,    -1,    -1,    54,    -1,    -1,    -1,
+     112,    -1,    -1,    -1,   116,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    70,    71,    -1,    -1,    -1,    75,    -1,    -1,
+      -1,    -1,    -1,    -1,    82,    83,    84,    -1,    -1,    -1,
+      88,    89,    90,    91,    92,    93,    94,    95,    -1,    54,
+       1,    99,   100,   101,     5,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    -1,   112,    70,    71,    -1,   116,    -1,
+      75,    -1,    -1,    -1,    -1,    -1,    -1,    82,    83,    84,
+      -1,    -1,    -1,    88,    89,    90,    91,    92,    93,    94,
+      95,    -1,    -1,     1,    99,   100,   101,     5,    -1,    -1,
+      -1,    -1,    -1,    54,    -1,    -1,    -1,   112,    -1,    -1,
+      -1,   116,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    70,
+      71,    -1,    -1,    -1,    75,    -1,    -1,    -1,    -1,    -1,
+      -1,    82,    83,    84,    -1,    -1,    -1,    88,    89,    90,
+      91,    92,    93,    94,    95,    -1,    54,     1,    99,   100,
+     101,     5,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,   112,    70,    71,    -1,   116,    -1,    75,    -1,    -1,
+      -1,    -1,    -1,    -1,    82,    83,    84,    -1,    -1,    -1,
+      88,    89,    90,    91,    92,    93,    94,    95,    -1,    -1,
+      -1,    99,   100,   101,    -1,    -1,    -1,    -1,    -1,    -1,
+      54,    -1,    -1,    -1,   112,    -1,    -1,    -1,   116,    -1,
+      -1,    -1,    -1,    -1,    -1,    -1,    70,    71,    -1,    -1,
+      -1,    75,    -1,    -1,    -1,    -1,    -1,    -1,    82,    83,
+      84,    -1,    -1,    -1,    88,    89,    90,    91,    92,    93,
+      94,    95,    -1,    -1,    -1,    99,   100,   101,    44,    45,
+      46,    47,    48,    49,    50,    51,    52,    53,    -1,    -1,
+      -1,    -1,   116,    44,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
       -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,    -1,   108,    -1,    -1,    -1,    -1,
-      -1,    -1,    -1,    -1,   117,   118,   119,   120,    -1,   122,
-     123
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,   109,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,   118,   119,   120,   121,    -1,   123,   124
 };
 
 /* YYSTOS[STATE-NUM] -- The symbol kind of the accessing symbol of
    state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,   125,     1,     4,     5,    53,    69,    70,    74,
-      81,    82,    83,    87,    88,    89,    90,    91,    92,    93,
-      98,    99,   100,   126,   127,   128,   129,   130,   131,   132,
-     135,   136,   137,   138,   139,   140,     0,   115,   115,   120,
-      43,    44,    45,    46,    47,    48,    49,    50,    51,    52,
-     108,   117,   118,   119,   120,   122,   123,   141,   142,   143,
-     144,   145,   146,   117,   117,    75,    77,   115,   115,   120,
-     120,   119,   120,   120,    38,     4,   127,   115,   115,     6,
-      11,    15,    16,    17,    21,    22,    25,    26,   120,   141,
-      31,    32,    56,    58,    59,    61,    62,    63,    64,    65,
-      66,    33,    36,    37,   110,    71,    71,    40,   117,    84,
-     108,   115,   115,   115,   117,   115,   115,    12,   117,   118,
-     117,   117,   117,   117,   117,   109,   142,   142,   141,   141,
-     141,   141,   141,   141,   141,   141,   143,   143,   143,   126,
-     114,    72,    73,   110,    78,   120,   141,   114,   119,   145,
-     145,   145,   145,   145,   145,   145,   111,   110,   117,   117,
-     126,   117,   110,   109,   117,    13,   115,   115,   115,   115,
-     115,   115,   115,    54,    55,   133,   134,   126,   110,   110,
-     111,   110,   126,   117,   144,   110,   111,   126,   126,   126,
-     111,    45,   110,   126,   111,   111,   111,    86,   115,   126,
-     111,   115,   111,   133
+       0,     3,   126,   116,     0,     1,     4,     5,    54,    70,
+      71,    75,    82,    83,    84,    88,    89,    90,    91,    92,
+      93,    94,    95,    99,   100,   101,   116,   127,   128,   129,
+     130,   131,   132,   133,   136,   137,   139,   140,   141,   142,
+     116,   116,   121,    44,    45,    46,    47,    48,    49,    50,
+      51,    52,    53,   109,   118,   119,   120,   121,   123,   124,
+     143,   144,   145,   146,   147,   148,   118,   118,    76,    78,
+     116,   116,   121,   121,   120,   121,   121,    40,   138,   138,
+     138,   138,   138,   138,     4,   128,   116,   116,     6,    11,
+      15,    16,    17,    21,    22,    25,    26,   143,   147,    31,
+      32,    57,    59,    60,    62,    63,    64,    65,    66,    67,
+      33,    36,    37,   111,    62,    63,    72,    72,    41,   118,
+      85,   109,   116,   116,   116,     5,   116,   116,    12,   118,
+     119,   118,   118,   118,   118,   118,   110,   144,   144,   143,
+     143,   143,   143,   143,   143,   143,   143,   145,   145,   145,
+     127,   118,   118,   115,    73,    74,   111,    79,   121,   143,
+     121,   120,   147,   147,   147,   147,   147,   147,   147,   112,
+     111,   118,   118,   127,   118,   111,   110,    13,   116,   116,
+     116,   116,   116,   116,   116,    55,    56,   134,   135,   127,
+     111,   111,   112,   111,   127,   118,   146,   111,   112,   127,
+     127,   127,   112,    46,   111,   127,   112,   112,   112,    87,
+     116,   127,   112,   116,   112,   134
 };
 
 /* YYR1[RULE-NUM] -- Symbol kind of the left-hand side of rule RULE-NUM.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,   124,   125,   125,   126,   126,   127,   127,   127,   127,
-     127,   127,   127,   127,   127,   127,   127,   127,   128,   129,
-     129,   129,   130,   130,   130,   130,   131,   132,   133,   133,
-     133,   134,   135,   135,   135,   135,   135,   136,   136,   137,
-     138,   139,   139,   139,   139,   139,   139,   140,   140,   140,
-     141,   141,   141,   142,   142,   142,   142,   143,   143,   143,
-     143,   144,   144,   144,   144,   144,   144,   144,   144,   144,
-     144,   145,   145,   145,   145,   145,   145,   145,   145,   145,
-     145,   146,   146,   146,   146,   146
+       0,   125,   126,   126,   127,   127,   128,   128,   128,   128,
+     128,   128,   128,   128,   128,   128,   128,   128,   128,   129,
+     130,   130,   130,   131,   131,   131,   131,   132,   133,   134,
+     134,   134,   135,   136,   136,   136,   136,   136,   137,   137,
+     138,   139,   140,   141,   141,   141,   141,   141,   141,   141,
+     142,   142,   142,   143,   143,   143,   144,   144,   144,   144,
+     145,   145,   145,   145,   146,   146,   146,   146,   146,   146,
+     146,   146,   146,   146,   146,   147,   147,   147,   147,   147,
+     147,   147,   147,   147,   147,   148,   148,   148,   148,   148
 };
 
 /* YYR2[RULE-NUM] -- Number of symbols on the right-hand side of rule RULE-NUM.  */
 static const yytype_int8 yyr2[] =
 {
-       0,     2,     4,     3,     2,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     2,     2,     1,     2,     4,     6,
-       6,     6,     6,     6,     6,     6,     9,     6,     0,     4,
-       1,     6,     7,     8,     8,     8,     6,     2,     2,     9,
-       5,     1,     5,     1,     1,     1,     1,     3,     3,     3,
-       3,     3,     1,     3,     3,     3,     1,     3,     1,     1,
-       1,     3,     3,     3,     3,     3,     3,     3,     3,     2,
-       1,     1,     1,     1,     1,     1,     1,     1,     1,     1,
-       1,     1,     1,     1,     1,     1
+       0,     2,     5,     4,     2,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     2,     2,     1,     1,     2,     4,
+       6,     6,     6,     6,     6,     6,     6,     9,     6,     0,
+       4,     1,     6,     7,     8,     8,     8,     6,     2,     2,
+       3,     9,     5,     2,     2,     2,     1,     2,     2,     2,
+       3,     3,     3,     3,     3,     1,     3,     3,     3,     1,
+       3,     1,     1,     1,     3,     3,     3,     3,     3,     3,
+       3,     3,     2,     3,     3,     1,     1,     1,     1,     1,
+       1,     1,     1,     1,     1,     1,     1,     1,     1,     1
 };
 
 
@@ -1551,30 +1609,30 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-  case 2: /* program: T_GO_LIVE statements T_END_LIVE T_DOT  */
-#line 188 "socialstory_parser.y"
+  case 2: /* program: T_GO_LIVE T_DOT statements T_END_LIVE T_DOT  */
+#line 204 "socialstory_parser.y"
     {
         ast_root = make_node(AST_PROGRAM);
         ast_root->body = (yyvsp[-2].node);
         (yyval.node) = ast_root;
-        printf("\n✅ Parse successful! AST built.\n");
+        fprintf(output_file, "\n✅ Parse successful! AST built.\n");
     }
-#line 1563 "socialstory_parser.tab.c"
+#line 1621 "socialstory_parser.tab.c"
     break;
 
-  case 3: /* program: T_GO_LIVE T_END_LIVE T_DOT  */
-#line 195 "socialstory_parser.y"
+  case 3: /* program: T_GO_LIVE T_DOT T_END_LIVE T_DOT  */
+#line 211 "socialstory_parser.y"
     {
         ast_root = make_node(AST_PROGRAM);
         ast_root->body = NULL;
         (yyval.node) = ast_root;
-        printf("\n✅ Parse successful! Empty program.\n");
+        fprintf(output_file, "\n✅ Parse successful! Empty program.\n");
     }
-#line 1574 "socialstory_parser.tab.c"
+#line 1632 "socialstory_parser.tab.c"
     break;
 
   case 4: /* statements: statements statement  */
-#line 205 "socialstory_parser.y"
+#line 221 "socialstory_parser.y"
     {
         if ((yyvsp[-1].node) == NULL) {
             (yyval.node) = (yyvsp[0].node);
@@ -1585,95 +1643,105 @@ yyreduce:
             (yyval.node) = (yyvsp[-1].node);
         }
     }
-#line 1589 "socialstory_parser.tab.c"
+#line 1647 "socialstory_parser.tab.c"
     break;
 
   case 5: /* statements: statement  */
-#line 216 "socialstory_parser.y"
+#line 232 "socialstory_parser.y"
     {
         (yyval.node) = (yyvsp[0].node);
     }
-#line 1597 "socialstory_parser.tab.c"
+#line 1655 "socialstory_parser.tab.c"
     break;
 
   case 6: /* statement: account_create  */
-#line 222 "socialstory_parser.y"
+#line 238 "socialstory_parser.y"
                    { (yyval.node) = (yyvsp[0].node); }
-#line 1603 "socialstory_parser.tab.c"
+#line 1661 "socialstory_parser.tab.c"
     break;
 
   case 7: /* statement: account_init  */
-#line 223 "socialstory_parser.y"
+#line 239 "socialstory_parser.y"
                    { (yyval.node) = (yyvsp[0].node); }
-#line 1609 "socialstory_parser.tab.c"
+#line 1667 "socialstory_parser.tab.c"
     break;
 
   case 8: /* statement: account_update  */
-#line 224 "socialstory_parser.y"
+#line 240 "socialstory_parser.y"
                      { (yyval.node) = (yyvsp[0].node); }
-#line 1615 "socialstory_parser.tab.c"
-    break;
-
-  case 9: /* statement: story_post  */
-#line 225 "socialstory_parser.y"
-                 { (yyval.node) = (yyvsp[0].node); }
-#line 1621 "socialstory_parser.tab.c"
-    break;
-
-  case 10: /* statement: conditional  */
-#line 226 "socialstory_parser.y"
-                  { (yyval.node) = (yyvsp[0].node); }
-#line 1627 "socialstory_parser.tab.c"
-    break;
-
-  case 11: /* statement: loop  */
-#line 227 "socialstory_parser.y"
-           { (yyval.node) = (yyvsp[0].node); }
-#line 1633 "socialstory_parser.tab.c"
-    break;
-
-  case 12: /* statement: loop_control  */
-#line 228 "socialstory_parser.y"
-                   { (yyval.node) = (yyvsp[0].node); }
-#line 1639 "socialstory_parser.tab.c"
-    break;
-
-  case 13: /* statement: function_def  */
-#line 229 "socialstory_parser.y"
-                   { (yyval.node) = (yyvsp[0].node); }
-#line 1645 "socialstory_parser.tab.c"
-    break;
-
-  case 14: /* statement: function_call T_DOT  */
-#line 230 "socialstory_parser.y"
-                          { (yyval.node) = (yyvsp[-1].node); }
-#line 1651 "socialstory_parser.tab.c"
-    break;
-
-  case 15: /* statement: builtin_call T_DOT  */
-#line 231 "socialstory_parser.y"
-                         { (yyval.node) = (yyvsp[-1].node); }
-#line 1657 "socialstory_parser.tab.c"
-    break;
-
-  case 16: /* statement: io_statement  */
-#line 232 "socialstory_parser.y"
-                   { (yyval.node) = (yyvsp[0].node); }
-#line 1663 "socialstory_parser.tab.c"
-    break;
-
-  case 17: /* statement: error T_DOT  */
-#line 234 "socialstory_parser.y"
-    {
-        yyerror("Invalid statement - skipping to next");
-        yyerrok;
-        (yyval.node) = NULL;
-    }
 #line 1673 "socialstory_parser.tab.c"
     break;
 
-  case 18: /* account_create: T_THE_ACCOUNT T_ID T_WAS_CREATED T_DOT  */
+  case 9: /* statement: story_post  */
+#line 241 "socialstory_parser.y"
+                 { (yyval.node) = (yyvsp[0].node); }
+#line 1679 "socialstory_parser.tab.c"
+    break;
+
+  case 10: /* statement: conditional  */
+#line 242 "socialstory_parser.y"
+                  { (yyval.node) = (yyvsp[0].node); }
+#line 1685 "socialstory_parser.tab.c"
+    break;
+
+  case 11: /* statement: loop  */
+#line 243 "socialstory_parser.y"
+           { (yyval.node) = (yyvsp[0].node); }
+#line 1691 "socialstory_parser.tab.c"
+    break;
+
+  case 12: /* statement: loop_control  */
 #line 244 "socialstory_parser.y"
+                   { (yyval.node) = (yyvsp[0].node); }
+#line 1697 "socialstory_parser.tab.c"
+    break;
+
+  case 13: /* statement: function_def  */
+#line 245 "socialstory_parser.y"
+                   { (yyval.node) = (yyvsp[0].node); }
+#line 1703 "socialstory_parser.tab.c"
+    break;
+
+  case 14: /* statement: function_call T_DOT  */
+#line 246 "socialstory_parser.y"
+                          { (yyval.node) = (yyvsp[-1].node); }
+#line 1709 "socialstory_parser.tab.c"
+    break;
+
+  case 15: /* statement: builtin_call T_DOT  */
+#line 247 "socialstory_parser.y"
+                         { (yyval.node) = (yyvsp[-1].node); }
+#line 1715 "socialstory_parser.tab.c"
+    break;
+
+  case 16: /* statement: io_statement  */
+#line 248 "socialstory_parser.y"
+                   { (yyval.node) = (yyvsp[0].node); }
+#line 1721 "socialstory_parser.tab.c"
+    break;
+
+  case 17: /* statement: T_DOT  */
+#line 250 "socialstory_parser.y"
+    {
+        (yyval.node) = NULL;
+    }
+#line 1729 "socialstory_parser.tab.c"
+    break;
+
+  case 18: /* statement: error T_DOT  */
+#line 254 "socialstory_parser.y"
+    {
+        char msg[256];
+        snprintf(msg, sizeof(msg), "Invalid statement near '%s'", yytext);
+        yyerror(msg);
+        yyerrok;
+        (yyval.node) = NULL;
+    }
+#line 1741 "socialstory_parser.tab.c"
+    break;
+
+  case 19: /* account_create: T_THE_ACCOUNT T_ID T_WAS_CREATED T_DOT  */
+#line 266 "socialstory_parser.y"
     {
         check_duplicate_account((yyvsp[-2].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_CREATE);
@@ -1681,11 +1749,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         insert_symbol((yyvsp[-2].sval), SYM_ACCOUNT);
     }
-#line 1685 "socialstory_parser.tab.c"
+#line 1753 "socialstory_parser.tab.c"
     break;
 
-  case 19: /* account_init: T_THE_ACCOUNT T_ID T_STARTED_WITH T_NUMBER metric T_DOT  */
-#line 255 "socialstory_parser.y"
+  case 20: /* account_init: T_THE_ACCOUNT T_ID T_STARTED_WITH T_NUMBER metric T_DOT  */
+#line 277 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
@@ -1694,11 +1762,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1698 "socialstory_parser.tab.c"
+#line 1766 "socialstory_parser.tab.c"
     break;
 
-  case 20: /* account_init: T_THE_ACCOUNT T_ID T_BEGAN_AT T_DECIMAL metric T_DOT  */
-#line 264 "socialstory_parser.y"
+  case 21: /* account_init: T_THE_ACCOUNT T_ID T_BEGAN_AT T_DECIMAL metric T_DOT  */
+#line 286 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
@@ -1707,11 +1775,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1711 "socialstory_parser.tab.c"
+#line 1779 "socialstory_parser.tab.c"
     break;
 
-  case 21: /* account_init: T_THE_ACCOUNT T_ID T_NOW_HAS T_NUMBER metric T_DOT  */
-#line 273 "socialstory_parser.y"
+  case 22: /* account_init: T_THE_ACCOUNT T_ID T_NOW_HAS T_NUMBER metric T_DOT  */
+#line 295 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
@@ -1720,11 +1788,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1724 "socialstory_parser.tab.c"
+#line 1792 "socialstory_parser.tab.c"
     break;
 
-  case 22: /* account_update: T_THE_ACCOUNT T_ID T_GAINED T_NUMBER metric T_DOT  */
-#line 285 "socialstory_parser.y"
+  case 23: /* account_update: T_THE_ACCOUNT T_ID T_GAINED T_NUMBER metric T_DOT  */
+#line 307 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
@@ -1733,11 +1801,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1737 "socialstory_parser.tab.c"
+#line 1805 "socialstory_parser.tab.c"
     break;
 
-  case 23: /* account_update: T_THE_ACCOUNT T_ID T_LOST T_NUMBER metric T_DOT  */
-#line 294 "socialstory_parser.y"
+  case 24: /* account_update: T_THE_ACCOUNT T_ID T_LOST T_NUMBER metric T_DOT  */
+#line 316 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
@@ -1746,11 +1814,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1750 "socialstory_parser.tab.c"
+#line 1818 "socialstory_parser.tab.c"
     break;
 
-  case 24: /* account_update: T_THE_ACCOUNT T_ID T_INCREASED_BY T_NUMBER metric T_DOT  */
-#line 303 "socialstory_parser.y"
+  case 25: /* account_update: T_THE_ACCOUNT T_ID T_INCREASED_BY T_NUMBER metric T_DOT  */
+#line 325 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
@@ -1759,11 +1827,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1763 "socialstory_parser.tab.c"
+#line 1831 "socialstory_parser.tab.c"
     break;
 
-  case 25: /* account_update: T_THE_ACCOUNT T_ID T_DECREASED_BY T_NUMBER metric T_DOT  */
-#line 312 "socialstory_parser.y"
+  case 26: /* account_update: T_THE_ACCOUNT T_ID T_DECREASED_BY T_NUMBER metric T_DOT  */
+#line 334 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-4].sval), yylineno);
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
@@ -1772,11 +1840,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1776 "socialstory_parser.tab.c"
+#line 1844 "socialstory_parser.tab.c"
     break;
 
-  case 26: /* story_post: T_THE_ACCOUNT T_ID T_POSTED T_ABOUT T_TEXT T_THAT_HAD T_NUMBER T_VIEWS T_DOT  */
-#line 324 "socialstory_parser.y"
+  case 27: /* story_post: T_THE_ACCOUNT T_ID T_POSTED T_ABOUT T_TEXT T_THAT_HAD T_NUMBER T_VIEWS T_DOT  */
+#line 346 "socialstory_parser.y"
     {
         check_account_exists((yyvsp[-7].sval), yylineno);
         (yyval.node) = make_node(AST_STORY_POST);
@@ -1785,11 +1853,11 @@ yyreduce:
         (yyval.node)->ival = (yyvsp[-2].ival);
         (yyval.node)->line_number = yylineno;
     }
-#line 1789 "socialstory_parser.tab.c"
+#line 1857 "socialstory_parser.tab.c"
     break;
 
-  case 27: /* conditional: T_WHEN comparison T_LBRACE statements T_RBRACE optional_else  */
-#line 337 "socialstory_parser.y"
+  case 28: /* conditional: T_WHEN comparison T_LBRACE statements T_RBRACE optional_else  */
+#line 359 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_CONDITIONAL);
         (yyval.node)->condition = (yyvsp[-4].node);
@@ -1797,31 +1865,31 @@ yyreduce:
         (yyval.node)->else_body = (yyvsp[0].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1801 "socialstory_parser.tab.c"
+#line 1869 "socialstory_parser.tab.c"
     break;
 
-  case 28: /* optional_else: %empty  */
-#line 347 "socialstory_parser.y"
+  case 29: /* optional_else: %empty  */
+#line 369 "socialstory_parser.y"
                 { (yyval.node) = NULL; }
-#line 1807 "socialstory_parser.tab.c"
+#line 1875 "socialstory_parser.tab.c"
     break;
 
-  case 29: /* optional_else: T_OTHERWISE T_LBRACE statements T_RBRACE  */
-#line 349 "socialstory_parser.y"
+  case 30: /* optional_else: T_OTHERWISE T_LBRACE statements T_RBRACE  */
+#line 371 "socialstory_parser.y"
     {
         (yyval.node) = (yyvsp[-1].node);
     }
-#line 1815 "socialstory_parser.tab.c"
+#line 1883 "socialstory_parser.tab.c"
     break;
 
-  case 30: /* optional_else: else_if_chain  */
-#line 352 "socialstory_parser.y"
+  case 31: /* optional_else: else_if_chain  */
+#line 374 "socialstory_parser.y"
                     { (yyval.node) = (yyvsp[0].node); }
-#line 1821 "socialstory_parser.tab.c"
+#line 1889 "socialstory_parser.tab.c"
     break;
 
-  case 31: /* else_if_chain: T_OTHERWISE_IF comparison T_LBRACE statements T_RBRACE optional_else  */
-#line 357 "socialstory_parser.y"
+  case 32: /* else_if_chain: T_OTHERWISE_IF comparison T_LBRACE statements T_RBRACE optional_else  */
+#line 379 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_CONDITIONAL);
         (yyval.node)->condition = (yyvsp[-4].node);
@@ -1829,87 +1897,103 @@ yyreduce:
         (yyval.node)->else_body = (yyvsp[0].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1833 "socialstory_parser.tab.c"
+#line 1901 "socialstory_parser.tab.c"
     break;
 
-  case 32: /* loop: T_EVERY_DAY_FOR T_NUMBER T_DAYS T_COMMA T_LBRACE statements T_RBRACE  */
-#line 369 "socialstory_parser.y"
+  case 33: /* loop: T_EVERY_DAY_FOR T_NUMBER T_DAYS T_COMMA T_LBRACE statements T_RBRACE  */
+#line 391 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP);
-        (yyval.node)->ival = (yyvsp[-5].ival);
+        (yyval.node)->ival = 1;        /* start */
+        (yyval.node)->ival2 = (yyvsp[-5].ival);      /* end */
+        (yyval.node)->step = 1;        /* step */
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1844 "socialstory_parser.tab.c"
+#line 1914 "socialstory_parser.tab.c"
     break;
 
-  case 33: /* loop: T_EVERY T_NUMBER T_DAYS T_INCREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE  */
-#line 376 "socialstory_parser.y"
+  case 34: /* loop: T_EVERY T_NUMBER T_DAYS T_INCREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE  */
+#line 400 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_INCREMENT);
-        (yyval.node)->ival = (yyvsp[-6].ival);
-        (yyval.node)->fval = (float)(yyvsp[-3].ival);
+        (yyval.node)->ival = 1;        /* start at 1 */
+        (yyval.node)->ival2 = (yyvsp[-6].ival);      /* end at this value */
+        (yyval.node)->step = (yyvsp[-3].ival);       /* increment by this */
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1856 "socialstory_parser.tab.c"
+#line 1927 "socialstory_parser.tab.c"
     break;
 
-  case 34: /* loop: T_EVERY T_NUMBER T_DAYS T_DECREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE  */
-#line 384 "socialstory_parser.y"
+  case 35: /* loop: T_EVERY T_NUMBER T_DAYS T_DECREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE  */
+#line 409 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_DECREMENT);
-        (yyval.node)->ival = (yyvsp[-6].ival);
-        (yyval.node)->fval = (float)(yyvsp[-3].ival);
+        (yyval.node)->ival = (yyvsp[-6].ival);       /* start at this value */
+        (yyval.node)->ival2 = 1;       /* end at 1 */
+        (yyval.node)->step = (yyvsp[-3].ival);       /* decrement by this */
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1868 "socialstory_parser.tab.c"
+#line 1940 "socialstory_parser.tab.c"
     break;
 
-  case 35: /* loop: T_FOR_EACH T_FOLLOWER_FROM T_NUMBER T_TO T_NUMBER T_LBRACE statements T_RBRACE  */
-#line 392 "socialstory_parser.y"
+  case 36: /* loop: T_FOR_EACH T_FOLLOWER_FROM T_NUMBER T_TO T_NUMBER T_LBRACE statements T_RBRACE  */
+#line 418 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_RANGE);
-        (yyval.node)->ival = (yyvsp[-5].ival);
-        (yyval.node)->fval = (float)(yyvsp[-3].ival);
+        (yyval.node)->ival = (yyvsp[-5].ival);       /* start */
+        (yyval.node)->ival2 = (yyvsp[-3].ival);      /* end */
+        (yyval.node)->step = 1;        /* step */
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1880 "socialstory_parser.tab.c"
+#line 1953 "socialstory_parser.tab.c"
     break;
 
-  case 36: /* loop: T_FOR_EACH T_POST_IN T_THE_FEED T_LBRACE statements T_RBRACE  */
-#line 400 "socialstory_parser.y"
+  case 37: /* loop: T_FOR_EACH T_POST_IN T_THE_FEED T_LBRACE statements T_RBRACE  */
+#line 427 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_COLLECTION);
         (yyval.node)->sval = strdup("posts");
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1891 "socialstory_parser.tab.c"
+#line 1964 "socialstory_parser.tab.c"
     break;
 
-  case 37: /* loop_control: T_STOP_THE_STORY T_DOT  */
-#line 410 "socialstory_parser.y"
+  case 38: /* loop_control: T_STOP_THE_STORY T_DOT  */
+#line 437 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BREAK);
         (yyval.node)->line_number = yylineno;
     }
-#line 1900 "socialstory_parser.tab.c"
+#line 1973 "socialstory_parser.tab.c"
     break;
 
-  case 38: /* loop_control: T_SKIP_THIS_POST T_DOT  */
-#line 415 "socialstory_parser.y"
+  case 39: /* loop_control: T_SKIP_THIS_POST T_DOT  */
+#line 442 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_CONTINUE);
         (yyval.node)->line_number = yylineno;
     }
-#line 1909 "socialstory_parser.tab.c"
+#line 1982 "socialstory_parser.tab.c"
     break;
 
-  case 39: /* function_def: T_THE_STORY_OF T_ID T_BEGINS_WITH T_ID T_LBRACE statements T_RBRACE T_THE_STORY_ENDS T_DOT  */
-#line 424 "socialstory_parser.y"
+  case 40: /* account_ref: T_FOR T_THE_ACCOUNT T_ID  */
+#line 451 "socialstory_parser.y"
+    {
+        check_account_exists((yyvsp[0].sval), yylineno);
+        (yyval.node) = make_node(AST_ACCOUNT_REF);
+        (yyval.node)->sval = (yyvsp[0].sval);
+        (yyval.node)->line_number = yylineno;
+    }
+#line 1993 "socialstory_parser.tab.c"
+    break;
+
+  case 41: /* function_def: T_THE_STORY_OF T_ID T_BEGINS_WITH T_ID T_LBRACE statements T_RBRACE T_THE_STORY_ENDS T_DOT  */
+#line 462 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FUNCTION_DEF);
         (yyval.node)->sval = (yyvsp[-7].sval);
@@ -1918,379 +2002,409 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         insert_symbol((yyvsp[-7].sval), SYM_FUNCTION);
     }
-#line 1922 "socialstory_parser.tab.c"
+#line 2006 "socialstory_parser.tab.c"
     break;
 
-  case 40: /* function_call: T_TELL T_ID T_LPAREN expression T_RPAREN  */
-#line 436 "socialstory_parser.y"
+  case 42: /* function_call: T_TELL T_ID T_LPAREN expression T_RPAREN  */
+#line 474 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FUNCTION_CALL);
         (yyval.node)->sval = (yyvsp[-3].sval);
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 1933 "socialstory_parser.tab.c"
+#line 2017 "socialstory_parser.tab.c"
     break;
 
-  case 41: /* builtin_call: T_CALCULATE_VIRALITY  */
-#line 446 "socialstory_parser.y"
+  case 43: /* builtin_call: T_CALCULATE_VIRALITY account_ref  */
+#line 485 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("calculate_virality");
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
         (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
     }
-#line 1943 "socialstory_parser.tab.c"
+#line 2029 "socialstory_parser.tab.c"
     break;
 
-  case 42: /* builtin_call: T_CALCULATE_ENGAGEMENT T_WITH T_NUMBER T_COMMA T_NUMBER  */
-#line 452 "socialstory_parser.y"
+  case 44: /* builtin_call: T_CALCULATE_ENGAGEMENT account_ref  */
+#line 493 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("calculate_engagement");
-        (yyval.node)->ival = (yyvsp[-2].ival);
-        (yyval.node)->fval = (float)(yyvsp[0].ival);
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
         (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
     }
-#line 1955 "socialstory_parser.tab.c"
+#line 2041 "socialstory_parser.tab.c"
     break;
 
-  case 43: /* builtin_call: T_FIND_TOP_POST  */
-#line 460 "socialstory_parser.y"
+  case 45: /* builtin_call: T_FIND_TOP_POST account_ref  */
+#line 501 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_top_post");
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
         (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
     }
-#line 1965 "socialstory_parser.tab.c"
+#line 2053 "socialstory_parser.tab.c"
     break;
 
-  case 44: /* builtin_call: T_FIND_MAX_VIRAL_ACCOUNT  */
-#line 466 "socialstory_parser.y"
+  case 46: /* builtin_call: T_FIND_MAX_VIRAL_ACCOUNT  */
+#line 509 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_max_viral_account");
+        (yyval.node)->sval2 = NULL;  /* works on all accounts */
         (yyval.node)->line_number = yylineno;
     }
-#line 1975 "socialstory_parser.tab.c"
+#line 2064 "socialstory_parser.tab.c"
     break;
 
-  case 45: /* builtin_call: T_REVERSE_THE_CAPTION  */
-#line 472 "socialstory_parser.y"
+  case 47: /* builtin_call: T_REVERSE_THE_CAPTION account_ref  */
+#line 516 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("reverse_caption");
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
         (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
     }
-#line 1985 "socialstory_parser.tab.c"
+#line 2076 "socialstory_parser.tab.c"
     break;
 
-  case 46: /* builtin_call: T_ANALYZE_GROWTH  */
-#line 478 "socialstory_parser.y"
+  case 48: /* builtin_call: T_ANALYZE_GROWTH account_ref  */
+#line 524 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("analyze_growth");
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
         (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
     }
-#line 1995 "socialstory_parser.tab.c"
+#line 2088 "socialstory_parser.tab.c"
     break;
 
-  case 47: /* io_statement: T_ANNOUNCE T_TEXT T_DOT  */
-#line 488 "socialstory_parser.y"
+  case 49: /* builtin_call: T_FIND_HIGHEST_REACH account_ref  */
+#line 532 "socialstory_parser.y"
+    {
+        (yyval.node) = make_node(AST_BUILTIN_CALL);
+        (yyval.node)->sval = strdup("find_highest_reach");
+        (yyval.node)->sval2 = (yyvsp[0].node)->sval;  /* account name */
+        (yyval.node)->line_number = yylineno;
+        free((yyvsp[0].node));
+    }
+#line 2100 "socialstory_parser.tab.c"
+    break;
+
+  case 50: /* io_statement: T_ANNOUNCE T_TEXT T_DOT  */
+#line 544 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ANNOUNCE);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 2005 "socialstory_parser.tab.c"
+#line 2110 "socialstory_parser.tab.c"
     break;
 
-  case 48: /* io_statement: T_DISPLAY T_ID T_DOT  */
-#line 494 "socialstory_parser.y"
+  case 51: /* io_statement: T_DISPLAY T_ID T_DOT  */
+#line 550 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_DISPLAY);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 2015 "socialstory_parser.tab.c"
+#line 2120 "socialstory_parser.tab.c"
     break;
 
-  case 49: /* io_statement: T_ASK_FOR T_ID T_DOT  */
-#line 500 "socialstory_parser.y"
+  case 52: /* io_statement: T_ASK_FOR T_ID T_DOT  */
+#line 556 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ASK_FOR);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 2025 "socialstory_parser.tab.c"
+#line 2130 "socialstory_parser.tab.c"
     break;
 
-  case 50: /* expression: expression T_PLUS term  */
-#line 510 "socialstory_parser.y"
+  case 53: /* expression: expression T_PLUS term  */
+#line 566 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = '+';
     }
-#line 2034 "socialstory_parser.tab.c"
+#line 2139 "socialstory_parser.tab.c"
     break;
 
-  case 51: /* expression: expression T_MINUS term  */
-#line 515 "socialstory_parser.y"
+  case 54: /* expression: expression T_MINUS term  */
+#line 571 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = '-';
     }
-#line 2043 "socialstory_parser.tab.c"
+#line 2148 "socialstory_parser.tab.c"
     break;
 
-  case 52: /* expression: term  */
-#line 519 "socialstory_parser.y"
+  case 55: /* expression: term  */
+#line 575 "socialstory_parser.y"
            { (yyval.node) = (yyvsp[0].node); }
-#line 2049 "socialstory_parser.tab.c"
+#line 2154 "socialstory_parser.tab.c"
     break;
 
-  case 53: /* term: term T_TIMES factor  */
-#line 524 "socialstory_parser.y"
+  case 56: /* term: term T_TIMES factor  */
+#line 580 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = '*';
     }
-#line 2058 "socialstory_parser.tab.c"
+#line 2163 "socialstory_parser.tab.c"
     break;
 
-  case 54: /* term: term T_DIVIDE factor  */
-#line 529 "socialstory_parser.y"
+  case 57: /* term: term T_DIVIDE factor  */
+#line 585 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = '/';
     }
-#line 2067 "socialstory_parser.tab.c"
+#line 2172 "socialstory_parser.tab.c"
     break;
 
-  case 55: /* term: term T_MODULO factor  */
-#line 534 "socialstory_parser.y"
+  case 58: /* term: term T_MODULO factor  */
+#line 590 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = '%';
     }
-#line 2076 "socialstory_parser.tab.c"
-    break;
-
-  case 56: /* term: factor  */
-#line 538 "socialstory_parser.y"
-             { (yyval.node) = (yyvsp[0].node); }
-#line 2082 "socialstory_parser.tab.c"
-    break;
-
-  case 57: /* factor: T_LPAREN expression T_RPAREN  */
-#line 542 "socialstory_parser.y"
-                                 { (yyval.node) = (yyvsp[-1].node); }
-#line 2088 "socialstory_parser.tab.c"
-    break;
-
-  case 58: /* factor: literal  */
-#line 543 "socialstory_parser.y"
-              { (yyval.node) = (yyvsp[0].node); }
-#line 2094 "socialstory_parser.tab.c"
-    break;
-
-  case 59: /* factor: T_ID  */
-#line 545 "socialstory_parser.y"
-    {
-        (yyval.node) = make_node(AST_IDENTIFIER);
-        (yyval.node)->sval = (yyvsp[0].sval);
-    }
-#line 2103 "socialstory_parser.tab.c"
-    break;
-
-  case 60: /* factor: metric  */
-#line 549 "socialstory_parser.y"
-             { (yyval.node) = (yyvsp[0].node); }
-#line 2109 "socialstory_parser.tab.c"
-    break;
-
-  case 61: /* comparison: expression T_MORE_THAN expression  */
-#line 555 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '>';
-    }
-#line 2118 "socialstory_parser.tab.c"
-    break;
-
-  case 62: /* comparison: expression T_LESS_THAN expression  */
-#line 560 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '<';
-    }
-#line 2127 "socialstory_parser.tab.c"
-    break;
-
-  case 63: /* comparison: expression T_EXACTLY expression  */
-#line 565 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '=';
-    }
-#line 2136 "socialstory_parser.tab.c"
-    break;
-
-  case 64: /* comparison: expression T_AT_LEAST expression  */
-#line 570 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = 'G';
-    }
-#line 2145 "socialstory_parser.tab.c"
-    break;
-
-  case 65: /* comparison: expression T_AT_MOST expression  */
-#line 575 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = 'L';
-    }
-#line 2154 "socialstory_parser.tab.c"
-    break;
-
-  case 66: /* comparison: expression T_DIFFERENT_FROM expression  */
-#line 580 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '!';
-    }
-#line 2163 "socialstory_parser.tab.c"
-    break;
-
-  case 67: /* comparison: expression T_EXCEEDED expression  */
-#line 585 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '>';
-    }
-#line 2172 "socialstory_parser.tab.c"
-    break;
-
-  case 68: /* comparison: expression T_DROPPED_BELOW expression  */
-#line 590 "socialstory_parser.y"
-    {
-        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
-        (yyval.node)->ival = '<';
-    }
 #line 2181 "socialstory_parser.tab.c"
     break;
 
-  case 69: /* comparison: expression T_WENT_VIRAL  */
-#line 595 "socialstory_parser.y"
-    {
-        (yyval.node) = make_node(AST_COMPARISON);
-        (yyval.node)->left = (yyvsp[-1].node);
-        (yyval.node)->ival = 'V';
-    }
-#line 2191 "socialstory_parser.tab.c"
+  case 59: /* term: factor  */
+#line 594 "socialstory_parser.y"
+             { (yyval.node) = (yyvsp[0].node); }
+#line 2187 "socialstory_parser.tab.c"
     break;
 
-  case 70: /* comparison: T_ID  */
+  case 60: /* factor: T_LPAREN expression T_RPAREN  */
+#line 598 "socialstory_parser.y"
+                                 { (yyval.node) = (yyvsp[-1].node); }
+#line 2193 "socialstory_parser.tab.c"
+    break;
+
+  case 61: /* factor: literal  */
+#line 599 "socialstory_parser.y"
+              { (yyval.node) = (yyvsp[0].node); }
+#line 2199 "socialstory_parser.tab.c"
+    break;
+
+  case 62: /* factor: T_ID  */
 #line 601 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_IDENTIFIER);
         (yyval.node)->sval = (yyvsp[0].sval);
     }
-#line 2200 "socialstory_parser.tab.c"
+#line 2208 "socialstory_parser.tab.c"
     break;
 
-  case 71: /* metric: T_LIKES  */
-#line 609 "socialstory_parser.y"
-            { (yyval.node) = make_node_with_string(AST_METRIC, strdup("likes")); }
-#line 2206 "socialstory_parser.tab.c"
+  case 63: /* factor: metric  */
+#line 605 "socialstory_parser.y"
+             { (yyval.node) = (yyvsp[0].node); }
+#line 2214 "socialstory_parser.tab.c"
     break;
 
-  case 72: /* metric: T_FOLLOWERS  */
-#line 610 "socialstory_parser.y"
-                  { (yyval.node) = make_node_with_string(AST_METRIC, strdup("followers")); }
-#line 2212 "socialstory_parser.tab.c"
-    break;
-
-  case 73: /* metric: T_VIEWS  */
+  case 64: /* comparison: expression T_MORE_THAN expression  */
 #line 611 "socialstory_parser.y"
-              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("views")); }
-#line 2218 "socialstory_parser.tab.c"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '>';
+    }
+#line 2223 "socialstory_parser.tab.c"
     break;
 
-  case 74: /* metric: T_COMMENTS  */
-#line 612 "socialstory_parser.y"
-                 { (yyval.node) = make_node_with_string(AST_METRIC, strdup("comments")); }
-#line 2224 "socialstory_parser.tab.c"
-    break;
-
-  case 75: /* metric: T_SHARES  */
-#line 613 "socialstory_parser.y"
-               { (yyval.node) = make_node_with_string(AST_METRIC, strdup("shares")); }
-#line 2230 "socialstory_parser.tab.c"
-    break;
-
-  case 76: /* metric: T_POSTS  */
-#line 614 "socialstory_parser.y"
-              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("posts")); }
-#line 2236 "socialstory_parser.tab.c"
-    break;
-
-  case 77: /* metric: T_STORIES  */
-#line 615 "socialstory_parser.y"
-                { (yyval.node) = make_node_with_string(AST_METRIC, strdup("stories")); }
-#line 2242 "socialstory_parser.tab.c"
-    break;
-
-  case 78: /* metric: T_ENGAGEMENT_RATE  */
+  case 65: /* comparison: expression T_LESS_THAN expression  */
 #line 616 "socialstory_parser.y"
-                        { (yyval.node) = make_node_with_string(AST_METRIC, strdup("engagement_rate")); }
-#line 2248 "socialstory_parser.tab.c"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '<';
+    }
+#line 2232 "socialstory_parser.tab.c"
     break;
 
-  case 79: /* metric: T_REACH  */
-#line 617 "socialstory_parser.y"
-              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("reach")); }
-#line 2254 "socialstory_parser.tab.c"
+  case 66: /* comparison: expression T_EXACTLY expression  */
+#line 621 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '=';
+    }
+#line 2241 "socialstory_parser.tab.c"
     break;
 
-  case 80: /* metric: T_GROWTH_RATE  */
-#line 618 "socialstory_parser.y"
-                    { (yyval.node) = make_node_with_string(AST_METRIC, strdup("growth_rate")); }
-#line 2260 "socialstory_parser.tab.c"
-    break;
-
-  case 81: /* literal: T_NUMBER  */
-#line 623 "socialstory_parser.y"
-             { (yyval.node) = make_node_with_int(AST_LITERAL_INT, (yyvsp[0].ival)); }
-#line 2266 "socialstory_parser.tab.c"
-    break;
-
-  case 82: /* literal: T_DECIMAL  */
-#line 624 "socialstory_parser.y"
-                { (yyval.node) = make_node_with_float(AST_LITERAL_FLOAT, (yyvsp[0].fval)); }
-#line 2272 "socialstory_parser.tab.c"
-    break;
-
-  case 83: /* literal: T_TEXT  */
-#line 625 "socialstory_parser.y"
-             { (yyval.node) = make_node_with_string(AST_LITERAL_STRING, (yyvsp[0].sval)); }
-#line 2278 "socialstory_parser.tab.c"
-    break;
-
-  case 84: /* literal: T_TRUE_STORY  */
+  case 67: /* comparison: expression T_AT_LEAST expression  */
 #line 626 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = 'G';
+    }
+#line 2250 "socialstory_parser.tab.c"
+    break;
+
+  case 68: /* comparison: expression T_AT_MOST expression  */
+#line 631 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = 'L';
+    }
+#line 2259 "socialstory_parser.tab.c"
+    break;
+
+  case 69: /* comparison: expression T_DIFFERENT_FROM expression  */
+#line 636 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '!';
+    }
+#line 2268 "socialstory_parser.tab.c"
+    break;
+
+  case 70: /* comparison: expression T_EXCEEDED expression  */
+#line 641 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '>';
+    }
+#line 2277 "socialstory_parser.tab.c"
+    break;
+
+  case 71: /* comparison: expression T_DROPPED_BELOW expression  */
+#line 646 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), (yyvsp[0].node));
+        (yyval.node)->ival = '<';
+    }
+#line 2286 "socialstory_parser.tab.c"
+    break;
+
+  case 72: /* comparison: expression T_WENT_VIRAL  */
+#line 651 "socialstory_parser.y"
+    {
+        (yyval.node) = make_node(AST_COMPARISON);
+        (yyval.node)->left = (yyvsp[-1].node);
+        (yyval.node)->ival = 'V';
+    }
+#line 2296 "socialstory_parser.tab.c"
+    break;
+
+  case 73: /* comparison: metric T_MORE_THAN T_NUMBER  */
+#line 657 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), make_node_with_int(AST_LITERAL_INT, (yyvsp[0].ival)));
+        (yyval.node)->ival = '>';
+    }
+#line 2305 "socialstory_parser.tab.c"
+    break;
+
+  case 74: /* comparison: metric T_LESS_THAN T_NUMBER  */
+#line 662 "socialstory_parser.y"
+    {
+        (yyval.node) = make_binary_op(AST_COMPARISON, (yyvsp[-2].node), make_node_with_int(AST_LITERAL_INT, (yyvsp[0].ival)));
+        (yyval.node)->ival = '<';
+    }
+#line 2314 "socialstory_parser.tab.c"
+    break;
+
+  case 75: /* metric: T_LIKES  */
+#line 670 "socialstory_parser.y"
+            { (yyval.node) = make_node_with_string(AST_METRIC, strdup("likes")); }
+#line 2320 "socialstory_parser.tab.c"
+    break;
+
+  case 76: /* metric: T_FOLLOWERS  */
+#line 671 "socialstory_parser.y"
+                  { (yyval.node) = make_node_with_string(AST_METRIC, strdup("followers")); }
+#line 2326 "socialstory_parser.tab.c"
+    break;
+
+  case 77: /* metric: T_VIEWS  */
+#line 672 "socialstory_parser.y"
+              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("views")); }
+#line 2332 "socialstory_parser.tab.c"
+    break;
+
+  case 78: /* metric: T_COMMENTS  */
+#line 673 "socialstory_parser.y"
+                 { (yyval.node) = make_node_with_string(AST_METRIC, strdup("comments")); }
+#line 2338 "socialstory_parser.tab.c"
+    break;
+
+  case 79: /* metric: T_SHARES  */
+#line 674 "socialstory_parser.y"
+               { (yyval.node) = make_node_with_string(AST_METRIC, strdup("shares")); }
+#line 2344 "socialstory_parser.tab.c"
+    break;
+
+  case 80: /* metric: T_POSTS  */
+#line 675 "socialstory_parser.y"
+              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("posts")); }
+#line 2350 "socialstory_parser.tab.c"
+    break;
+
+  case 81: /* metric: T_STORIES  */
+#line 676 "socialstory_parser.y"
+                { (yyval.node) = make_node_with_string(AST_METRIC, strdup("stories")); }
+#line 2356 "socialstory_parser.tab.c"
+    break;
+
+  case 82: /* metric: T_ENGAGEMENT_RATE  */
+#line 677 "socialstory_parser.y"
+                        { (yyval.node) = make_node_with_string(AST_METRIC, strdup("engagement_rate")); }
+#line 2362 "socialstory_parser.tab.c"
+    break;
+
+  case 83: /* metric: T_REACH  */
+#line 678 "socialstory_parser.y"
+              { (yyval.node) = make_node_with_string(AST_METRIC, strdup("reach")); }
+#line 2368 "socialstory_parser.tab.c"
+    break;
+
+  case 84: /* metric: T_GROWTH_RATE  */
+#line 679 "socialstory_parser.y"
+                    { (yyval.node) = make_node_with_string(AST_METRIC, strdup("growth_rate")); }
+#line 2374 "socialstory_parser.tab.c"
+    break;
+
+  case 85: /* literal: T_NUMBER  */
+#line 684 "socialstory_parser.y"
+             { (yyval.node) = make_node_with_int(AST_LITERAL_INT, (yyvsp[0].ival)); }
+#line 2380 "socialstory_parser.tab.c"
+    break;
+
+  case 86: /* literal: T_DECIMAL  */
+#line 685 "socialstory_parser.y"
+                { (yyval.node) = make_node_with_float(AST_LITERAL_FLOAT, (yyvsp[0].fval)); }
+#line 2386 "socialstory_parser.tab.c"
+    break;
+
+  case 87: /* literal: T_TEXT  */
+#line 686 "socialstory_parser.y"
+             { (yyval.node) = make_node_with_string(AST_LITERAL_STRING, (yyvsp[0].sval)); }
+#line 2392 "socialstory_parser.tab.c"
+    break;
+
+  case 88: /* literal: T_TRUE_STORY  */
+#line 687 "socialstory_parser.y"
                    { (yyval.node) = make_node_with_int(AST_LITERAL_BOOL, 1); }
-#line 2284 "socialstory_parser.tab.c"
+#line 2398 "socialstory_parser.tab.c"
     break;
 
-  case 85: /* literal: T_FALSE_ALARM  */
-#line 627 "socialstory_parser.y"
+  case 89: /* literal: T_FALSE_ALARM  */
+#line 688 "socialstory_parser.y"
                     { (yyval.node) = make_node_with_int(AST_LITERAL_BOOL, 0); }
-#line 2290 "socialstory_parser.tab.c"
+#line 2404 "socialstory_parser.tab.c"
     break;
 
 
-#line 2294 "socialstory_parser.tab.c"
+#line 2408 "socialstory_parser.tab.c"
 
       default: break;
     }
@@ -2483,12 +2597,13 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 630 "socialstory_parser.y"
+#line 690 "socialstory_parser.y"
 
 
-/* Error handler */
+/* Error handler with line numbers */
 void yyerror(const char *s) {
     fprintf(stderr, "❌ Syntax Error at line %d: %s\n", yylineno, s);
+    fprintf(output_file, "❌ Syntax Error at line %d: %s\n", yylineno, s);
     semantic_errors++;
 }
 
@@ -2557,6 +2672,7 @@ SymbolEntry* insert_symbol(const char* name, int sym_type) {
 void check_account_exists(const char* name, int line) {
     if (lookup_symbol(name) == NULL) {
         fprintf(stderr, "❌ Semantic Error (line %d): Account '%s' not declared\n", line, name);
+        fprintf(output_file, "❌ Semantic Error (line %d): Account '%s' not declared\n", line, name);
         semantic_errors++;
     }
 }
@@ -2564,28 +2680,36 @@ void check_account_exists(const char* name, int line) {
 void check_duplicate_account(const char* name, int line) {
     if (lookup_symbol(name) != NULL) {
         fprintf(stderr, "❌ Semantic Error (line %d): Account '%s' already exists\n", line, name);
+        fprintf(output_file, "❌ Semantic Error (line %d): Account '%s' already exists\n", line, name);
         semantic_errors++;
     }
 }
 
 void print_symbol_table() {
-    printf("\n📋 Symbol Table:\n");
-    printf("================\n");
+    fprintf(output_file, "\n📋 Symbol Table:\n");
+    fprintf(output_file, "================\n");
     SymbolEntry* current = symbol_table;
     while (current != NULL) {
-        printf("%-20s | Type: ", current->name);
+        fprintf(output_file, "%-20s | Type: ", current->name);
         switch (current->type) {
-            case SYM_ACCOUNT: printf("Account"); break;
-            case SYM_VARIABLE: printf("Variable"); break;
-            case SYM_FUNCTION: printf("Function"); break;
+            case SYM_ACCOUNT: fprintf(output_file, "Account"); break;
+            case SYM_VARIABLE: fprintf(output_file, "Variable"); break;
+            case SYM_FUNCTION: fprintf(output_file, "Function"); break;
         }
         if (current->type == SYM_ACCOUNT) {
-            printf(" | Likes: %d, Followers: %d", current->likes, current->followers);
+            fprintf(output_file, " | Likes: %d, Followers: %d, Views: %d, Comments: %d, Shares: %d",
+                    current->likes, current->followers, current->views, current->comments, current->shares);
+            if (current->engagement_rate > 0) {
+                fprintf(output_file, ", Engagement: %.2f%%", current->engagement_rate);
+            }
+            if (current->growth_rate > 0) {
+                fprintf(output_file, ", Growth: %.2f%%", current->growth_rate);
+            }
         }
-        printf("\n");
+        fprintf(output_file, "\n");
         current = current->next;
     }
-    printf("================\n");
+    fprintf(output_file, "================\n");
 }
 
 void free_symbol_table() {
@@ -2628,6 +2752,7 @@ const char* node_type_name(ASTNodeType type) {
         case AST_METRIC: return "METRIC";
         case AST_BREAK: return "BREAK";
         case AST_CONTINUE: return "CONTINUE";
+        case AST_ACCOUNT_REF: return "ACCOUNT_REF";
         default: return "UNKNOWN";
     }
 }
@@ -2635,31 +2760,35 @@ const char* node_type_name(ASTNodeType type) {
 void print_ast(ASTNode* node, int depth) {
     if (node == NULL) return;
     
-    for (int i = 0; i < depth; i++) printf("  ");
-    printf("├─ %s", node_type_name(node->type));
+    for (int i = 0; i < depth; i++) fprintf(output_file, "  ");
+    fprintf(output_file, "├─ %s", node_type_name(node->type));
     
-    if (node->sval) printf(" (%s)", node->sval);
-    if (node->type == AST_LITERAL_INT) printf(" [%d]", node->ival);
-    if (node->type == AST_LITERAL_FLOAT) printf(" [%.2f]", node->fval);
-    if (node->type == AST_BINARY_OP) printf(" ['%c']", (char)node->ival);
+    if (node->sval) fprintf(output_file, " (%s)", node->sval);
+    if (node->sval2) fprintf(output_file, " [Account: %s]", node->sval2);
+    if (node->type == AST_LITERAL_INT) fprintf(output_file, " [%d]", node->ival);
+    if (node->type == AST_LITERAL_FLOAT) fprintf(output_file, " [%.2f]", node->fval);
+    if (node->type == AST_BINARY_OP) fprintf(output_file, " ['%c']", (char)node->ival);
+    if (node->type == AST_LOOP || node->type == AST_LOOP_INCREMENT || node->type == AST_LOOP_DECREMENT) {
+        fprintf(output_file, " [start:%d, end:%d, step:%d]", node->ival, node->ival2, node->step);
+    }
     
-    printf("\n");
+    fprintf(output_file, "\n");
     
     if (node->condition) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Condition:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Condition:\n");
         print_ast(node->condition, depth + 2);
     }
     
     if (node->body) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Body:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Body:\n");
         print_ast(node->body, depth + 2);
     }
     
     if (node->else_body) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Else:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Else:\n");
         print_ast(node->else_body, depth + 2);
     }
     
@@ -2677,7 +2806,20 @@ void free_ast(ASTNode* node) {
     free_ast(node->else_body);
     free_ast(node->next);
     if (node->sval) free(node->sval);
+    if (node->sval2) free(node->sval2);
     free(node);
+}
+
+/* Helper function to get metric value from account */
+int get_metric_value(SymbolEntry* account, const char* metric_name) {
+    if (strcmp(metric_name, "likes") == 0) return account->likes;
+    if (strcmp(metric_name, "followers") == 0) return account->followers;
+    if (strcmp(metric_name, "views") == 0) return account->views;
+    if (strcmp(metric_name, "comments") == 0) return account->comments;
+    if (strcmp(metric_name, "shares") == 0) return account->shares;
+    if (strcmp(metric_name, "posts") == 0) return account->posts;
+    if (strcmp(metric_name, "stories") == 0) return account->stories;
+    return 0;
 }
 
 /* Interpreter */
@@ -2689,6 +2831,10 @@ int evaluate_expression(ASTNode* node) {
             return node->ival;
         case AST_LITERAL_BOOL:
             return node->ival;
+        case AST_METRIC: {
+            /* Metrics evaluate to their current value - need context */
+            return 0;  /* Will be handled in context */
+        }
         case AST_BINARY_OP: {
             int left = evaluate_expression(node->left);
             int right = evaluate_expression(node->right);
@@ -2723,17 +2869,23 @@ void execute(ASTNode* node) {
     
     switch (node->type) {
         case AST_PROGRAM:
-            printf("\n🎬 Executing SocialStoryScript Program...\n");
-            printf("==========================================\n");
+            printf("\n╔════════════════════════════════════════════════╗\n");
+            printf("║   🎬 SocialStoryScript Program Execution     ║\n");
+            printf("╚════════════════════════════════════════════════╝\n\n");
+            fprintf(output_file, "\n🎬 Executing SocialStoryScript Program...\n");
+            fprintf(output_file, "==========================================\n");
             execute_statements(node->body);
-            printf("==========================================\n");
-            printf("✅ Program execution complete!\n");
+            fprintf(output_file, "==========================================\n");
+            fprintf(output_file, "✅ Program execution complete!\n");
+            printf("\n╔════════════════════════════════════════════════╗\n");
+            printf("║        ✅ Program Execution Complete!         ║\n");
+            printf("╚════════════════════════════════════════════════╝\n\n");
             break;
             
         case AST_ACCOUNT_CREATE: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account) {
-                printf("✨ Created account: %s\n", node->sval);
+                fprintf(output_file, "[Line %d] ✨ Created account: %s\n", node->line_number, node->sval);
             }
             break;
         }
@@ -2741,15 +2893,28 @@ void execute(ASTNode* node) {
         case AST_ACCOUNT_INIT: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account && node->left && node->left->sval) {
-                if (strcmp(node->left->sval, "likes") == 0) {
+                const char* metric = node->left->sval;
+                if (strcmp(metric, "likes") == 0) {
                     account->likes = node->ival;
-                    printf("📊 %s started with %d likes\n", node->sval, node->ival);
-                } else if (strcmp(node->left->sval, "followers") == 0) {
+                    fprintf(output_file, "[Line %d] 📊 %s started with %d likes\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "followers") == 0) {
                     account->followers = node->ival;
-                    printf("👥 %s started with %d followers\n", node->sval, node->ival);
-                } else if (strcmp(node->left->sval, "views") == 0) {
+                    fprintf(output_file, "[Line %d] 👥 %s started with %d followers\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "views") == 0) {
                     account->views = node->ival;
-                    printf("👁️  %s started with %d views\n", node->sval, node->ival);
+                    fprintf(output_file, "[Line %d] 👁️  %s started with %d views\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "comments") == 0) {
+                    account->comments = node->ival;
+                    fprintf(output_file, "[Line %d] 💬 %s started with %d comments\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "shares") == 0) {
+                    account->shares = node->ival;
+                    fprintf(output_file, "[Line %d] 🔄 %s started with %d shares\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "engagement_rate") == 0) {
+                    account->engagement_rate = node->fval;
+                    fprintf(output_file, "[Line %d] 📈 %s began at %.2f%% engagement rate\n", node->line_number, node->sval, node->fval);
+                } else if (strcmp(metric, "growth_rate") == 0) {
+                    account->growth_rate = node->fval;
+                    fprintf(output_file, "[Line %d] 📊 %s began at %.2f%% growth rate\n", node->line_number, node->sval, node->fval);
                 }
             }
             break;
@@ -2758,20 +2923,34 @@ void execute(ASTNode* node) {
         case AST_ACCOUNT_UPDATE: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account && node->left && node->left->sval) {
-                if (strcmp(node->left->sval, "likes") == 0) {
+                const char* metric = node->left->sval;
+                const char* action = (node->ival > 0) ? "gained" : "lost";
+                int abs_val = abs(node->ival);
+                
+                if (strcmp(metric, "likes") == 0) {
                     account->likes += node->ival;
-                    printf("❤️  %s %s %d likes (now: %d)\n", 
-                           node->sval, 
-                           node->ival > 0 ? "gained" : "lost", 
-                           abs(node->ival), 
-                           account->likes);
-                } else if (strcmp(node->left->sval, "followers") == 0) {
+                    printf("[Line %d] ❤️  %s %s %d likes (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->likes);
+                    fprintf(output_file, "[Line %d] ❤️  %s %s %d likes (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->likes);
+                } else if (strcmp(metric, "followers") == 0) {
                     account->followers += node->ival;
-                    printf("👥 %s %s %d followers (now: %d)\n", 
-                           node->sval, 
-                           node->ival > 0 ? "gained" : "lost", 
-                           abs(node->ival), 
-                           account->followers);
+                    printf("[Line %d] 👥 %s %s %d followers (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->followers);
+                    fprintf(output_file, "[Line %d] 👥 %s %s %d followers (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->followers);
+                } else if (strcmp(metric, "views") == 0) {
+                    account->views += node->ival;
+                    fprintf(output_file, "[Line %d] 👁️  %s %s %d views (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->views);
+                } else if (strcmp(metric, "comments") == 0) {
+                    account->comments += node->ival;
+                    fprintf(output_file, "[Line %d] 💬 %s %s %d comments (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->comments);
+                } else if (strcmp(metric, "shares") == 0) {
+                    account->shares += node->ival;
+                    fprintf(output_file, "[Line %d] 🔄 %s %s %d shares (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->shares);
                 }
             }
             break;
@@ -2779,40 +2958,64 @@ void execute(ASTNode* node) {
             
         case AST_STORY_POST:
             if (node->left && node->left->sval) {
-                printf("📱 %s posted story: \"%s\" (%d views)\n", 
-                       node->sval, node->left->sval, node->ival);
+                printf("[Line %d] 📱 %s posted story: \"%s\" (%d views)\n", 
+                       node->line_number, node->sval, node->left->sval, node->ival);
+                fprintf(output_file, "[Line %d] 📱 %s posted story: \"%s\" (%d views)\n", 
+                       node->line_number, node->sval, node->left->sval, node->ival);
             }
             break;
             
-        case AST_CONDITIONAL:
-            if (evaluate_expression(node->condition)) {
+        case AST_CONDITIONAL: {
+            int cond_result = evaluate_expression(node->condition);
+            if (cond_result) {
                 execute_statements(node->body);
             } else if (node->else_body) {
                 execute(node->else_body);
             }
             break;
+        }
             
         case AST_LOOP:
-            for (int i = 0; i < node->ival; i++) {
+            fprintf(output_file, "[Line %d] 🔄 Loop: days %d to %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i <= node->ival2; i += node->step) {
                 execute_statements(node->body);
             }
             break;
             
         case AST_LOOP_INCREMENT:
-            for (int i = 0; i < node->ival; i += (int)node->fval) {
+            fprintf(output_file, "[Line %d] 🔄 Loop incrementing: start %d, end %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i <= node->ival2; i += node->step) {
+                execute_statements(node->body);
+            }
+            break;
+            
+        case AST_LOOP_DECREMENT:
+            fprintf(output_file, "[Line %d] 🔄 Loop decrementing: start %d, end %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i >= node->ival2; i -= node->step) {
                 execute_statements(node->body);
             }
             break;
             
         case AST_ANNOUNCE:
-            printf("📢 Announcement: %s\n", node->sval);
+            printf("📢 %s\n", node->sval);
+            fprintf(output_file, "[Line %d] 📢 Announcement: %s\n", node->line_number, node->sval);
             break;
             
         case AST_DISPLAY: {
             SymbolEntry* sym = lookup_symbol(node->sval);
             if (sym && sym->type == SYM_ACCOUNT) {
-                printf("📊 Account %s: Likes=%d, Followers=%d, Views=%d\n",
-                       node->sval, sym->likes, sym->followers, sym->views);
+                fprintf(output_file, "[Line %d] 📊 Account %s: Likes=%d, Followers=%d, Views=%d, Comments=%d, Shares=%d\n",
+                       node->line_number, node->sval, sym->likes, sym->followers, sym->views, 
+                       sym->comments, sym->shares);
+                if (sym->engagement_rate > 0) {
+                    fprintf(output_file, "        Engagement Rate: %.2f%%\n", sym->engagement_rate);
+                }
+                if (sym->growth_rate > 0) {
+                    fprintf(output_file, "        Growth Rate: %.2f%%\n", sym->growth_rate);
+                }
             }
             break;
         }
@@ -2833,7 +3036,37 @@ void execute(ASTNode* node) {
                     current = current->next;
                 }
                 if (max) {
-                    printf("🏆 Most viral account: %s (score: %d)\n", max->name, max_score);
+                    printf("🏆 Most viral account: %s (viral score: %d)\n", max->name, max_score);
+                    fprintf(output_file, "[Line %d] 🏆 RESULT: Most viral account is '%s' with viral score: %d\n", 
+                           node->line_number, max->name, max_score);
+                }
+            } else if (strcmp(node->sval, "calculate_virality") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account) {
+                    int virality = account->likes + account->followers + account->views;
+                    account->is_viral = (virality > 1000);
+                    printf("📊 Virality score for %s: %d %s\n", 
+                           node->sval2, virality, account->is_viral ? "(VIRAL!)" : "");
+                    fprintf(output_file, "[Line %d] 📊 RESULT: Virality score for '%s' = %d %s\n", 
+                           node->line_number, node->sval2, virality, account->is_viral ? "(VIRAL!)" : "");
+                }
+            } else if (strcmp(node->sval, "calculate_engagement") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account && account->followers > 0) {
+                    float engagement = ((float)(account->likes + account->comments + account->shares) / account->followers) * 100.0;
+                    account->engagement_rate = engagement;
+                    printf("📈 Engagement rate for %s: %.2f%%\n", node->sval2, engagement);
+                    fprintf(output_file, "[Line %d] 📈 RESULT: Engagement rate for '%s' = %.2f%%\n", 
+                           node->line_number, node->sval2, engagement);
+                }
+            } else if (strcmp(node->sval, "analyze_growth") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account) {
+                    float growth = ((float)account->followers / 100.0) * 10.0;  /* Simulated growth */
+                    account->growth_rate = growth;
+                    printf("📊 Growth rate for %s: %.2f%%\n", node->sval2, growth);
+                    fprintf(output_file, "[Line %d] 📊 RESULT: Growth rate for '%s' = %.2f%%\n", 
+                           node->line_number, node->sval2, growth);
                 }
             }
             break;
@@ -2865,28 +3098,55 @@ int main(int argc, char** argv) {
         return 1;
     }
     
+    /* Create output file */
+    char output_filename[256];
+    snprintf(output_filename, sizeof(output_filename), "output_%s", argv[1]);
+    output_file = fopen(output_filename, "w");
+    if (!output_file) {
+        fprintf(stderr, "Error: Cannot create output file\n");
+        fclose(input);
+        return 1;
+    }
+    
     yyin = input;
     
-    printf("🚀 SocialStoryScript Compiler\n");
-    printf("==============================\n");
+    printf("╔════════════════════════════════════════════════╗\n");
+    printf("║       🚀 SocialStoryScript Compiler           ║\n");
+    printf("╚════════════════════════════════════════════════╝\n");
     printf("Parsing: %s\n", argv[1]);
-    printf("==============================\n\n");
+    printf("Output:  %s\n", output_filename);
+    printf("════════════════════════════════════════════════\n\n");
+    
+    fprintf(output_file, "🚀 SocialStoryScript Compiler\n");
+    fprintf(output_file, "==============================\n");
+    fprintf(output_file, "Parsing: %s\n", argv[1]);
+    fprintf(output_file, "==============================\n\n");
     
     int parse_result = yyparse();
     
     if (parse_result == 0 && semantic_errors == 0) {
-        printf("\n🌲 Abstract Syntax Tree:\n");
+        fprintf(output_file, "\n🌲 Abstract Syntax Tree:\n");
         print_ast(ast_root, 0);
         
         print_symbol_table();
         
         execute(ast_root);
         
+        fprintf(output_file, "\n✅ Compilation successful!\n");
+        fprintf(output_file, "   Lexical errors: %d\n", error_count);
+        fprintf(output_file, "   Syntax errors: 0\n");
+        fprintf(output_file, "   Semantic errors: %d\n", semantic_errors);
+        
         printf("\n✅ Compilation successful!\n");
         printf("   Lexical errors: %d\n", error_count);
         printf("   Syntax errors: 0\n");
         printf("   Semantic errors: %d\n", semantic_errors);
+        printf("\nDetailed output saved to: %s\n", output_filename);
     } else {
+        fprintf(output_file, "\n❌ Compilation failed with errors.\n");
+        fprintf(output_file, "   Lexical errors: %d\n", error_count);
+        fprintf(output_file, "   Semantic errors: %d\n", semantic_errors);
+        
         printf("\n❌ Compilation failed with errors.\n");
         printf("   Lexical errors: %d\n", error_count);
         printf("   Semantic errors: %d\n", semantic_errors);
@@ -2895,6 +3155,7 @@ int main(int argc, char** argv) {
     free_ast(ast_root);
     free_symbol_table();
     fclose(input);
+    fclose(output_file);
     
     return (parse_result == 0 && semantic_errors == 0) ? 0 : 1;
 }

@@ -1,134 +1,53 @@
-🚀 SocialStoryScript Compiler
-==============================
+╔════════════════════════════════════════════════╗
+║       🚀 SocialStoryScript Compiler           ║
+╚════════════════════════════════════════════════╝
 Parsing: test_parser.txt
-==============================
+Output:  output_test_parser.txt
+════════════════════════════════════════════════
 
 
-✅ Parse successful! AST built.
+╔════════════════════════════════════════════════╗
+║   🎬 SocialStoryScript Program Execution     ║
+╚════════════════════════════════════════════════╝
 
-🌲 Abstract Syntax Tree:
-├─ PROGRAM
-  Body:
-    ├─ ACCOUNT_CREATE (TechWorld)
-    ├─ ACCOUNT_CREATE (FashionBlogger)
-    ├─ ACCOUNT_CREATE (FoodieLife)
-    ├─ ACCOUNT_INIT (TechWorld)
-      ├─ METRIC (followers)
-    ├─ ACCOUNT_INIT (TechWorld)
-      ├─ METRIC (likes)
-    ├─ ACCOUNT_INIT (TechWorld)
-      ├─ METRIC (views)
-    ├─ ACCOUNT_INIT (FashionBlogger)
-      ├─ METRIC (followers)
-    ├─ ACCOUNT_INIT (FashionBlogger)
-      ├─ METRIC (likes)
-    ├─ ACCOUNT_INIT (FoodieLife)
-      ├─ METRIC (followers)
-    ├─ ACCOUNT_UPDATE (TechWorld)
-      ├─ METRIC (likes)
-    ├─ ACCOUNT_UPDATE (TechWorld)
-      ├─ METRIC (followers)
-    ├─ ACCOUNT_UPDATE (FashionBlogger)
-      ├─ METRIC (followers)
-    ├─ ACCOUNT_UPDATE (FoodieLife)
-      ├─ METRIC (likes)
-    ├─ STORY_POST (TechWorld)
-      ├─ LITERAL_STRING (AI Revolution)
-    ├─ STORY_POST (FashionBlogger)
-      ├─ LITERAL_STRING (Summer Trends 2026)
-    ├─ ANNOUNCE (Welcome to SocialStoryScript!)
-    ├─ ANNOUNCE (Testing the compiler...)
-    ├─ DISPLAY (TechWorld)
-    ├─ DISPLAY (FashionBlogger)
-    ├─ DISPLAY (FoodieLife)
-    ├─ CONDITIONAL
-      Condition:
-        ├─ COMPARISON
-          ├─ METRIC (likes)
-          ├─ LITERAL_INT [100]
-      Body:
-        ├─ ANNOUNCE (Great engagement!)
-        ├─ ACCOUNT_UPDATE (TechWorld)
-          ├─ METRIC (likes)
-    ├─ CONDITIONAL
-      Condition:
-        ├─ COMPARISON
-          ├─ METRIC (followers)
-          ├─ LITERAL_INT [500]
-      Body:
-        ├─ ANNOUNCE (Time to grow!)
-      Else:
-        ├─ ANNOUNCE (Solid follower base!)
-    ├─ LOOP
-      Body:
-        ├─ ACCOUNT_UPDATE (TechWorld)
-          ├─ METRIC (likes)
-        ├─ ANNOUNCE (Daily growth!)
-    ├─ LOOP_INCREMENT
-      Body:
-        ├─ ACCOUNT_UPDATE (FashionBlogger)
-          ├─ METRIC (followers)
-    ├─ LOOP_DECREMENT
-      Body:
-        ├─ ANNOUNCE (Countdown active!)
-    ├─ BUILTIN_CALL (calculate_virality)
-    ├─ BUILTIN_CALL (find_max_viral_account)
-    ├─ BUILTIN_CALL (analyze_growth)
-    ├─ ANNOUNCE (Final Statistics:)
-    ├─ DISPLAY (TechWorld)
-    ├─ DISPLAY (FashionBlogger)
-    ├─ DISPLAY (FoodieLife)
+[Line 19] ❤️  TechWorld gained 50 likes (now: 150)
+[Line 20] 👥 TechWorld gained 100 followers (now: 600)
+[Line 21] 👥 FashionBlogger lost 25 followers (now: 975)
+[Line 22] ❤️  FoodieLife gained 80 likes (now: 80)
+[Line 25] 📱 TechWorld posted story: "AI Revolution" (5000 views)
+[Line 26] 📱 FashionBlogger posted story: "Summer Trends 2026" (3500 views)
+📢 Welcome to SocialStoryScript!
+📢 Testing the compiler...
+📢 Time to grow!
+[Line 56] ❤️  TechWorld gained 10 likes (now: 160)
+📢 Daily growth!
+[Line 56] ❤️  TechWorld gained 10 likes (now: 170)
+📢 Daily growth!
+[Line 56] ❤️  TechWorld gained 10 likes (now: 180)
+📢 Daily growth!
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 980)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 985)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 990)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 995)
+[Line 62] 👥 FashionBlogger gained 5 followers (now: 1000)
+📢 Countdown active!
+📢 Countdown active!
+📢 Countdown active!
+📢 Countdown active!
+📊 Virality score for TechWorld: 1030 (VIRAL!)
+📈 Engagement rate for FashionBlogger: 30.00%
+📊 Growth rate for FoodieLife: 75.00%
+🏆 Most viral account: FashionBlogger (viral score: 1300)
+📢 Final Statistics:
 
-📋 Symbol Table:
-================
-FoodieLife           | Type: Account | Likes: 0, Followers: 0
-FashionBlogger       | Type: Account | Likes: 0, Followers: 0
-TechWorld            | Type: Account | Likes: 0, Followers: 0
-================
+╔════════════════════════════════════════════════╗
+║        ✅ Program Execution Complete!         ║
+╚════════════════════════════════════════════════╝
 
-🎬 Executing SocialStoryScript Program...
-==========================================
-✨ Created account: TechWorld
-✨ Created account: FashionBlogger
-✨ Created account: FoodieLife
-👥 TechWorld started with 500 followers
-📊 TechWorld started with 100 likes
-👁️  TechWorld started with 250 views
-👥 FashionBlogger started with 1000 followers
-📊 FashionBlogger started with 300 likes
-👥 FoodieLife started with 750 followers
-❤️  TechWorld gained 50 likes (now: 150)
-👥 TechWorld gained 100 followers (now: 600)
-👥 FashionBlogger lost 25 followers (now: 975)
-❤️  FoodieLife gained 80 likes (now: 80)
-📱 TechWorld posted story: "AI Revolution" (5000 views)
-📱 FashionBlogger posted story: "Summer Trends 2026" (3500 views)
-📢 Announcement: Welcome to SocialStoryScript!
-📢 Announcement: Testing the compiler...
-📊 Account TechWorld: Likes=150, Followers=600, Views=250
-📊 Account FashionBlogger: Likes=300, Followers=975, Views=0
-📊 Account FoodieLife: Likes=80, Followers=750, Views=0
-📢 Announcement: Time to grow!
-❤️  TechWorld gained 10 likes (now: 160)
-📢 Announcement: Daily growth!
-❤️  TechWorld gained 10 likes (now: 170)
-📢 Announcement: Daily growth!
-❤️  TechWorld gained 10 likes (now: 180)
-📢 Announcement: Daily growth!
-👥 FashionBlogger gained 5 followers (now: 980)
-👥 FashionBlogger gained 5 followers (now: 985)
-👥 FashionBlogger gained 5 followers (now: 990)
-👥 FashionBlogger gained 5 followers (now: 995)
-👥 FashionBlogger gained 5 followers (now: 1000)
-🏆 Most viral account: FashionBlogger (score: 1300)
-📢 Announcement: Final Statistics:
-📊 Account TechWorld: Likes=180, Followers=600, Views=250
-📊 Account FashionBlogger: Likes=300, Followers=1000, Views=0
-📊 Account FoodieLife: Likes=80, Followers=750, Views=0
-==========================================
-✅ Program execution complete!
 
 ✅ Compilation successful!
    Lexical errors: 0
    Syntax errors: 0
    Semantic errors: 0
+
+Detailed output saved to: output_test_parser.txt

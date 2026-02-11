@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 #include "socialstory_tokens.h"
 
 /* Forward declarations */
@@ -10,6 +11,10 @@ int yylex(void);
 extern int yylineno;
 extern FILE *yyin;
 extern int error_count;
+extern char* yytext;
+
+/* Output file for structured output */
+FILE* output_file = NULL;
 
 /* AST Node Types */
 typedef enum {
@@ -41,7 +46,8 @@ typedef enum {
     AST_LITERAL_STRING,
     AST_LITERAL_BOOL,
     AST_IDENTIFIER,
-    AST_METRIC
+    AST_METRIC,
+    AST_ACCOUNT_REF
 } ASTNodeType;
 
 /* AST Node Structure */
@@ -50,8 +56,11 @@ typedef struct ASTNode {
     
     /* Value holders */
     int ival;
+    int ival2;  /* For loop end value */
+    int step;   /* For loop step */
     float fval;
     char* sval;
+    char* sval2; /* For additional string (like account name in builtin) */
     
     /* Node connections */
     struct ASTNode* left;
@@ -60,6 +69,7 @@ typedef struct ASTNode {
     struct ASTNode* body;
     struct ASTNode* else_body;
     struct ASTNode* next;
+    struct ASTNode* param;  /* For function parameters */
     
     /* Additional info */
     int line_number;
@@ -105,6 +115,7 @@ void free_ast(ASTNode* node);
 SymbolEntry* lookup_symbol(const char* name);
 SymbolEntry* insert_symbol(const char* name, int sym_type);
 void print_symbol_table();
+void print_symbol_table_to_file(FILE* fp);
 void free_symbol_table();
 
 /* Semantic analysis */
@@ -114,6 +125,11 @@ void check_duplicate_account(const char* name, int line);
 /* Interpreter */
 void execute(ASTNode* node);
 void execute_statements(ASTNode* node);
+int evaluate_expression(ASTNode* node);
+
+/* Output functions */
+void output_to_terminal(const char* format, ...);
+void output_to_file(const char* format, ...);
 
 %}
 
@@ -134,7 +150,7 @@ void execute_statements(ASTNode* node);
 %token T_GAINED T_LOST T_ADDED T_REMOVED T_INCREASED_BY T_DECREASED_BY
 %token T_WAS_UPDATED_TO T_BECAME T_MULTIPLIED_BY T_DIVIDED_BY
 %token T_PLUS T_MINUS T_TIMES T_MULTIPLY T_DIVIDED_EVENLY_BY T_DIVIDE T_MODULO
-%token T_WITH T_AND_THEN
+%token T_WITH T_AND_THEN T_FOR
 %token T_THE_FEED T_CONTAINS T_AT_INDEX
 %token T_LIKES T_FOLLOWERS T_VIEWS T_COMMENTS T_SHARES T_POSTS T_STORIES
 %token T_ENGAGEMENT_RATE T_REACH T_GROWTH_RATE
@@ -173,6 +189,7 @@ void execute_statements(ASTNode* node);
 %type <node> comparison
 %type <node> metric literal
 %type <node> optional_else else_if_chain
+%type <node> account_ref
 
 /* Operator precedence */
 %left T_ALSO T_EITHER
@@ -180,23 +197,22 @@ void execute_statements(ASTNode* node);
 %left T_PLUS T_MINUS
 %left T_TIMES T_MULTIPLY T_DIVIDE T_DIVIDED_EVENLY_BY T_MODULO
 %right T_OPPOSITE
-
 %%
 
 program:
-    T_GO_LIVE statements T_END_LIVE T_DOT
+    T_GO_LIVE T_DOT statements T_END_LIVE T_DOT
     {
         ast_root = make_node(AST_PROGRAM);
-        ast_root->body = $2;
+        ast_root->body = $3;
         $$ = ast_root;
-        printf("\n✅ Parse successful! AST built.\n");
+        fprintf(output_file, "\n✅ Parse successful! AST built.\n");
     }
-    | T_GO_LIVE T_END_LIVE T_DOT
+    | T_GO_LIVE T_DOT T_END_LIVE T_DOT
     {
         ast_root = make_node(AST_PROGRAM);
         ast_root->body = NULL;
         $$ = ast_root;
-        printf("\n✅ Parse successful! Empty program.\n");
+        fprintf(output_file, "\n✅ Parse successful! Empty program.\n");
     }
     ;
 
@@ -230,9 +246,15 @@ statement:
     | function_call T_DOT { $$ = $1; }
     | builtin_call T_DOT { $$ = $1; }
     | io_statement { $$ = $1; }
+    | T_DOT
+    {
+        $$ = NULL;
+    }
     | error T_DOT
     {
-        yyerror("Invalid statement - skipping to next");
+        char msg[256];
+        snprintf(msg, sizeof(msg), "Invalid statement near '%s'", yytext);
+        yyerror(msg);
         yyerrok;
         $$ = NULL;
     }
@@ -363,36 +385,41 @@ else_if_chain:
     }
     ;
 
-/* Loops */
+/* Loops - FIXED with proper start, end, step */
 loop:
     T_EVERY_DAY_FOR T_NUMBER T_DAYS T_COMMA T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP);
-        $$->ival = $2;
+        $$->ival = 1;        /* start */
+        $$->ival2 = $2;      /* end */
+        $$->step = 1;        /* step */
         $$->body = $6;
         $$->line_number = yylineno;
     }
     | T_EVERY T_NUMBER T_DAYS T_INCREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP_INCREMENT);
-        $$->ival = $2;
-        $$->fval = (float)$5;
+        $$->ival = 1;        /* start at 1 */
+        $$->ival2 = $2;      /* end at this value */
+        $$->step = $5;       /* increment by this */
         $$->body = $7;
         $$->line_number = yylineno;
     }
     | T_EVERY T_NUMBER T_DAYS T_DECREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP_DECREMENT);
-        $$->ival = $2;
-        $$->fval = (float)$5;
+        $$->ival = $2;       /* start at this value */
+        $$->ival2 = 1;       /* end at 1 */
+        $$->step = $5;       /* decrement by this */
         $$->body = $7;
         $$->line_number = yylineno;
     }
     | T_FOR_EACH T_FOLLOWER_FROM T_NUMBER T_TO T_NUMBER T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP_RANGE);
-        $$->ival = $3;
-        $$->fval = (float)$5;
+        $$->ival = $3;       /* start */
+        $$->ival2 = $5;      /* end */
+        $$->step = 1;        /* step */
         $$->body = $7;
         $$->line_number = yylineno;
     }
@@ -414,6 +441,17 @@ loop_control:
     | T_SKIP_THIS_POST T_DOT
     {
         $$ = make_node(AST_CONTINUE);
+        $$->line_number = yylineno;
+    }
+    ;
+
+/* Account reference for builtin functions */
+account_ref:
+    T_FOR T_THE_ACCOUNT T_ID
+    {
+        check_account_exists($3, yylineno);
+        $$ = make_node(AST_ACCOUNT_REF);
+        $$->sval = $3;
         $$->line_number = yylineno;
     }
     ;
@@ -441,44 +479,62 @@ function_call:
     }
     ;
 
+/* Built-in functions - FIXED to require account parameters */
 builtin_call:
-    T_CALCULATE_VIRALITY
+    T_CALCULATE_VIRALITY account_ref
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("calculate_virality");
+        $$->sval2 = $2->sval;  /* account name */
         $$->line_number = yylineno;
+        free($2);
     }
-    | T_CALCULATE_ENGAGEMENT T_WITH T_NUMBER T_COMMA T_NUMBER
+    | T_CALCULATE_ENGAGEMENT account_ref
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("calculate_engagement");
-        $$->ival = $3;
-        $$->fval = (float)$5;
+        $$->sval2 = $2->sval;  /* account name */
         $$->line_number = yylineno;
+        free($2);
     }
-    | T_FIND_TOP_POST
+    | T_FIND_TOP_POST account_ref
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("find_top_post");
+        $$->sval2 = $2->sval;  /* account name */
         $$->line_number = yylineno;
+        free($2);
     }
     | T_FIND_MAX_VIRAL_ACCOUNT
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("find_max_viral_account");
+        $$->sval2 = NULL;  /* works on all accounts */
         $$->line_number = yylineno;
     }
-    | T_REVERSE_THE_CAPTION
+    | T_REVERSE_THE_CAPTION account_ref
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("reverse_caption");
+        $$->sval2 = $2->sval;  /* account name */
         $$->line_number = yylineno;
+        free($2);
     }
-    | T_ANALYZE_GROWTH
+    | T_ANALYZE_GROWTH account_ref
     {
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("analyze_growth");
+        $$->sval2 = $2->sval;  /* account name */
         $$->line_number = yylineno;
+        free($2);
+    }
+    | T_FIND_HIGHEST_REACH account_ref
+    {
+        $$ = make_node(AST_BUILTIN_CALL);
+        $$->sval = strdup("find_highest_reach");
+        $$->sval2 = $2->sval;  /* account name */
+        $$->line_number = yylineno;
+        free($2);
     }
     ;
 
@@ -597,10 +653,15 @@ comparison:
         $$->left = $1;
         $$->ival = 'V';
     }
-    | T_ID
+    | metric T_MORE_THAN T_NUMBER
     {
-        $$ = make_node(AST_IDENTIFIER);
-        $$->sval = $1;
+        $$ = make_binary_op(AST_COMPARISON, $1, make_node_with_int(AST_LITERAL_INT, $3));
+        $$->ival = '>';
+    }
+    | metric T_LESS_THAN T_NUMBER
+    {
+        $$ = make_binary_op(AST_COMPARISON, $1, make_node_with_int(AST_LITERAL_INT, $3));
+        $$->ival = '<';
     }
     ;
 
@@ -626,12 +687,12 @@ literal:
     | T_TRUE_STORY { $$ = make_node_with_int(AST_LITERAL_BOOL, 1); }
     | T_FALSE_ALARM { $$ = make_node_with_int(AST_LITERAL_BOOL, 0); }
     ;
-
 %%
 
-/* Error handler */
+/* Error handler with line numbers */
 void yyerror(const char *s) {
     fprintf(stderr, "❌ Syntax Error at line %d: %s\n", yylineno, s);
+    fprintf(output_file, "❌ Syntax Error at line %d: %s\n", yylineno, s);
     semantic_errors++;
 }
 
@@ -700,6 +761,7 @@ SymbolEntry* insert_symbol(const char* name, int sym_type) {
 void check_account_exists(const char* name, int line) {
     if (lookup_symbol(name) == NULL) {
         fprintf(stderr, "❌ Semantic Error (line %d): Account '%s' not declared\n", line, name);
+        fprintf(output_file, "❌ Semantic Error (line %d): Account '%s' not declared\n", line, name);
         semantic_errors++;
     }
 }
@@ -707,28 +769,36 @@ void check_account_exists(const char* name, int line) {
 void check_duplicate_account(const char* name, int line) {
     if (lookup_symbol(name) != NULL) {
         fprintf(stderr, "❌ Semantic Error (line %d): Account '%s' already exists\n", line, name);
+        fprintf(output_file, "❌ Semantic Error (line %d): Account '%s' already exists\n", line, name);
         semantic_errors++;
     }
 }
 
 void print_symbol_table() {
-    printf("\n📋 Symbol Table:\n");
-    printf("================\n");
+    fprintf(output_file, "\n📋 Symbol Table:\n");
+    fprintf(output_file, "================\n");
     SymbolEntry* current = symbol_table;
     while (current != NULL) {
-        printf("%-20s | Type: ", current->name);
+        fprintf(output_file, "%-20s | Type: ", current->name);
         switch (current->type) {
-            case SYM_ACCOUNT: printf("Account"); break;
-            case SYM_VARIABLE: printf("Variable"); break;
-            case SYM_FUNCTION: printf("Function"); break;
+            case SYM_ACCOUNT: fprintf(output_file, "Account"); break;
+            case SYM_VARIABLE: fprintf(output_file, "Variable"); break;
+            case SYM_FUNCTION: fprintf(output_file, "Function"); break;
         }
         if (current->type == SYM_ACCOUNT) {
-            printf(" | Likes: %d, Followers: %d", current->likes, current->followers);
+            fprintf(output_file, " | Likes: %d, Followers: %d, Views: %d, Comments: %d, Shares: %d",
+                    current->likes, current->followers, current->views, current->comments, current->shares);
+            if (current->engagement_rate > 0) {
+                fprintf(output_file, ", Engagement: %.2f%%", current->engagement_rate);
+            }
+            if (current->growth_rate > 0) {
+                fprintf(output_file, ", Growth: %.2f%%", current->growth_rate);
+            }
         }
-        printf("\n");
+        fprintf(output_file, "\n");
         current = current->next;
     }
-    printf("================\n");
+    fprintf(output_file, "================\n");
 }
 
 void free_symbol_table() {
@@ -771,6 +841,7 @@ const char* node_type_name(ASTNodeType type) {
         case AST_METRIC: return "METRIC";
         case AST_BREAK: return "BREAK";
         case AST_CONTINUE: return "CONTINUE";
+        case AST_ACCOUNT_REF: return "ACCOUNT_REF";
         default: return "UNKNOWN";
     }
 }
@@ -778,31 +849,35 @@ const char* node_type_name(ASTNodeType type) {
 void print_ast(ASTNode* node, int depth) {
     if (node == NULL) return;
     
-    for (int i = 0; i < depth; i++) printf("  ");
-    printf("├─ %s", node_type_name(node->type));
+    for (int i = 0; i < depth; i++) fprintf(output_file, "  ");
+    fprintf(output_file, "├─ %s", node_type_name(node->type));
     
-    if (node->sval) printf(" (%s)", node->sval);
-    if (node->type == AST_LITERAL_INT) printf(" [%d]", node->ival);
-    if (node->type == AST_LITERAL_FLOAT) printf(" [%.2f]", node->fval);
-    if (node->type == AST_BINARY_OP) printf(" ['%c']", (char)node->ival);
+    if (node->sval) fprintf(output_file, " (%s)", node->sval);
+    if (node->sval2) fprintf(output_file, " [Account: %s]", node->sval2);
+    if (node->type == AST_LITERAL_INT) fprintf(output_file, " [%d]", node->ival);
+    if (node->type == AST_LITERAL_FLOAT) fprintf(output_file, " [%.2f]", node->fval);
+    if (node->type == AST_BINARY_OP) fprintf(output_file, " ['%c']", (char)node->ival);
+    if (node->type == AST_LOOP || node->type == AST_LOOP_INCREMENT || node->type == AST_LOOP_DECREMENT) {
+        fprintf(output_file, " [start:%d, end:%d, step:%d]", node->ival, node->ival2, node->step);
+    }
     
-    printf("\n");
+    fprintf(output_file, "\n");
     
     if (node->condition) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Condition:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Condition:\n");
         print_ast(node->condition, depth + 2);
     }
     
     if (node->body) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Body:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Body:\n");
         print_ast(node->body, depth + 2);
     }
     
     if (node->else_body) {
-        for (int i = 0; i < depth + 1; i++) printf("  ");
-        printf("Else:\n");
+        for (int i = 0; i < depth + 1; i++) fprintf(output_file, "  ");
+        fprintf(output_file, "Else:\n");
         print_ast(node->else_body, depth + 2);
     }
     
@@ -820,7 +895,20 @@ void free_ast(ASTNode* node) {
     free_ast(node->else_body);
     free_ast(node->next);
     if (node->sval) free(node->sval);
+    if (node->sval2) free(node->sval2);
     free(node);
+}
+
+/* Helper function to get metric value from account */
+int get_metric_value(SymbolEntry* account, const char* metric_name) {
+    if (strcmp(metric_name, "likes") == 0) return account->likes;
+    if (strcmp(metric_name, "followers") == 0) return account->followers;
+    if (strcmp(metric_name, "views") == 0) return account->views;
+    if (strcmp(metric_name, "comments") == 0) return account->comments;
+    if (strcmp(metric_name, "shares") == 0) return account->shares;
+    if (strcmp(metric_name, "posts") == 0) return account->posts;
+    if (strcmp(metric_name, "stories") == 0) return account->stories;
+    return 0;
 }
 
 /* Interpreter */
@@ -832,6 +920,10 @@ int evaluate_expression(ASTNode* node) {
             return node->ival;
         case AST_LITERAL_BOOL:
             return node->ival;
+        case AST_METRIC: {
+            /* Metrics evaluate to their current value - need context */
+            return 0;  /* Will be handled in context */
+        }
         case AST_BINARY_OP: {
             int left = evaluate_expression(node->left);
             int right = evaluate_expression(node->right);
@@ -866,17 +958,23 @@ void execute(ASTNode* node) {
     
     switch (node->type) {
         case AST_PROGRAM:
-            printf("\n🎬 Executing SocialStoryScript Program...\n");
-            printf("==========================================\n");
+            printf("\n╔════════════════════════════════════════════════╗\n");
+            printf("║   🎬 SocialStoryScript Program Execution     ║\n");
+            printf("╚════════════════════════════════════════════════╝\n\n");
+            fprintf(output_file, "\n🎬 Executing SocialStoryScript Program...\n");
+            fprintf(output_file, "==========================================\n");
             execute_statements(node->body);
-            printf("==========================================\n");
-            printf("✅ Program execution complete!\n");
+            fprintf(output_file, "==========================================\n");
+            fprintf(output_file, "✅ Program execution complete!\n");
+            printf("\n╔════════════════════════════════════════════════╗\n");
+            printf("║        ✅ Program Execution Complete!         ║\n");
+            printf("╚════════════════════════════════════════════════╝\n\n");
             break;
             
         case AST_ACCOUNT_CREATE: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account) {
-                printf("✨ Created account: %s\n", node->sval);
+                fprintf(output_file, "[Line %d] ✨ Created account: %s\n", node->line_number, node->sval);
             }
             break;
         }
@@ -884,15 +982,28 @@ void execute(ASTNode* node) {
         case AST_ACCOUNT_INIT: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account && node->left && node->left->sval) {
-                if (strcmp(node->left->sval, "likes") == 0) {
+                const char* metric = node->left->sval;
+                if (strcmp(metric, "likes") == 0) {
                     account->likes = node->ival;
-                    printf("📊 %s started with %d likes\n", node->sval, node->ival);
-                } else if (strcmp(node->left->sval, "followers") == 0) {
+                    fprintf(output_file, "[Line %d] 📊 %s started with %d likes\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "followers") == 0) {
                     account->followers = node->ival;
-                    printf("👥 %s started with %d followers\n", node->sval, node->ival);
-                } else if (strcmp(node->left->sval, "views") == 0) {
+                    fprintf(output_file, "[Line %d] 👥 %s started with %d followers\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "views") == 0) {
                     account->views = node->ival;
-                    printf("👁️  %s started with %d views\n", node->sval, node->ival);
+                    fprintf(output_file, "[Line %d] 👁️  %s started with %d views\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "comments") == 0) {
+                    account->comments = node->ival;
+                    fprintf(output_file, "[Line %d] 💬 %s started with %d comments\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "shares") == 0) {
+                    account->shares = node->ival;
+                    fprintf(output_file, "[Line %d] 🔄 %s started with %d shares\n", node->line_number, node->sval, node->ival);
+                } else if (strcmp(metric, "engagement_rate") == 0) {
+                    account->engagement_rate = node->fval;
+                    fprintf(output_file, "[Line %d] 📈 %s began at %.2f%% engagement rate\n", node->line_number, node->sval, node->fval);
+                } else if (strcmp(metric, "growth_rate") == 0) {
+                    account->growth_rate = node->fval;
+                    fprintf(output_file, "[Line %d] 📊 %s began at %.2f%% growth rate\n", node->line_number, node->sval, node->fval);
                 }
             }
             break;
@@ -901,20 +1012,34 @@ void execute(ASTNode* node) {
         case AST_ACCOUNT_UPDATE: {
             SymbolEntry* account = lookup_symbol(node->sval);
             if (account && node->left && node->left->sval) {
-                if (strcmp(node->left->sval, "likes") == 0) {
+                const char* metric = node->left->sval;
+                const char* action = (node->ival > 0) ? "gained" : "lost";
+                int abs_val = abs(node->ival);
+                
+                if (strcmp(metric, "likes") == 0) {
                     account->likes += node->ival;
-                    printf("❤️  %s %s %d likes (now: %d)\n", 
-                           node->sval, 
-                           node->ival > 0 ? "gained" : "lost", 
-                           abs(node->ival), 
-                           account->likes);
-                } else if (strcmp(node->left->sval, "followers") == 0) {
+                    printf("[Line %d] ❤️  %s %s %d likes (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->likes);
+                    fprintf(output_file, "[Line %d] ❤️  %s %s %d likes (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->likes);
+                } else if (strcmp(metric, "followers") == 0) {
                     account->followers += node->ival;
-                    printf("👥 %s %s %d followers (now: %d)\n", 
-                           node->sval, 
-                           node->ival > 0 ? "gained" : "lost", 
-                           abs(node->ival), 
-                           account->followers);
+                    printf("[Line %d] 👥 %s %s %d followers (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->followers);
+                    fprintf(output_file, "[Line %d] 👥 %s %s %d followers (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->followers);
+                } else if (strcmp(metric, "views") == 0) {
+                    account->views += node->ival;
+                    fprintf(output_file, "[Line %d] 👁️  %s %s %d views (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->views);
+                } else if (strcmp(metric, "comments") == 0) {
+                    account->comments += node->ival;
+                    fprintf(output_file, "[Line %d] 💬 %s %s %d comments (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->comments);
+                } else if (strcmp(metric, "shares") == 0) {
+                    account->shares += node->ival;
+                    fprintf(output_file, "[Line %d] 🔄 %s %s %d shares (now: %d)\n", 
+                           node->line_number, node->sval, action, abs_val, account->shares);
                 }
             }
             break;
@@ -922,40 +1047,64 @@ void execute(ASTNode* node) {
             
         case AST_STORY_POST:
             if (node->left && node->left->sval) {
-                printf("📱 %s posted story: \"%s\" (%d views)\n", 
-                       node->sval, node->left->sval, node->ival);
+                printf("[Line %d] 📱 %s posted story: \"%s\" (%d views)\n", 
+                       node->line_number, node->sval, node->left->sval, node->ival);
+                fprintf(output_file, "[Line %d] 📱 %s posted story: \"%s\" (%d views)\n", 
+                       node->line_number, node->sval, node->left->sval, node->ival);
             }
             break;
             
-        case AST_CONDITIONAL:
-            if (evaluate_expression(node->condition)) {
+        case AST_CONDITIONAL: {
+            int cond_result = evaluate_expression(node->condition);
+            if (cond_result) {
                 execute_statements(node->body);
             } else if (node->else_body) {
                 execute(node->else_body);
             }
             break;
+        }
             
         case AST_LOOP:
-            for (int i = 0; i < node->ival; i++) {
+            fprintf(output_file, "[Line %d] 🔄 Loop: days %d to %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i <= node->ival2; i += node->step) {
                 execute_statements(node->body);
             }
             break;
             
         case AST_LOOP_INCREMENT:
-            for (int i = 0; i < node->ival; i += (int)node->fval) {
+            fprintf(output_file, "[Line %d] 🔄 Loop incrementing: start %d, end %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i <= node->ival2; i += node->step) {
+                execute_statements(node->body);
+            }
+            break;
+            
+        case AST_LOOP_DECREMENT:
+            fprintf(output_file, "[Line %d] 🔄 Loop decrementing: start %d, end %d, step %d\n", 
+                   node->line_number, node->ival, node->ival2, node->step);
+            for (int i = node->ival; i >= node->ival2; i -= node->step) {
                 execute_statements(node->body);
             }
             break;
             
         case AST_ANNOUNCE:
-            printf("📢 Announcement: %s\n", node->sval);
+            printf("📢 %s\n", node->sval);
+            fprintf(output_file, "[Line %d] 📢 Announcement: %s\n", node->line_number, node->sval);
             break;
             
         case AST_DISPLAY: {
             SymbolEntry* sym = lookup_symbol(node->sval);
             if (sym && sym->type == SYM_ACCOUNT) {
-                printf("📊 Account %s: Likes=%d, Followers=%d, Views=%d\n",
-                       node->sval, sym->likes, sym->followers, sym->views);
+                fprintf(output_file, "[Line %d] 📊 Account %s: Likes=%d, Followers=%d, Views=%d, Comments=%d, Shares=%d\n",
+                       node->line_number, node->sval, sym->likes, sym->followers, sym->views, 
+                       sym->comments, sym->shares);
+                if (sym->engagement_rate > 0) {
+                    fprintf(output_file, "        Engagement Rate: %.2f%%\n", sym->engagement_rate);
+                }
+                if (sym->growth_rate > 0) {
+                    fprintf(output_file, "        Growth Rate: %.2f%%\n", sym->growth_rate);
+                }
             }
             break;
         }
@@ -976,7 +1125,37 @@ void execute(ASTNode* node) {
                     current = current->next;
                 }
                 if (max) {
-                    printf("🏆 Most viral account: %s (score: %d)\n", max->name, max_score);
+                    printf("🏆 Most viral account: %s (viral score: %d)\n", max->name, max_score);
+                    fprintf(output_file, "[Line %d] 🏆 RESULT: Most viral account is '%s' with viral score: %d\n", 
+                           node->line_number, max->name, max_score);
+                }
+            } else if (strcmp(node->sval, "calculate_virality") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account) {
+                    int virality = account->likes + account->followers + account->views;
+                    account->is_viral = (virality > 1000);
+                    printf("📊 Virality score for %s: %d %s\n", 
+                           node->sval2, virality, account->is_viral ? "(VIRAL!)" : "");
+                    fprintf(output_file, "[Line %d] 📊 RESULT: Virality score for '%s' = %d %s\n", 
+                           node->line_number, node->sval2, virality, account->is_viral ? "(VIRAL!)" : "");
+                }
+            } else if (strcmp(node->sval, "calculate_engagement") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account && account->followers > 0) {
+                    float engagement = ((float)(account->likes + account->comments + account->shares) / account->followers) * 100.0;
+                    account->engagement_rate = engagement;
+                    printf("📈 Engagement rate for %s: %.2f%%\n", node->sval2, engagement);
+                    fprintf(output_file, "[Line %d] 📈 RESULT: Engagement rate for '%s' = %.2f%%\n", 
+                           node->line_number, node->sval2, engagement);
+                }
+            } else if (strcmp(node->sval, "analyze_growth") == 0 && node->sval2) {
+                SymbolEntry* account = lookup_symbol(node->sval2);
+                if (account) {
+                    float growth = ((float)account->followers / 100.0) * 10.0;  /* Simulated growth */
+                    account->growth_rate = growth;
+                    printf("📊 Growth rate for %s: %.2f%%\n", node->sval2, growth);
+                    fprintf(output_file, "[Line %d] 📊 RESULT: Growth rate for '%s' = %.2f%%\n", 
+                           node->line_number, node->sval2, growth);
                 }
             }
             break;
@@ -1008,28 +1187,55 @@ int main(int argc, char** argv) {
         return 1;
     }
     
+    /* Create output file */
+    char output_filename[256];
+    snprintf(output_filename, sizeof(output_filename), "output_%s", argv[1]);
+    output_file = fopen(output_filename, "w");
+    if (!output_file) {
+        fprintf(stderr, "Error: Cannot create output file\n");
+        fclose(input);
+        return 1;
+    }
+    
     yyin = input;
     
-    printf("🚀 SocialStoryScript Compiler\n");
-    printf("==============================\n");
+    printf("╔════════════════════════════════════════════════╗\n");
+    printf("║       🚀 SocialStoryScript Compiler           ║\n");
+    printf("╚════════════════════════════════════════════════╝\n");
     printf("Parsing: %s\n", argv[1]);
-    printf("==============================\n\n");
+    printf("Output:  %s\n", output_filename);
+    printf("════════════════════════════════════════════════\n\n");
+    
+    fprintf(output_file, "🚀 SocialStoryScript Compiler\n");
+    fprintf(output_file, "==============================\n");
+    fprintf(output_file, "Parsing: %s\n", argv[1]);
+    fprintf(output_file, "==============================\n\n");
     
     int parse_result = yyparse();
     
     if (parse_result == 0 && semantic_errors == 0) {
-        printf("\n🌲 Abstract Syntax Tree:\n");
+        fprintf(output_file, "\n🌲 Abstract Syntax Tree:\n");
         print_ast(ast_root, 0);
         
         print_symbol_table();
         
         execute(ast_root);
         
+        fprintf(output_file, "\n✅ Compilation successful!\n");
+        fprintf(output_file, "   Lexical errors: %d\n", error_count);
+        fprintf(output_file, "   Syntax errors: 0\n");
+        fprintf(output_file, "   Semantic errors: %d\n", semantic_errors);
+        
         printf("\n✅ Compilation successful!\n");
         printf("   Lexical errors: %d\n", error_count);
         printf("   Syntax errors: 0\n");
         printf("   Semantic errors: %d\n", semantic_errors);
+        printf("\nDetailed output saved to: %s\n", output_filename);
     } else {
+        fprintf(output_file, "\n❌ Compilation failed with errors.\n");
+        fprintf(output_file, "   Lexical errors: %d\n", error_count);
+        fprintf(output_file, "   Semantic errors: %d\n", semantic_errors);
+        
         printf("\n❌ Compilation failed with errors.\n");
         printf("   Lexical errors: %d\n", error_count);
         printf("   Semantic errors: %d\n", semantic_errors);
@@ -1038,6 +1244,7 @@ int main(int argc, char** argv) {
     free_ast(ast_root);
     free_symbol_table();
     fclose(input);
+    fclose(output_file);
     
     return (parse_result == 0 && semantic_errors == 0) ? 0 : 1;
 }
