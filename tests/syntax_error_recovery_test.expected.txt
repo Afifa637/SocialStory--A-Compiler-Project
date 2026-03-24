@@ -1,0 +1,17 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/syntax_error_recovery_test.txt
+==========================================
+
+
+❌ SYNTAX ERROR at line 8: near '.' — syntax error
+⚠️ Syntax error at line 8: Recovered
+
+❌ SYNTAX ERROR at line 12: near 'invalid' — syntax error
+⚠️ Syntax error at line 13: Recovered
+
+✅ Parse successful! AST built.
+
+❌ COMPILATION FAILED
+   Lexical errors  : 1
+   Semantic errors : 2

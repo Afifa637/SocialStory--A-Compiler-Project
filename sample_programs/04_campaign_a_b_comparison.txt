@@ -1,0 +1,38 @@
+Go live.
+Announce "campaign A/B comparison".
+
+The account CampaignA was created.
+The account CampaignA started with 1800 followers.
+The account CampaignA started with 460 likes.
+The account CampaignA started with 9200 views.
+
+The account CampaignB was created.
+The account CampaignB started with 1700 followers.
+The account CampaignB started with 520 likes.
+The account CampaignB started with 8900 views.
+
+When CampaignA likes more than CampaignB likes
+{
+    Announce "winner: campaign A by likes".
+}
+Otherwise if CampaignB likes more than CampaignA likes
+{
+    Announce "winner: campaign B by likes".
+}
+Otherwise
+{
+    Announce "result: tie on likes".
+}
+
+When CampaignA views more than CampaignB views
+{
+    Announce "reach lead: campaign A".
+}
+Otherwise
+{
+    Announce "reach lead: campaign B".
+}
+
+Display CampaignA.
+Display CampaignB.
+End live.

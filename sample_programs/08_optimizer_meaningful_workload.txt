@@ -1,0 +1,25 @@
+Go live.
+Announce "optimizer meaningful workload".
+
+The account OptBrand was created.
+The account OptBrand started with 0 likes.
+The account OptBrand started with 0 followers.
+The account OptBrand started with 0 comments.
+
+The account OptBrand now has 500 plus 0 likes.
+The account OptBrand now has 200 times 1 followers.
+The account OptBrand now has 10 plus 20 comments.
+The account OptBrand now has 40 plus 60 likes.
+The account OptBrand now has 300 minus 0 followers.
+The account OptBrand now has 12 times 2 comments.
+
+The feed contains 3 posts.
+The feed at index 0 now has 100 likes.
+The feed at index 1 now has 150 likes.
+The feed at index 2 now has 200 likes.
+
+The account OptBrand now has the feed at index 0 likes plus the feed at index 1 likes likes.
+The account OptBrand now has the feed contains posts followers.
+
+Display OptBrand.
+End live.

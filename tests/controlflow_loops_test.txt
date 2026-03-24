@@ -1,0 +1,69 @@
+Go live.
+Announce "controlflow loops".
+
+The account Flow was created.
+The account Flow started with 0 likes.
+The account Flow started with 10 followers.
+The account Flow started with 0 comments.
+
+// --- LOOP TYPE 1: Every day for N days (count-controlled) ---
+Every day for 3 days,
+{
+    The account Flow gained 2 likes.
+    When Flow likes more than 2
+    {
+        Skip this post.
+    }
+    The account Flow gained 100 likes.
+}
+
+// --- LOOP TYPE 2: incrementing by step ---
+Every 4 days incrementing by 2
+{
+    The account Flow gained 1 followers.
+}
+
+// --- LOOP TYPE 3: decrementing by step ---
+Every 4 days decrementing by 2
+{
+    The account Flow gained 1 comments.
+}
+
+// --- LOOP TYPE 4: range (for each follower from X to Y) ---
+For each follower from 1 to 3
+{
+    The account Flow gained 1 shares.
+}
+
+// --- LOOP TYPE 5: trending loop until condition (break inside) ---
+trending loop until Flow likes more than 20
+{
+    The account Flow gained 5 likes.
+    When Flow likes more than 15 also Flow followers less than 5 either Flow comments more than 0
+    {
+        Stop the story.
+    }
+}
+
+// --- CONDITIONALS: When / Otherwise if / Otherwise + special comparisons ---
+When Flow likes more than 20
+{
+    Announce "if branch".
+}
+Otherwise if Flow likes exceeded 10
+{
+    Announce "elseif branch".
+}
+Otherwise
+{
+    Announce "else branch".
+}
+
+// --- NOT (opposite) operator ---
+When opposite Flow followers more than 9999
+{
+    Announce "opposite branch taken".
+}
+
+Display Flow likes.
+End live.

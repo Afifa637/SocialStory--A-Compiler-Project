@@ -1,0 +1,39 @@
+Go live.
+Announce "input io".
+
+Ask for input_likes.
+Ask for input_followers.
+Ask for posts_per_week.
+
+The account InputUser was created.
+The account inputuser was created.
+The account InputUser started with 0 likes.
+The account InputUser started with 0 followers.
+The account InputUser started with 0 comments.
+The account InputUser started with 0 posts.
+The account inputuser started with 1 likes.
+The account InputUser gained (input_likes) likes.
+The account InputUser gained (input_followers) followers.
+The account InputUser gained (input_likes plus posts_per_week) comments.
+The account InputUser gained (posts_per_week) posts.
+
+When InputUser likes more than 10 also InputUser followers more than 50
+{
+    Announce "strong start".
+}
+Otherwise if InputUser likes more than 5
+{
+    Announce "moderate start".
+}
+Otherwise
+{
+    Announce "needs growth".
+}
+
+Display InputUser likes.
+Display inputuser likes.
+Display InputUser comments.
+Display InputUser posts.
+Display InputUser.
+Display inputuser.
+End live.

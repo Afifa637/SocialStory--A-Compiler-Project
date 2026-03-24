@@ -1,0 +1,297 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/functions_builtins_test.txt
+==========================================
+
+
+✅ Parse successful! AST built.
+
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ANNOUNCE (functions builtins)
+  ├─ ANNOUNCE (functions builtins)
+  ├─ ACCOUNT_CREATE (Built)
+  ├─ ACCOUNT_INIT (Built)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (Built)
+    ├─ METRIC (followers)
+  ├─ ACCOUNT_INIT (Built)
+    ├─ METRIC (comments)
+  ├─ ACCOUNT_INIT (Built)
+    ├─ METRIC (shares)
+  ├─ FUNCTION_DEF (Ping)
+    Body:
+      ├─ ANNOUNCE (PING)
+  ├─ FUNCTION_DEF (AddFive)
+    Body:
+      ├─ RETURN
+        ├─ BINARY_OP
+          ├─ IDENTIFIER (x)
+          ├─ LITERAL_INT [5]
+    ├─ IDENTIFIER (x)
+  ├─ FUNCTION_DEF (AddTwo)
+    Body:
+      ├─ RETURN
+        ├─ BINARY_OP
+          ├─ IDENTIFIER (a)
+          ├─ IDENTIFIER (b)
+    ├─ IDENTIFIER (a)
+  ├─ FUNCTION_CALL (Ping)
+  ├─ FUNCTION_CALL (AddFive)
+    ├─ LITERAL_INT [7]
+  ├─ FUNCTION_CALL (AddTwo)
+    ├─ LITERAL_INT [3]
+  ├─ FUNCTION_CALL (AddFive)
+    ├─ LITERAL_INT [1]
+  ├─ BUILTIN_CALL (calculate_virality) [Built]
+  ├─ BUILTIN_CALL (calculate_engagement) [Built]
+  ├─ BUILTIN_CALL (analyze_growth) [Built]
+  ├─ BUILTIN_CALL (check_if_trending) [Built]
+  ├─ BUILTIN_CALL (count_total_engagement)
+  ├─ BUILTIN_CALL (find_top_post)
+  ├─ BUILTIN_CALL (find_max_viral_account)
+  ├─ BUILTIN_CALL (reverse_growth) [Built]
+  ├─ FEED_DECLARE
+    ├─ METRIC (posts)
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [0]
+    ├─ LITERAL_INT [100]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [1]
+    ├─ LITERAL_INT [250]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [2]
+    ├─ LITERAL_INT [75]
+  ├─ BUILTIN_CALL (find_highest_reach)
+  ├─ BUILTIN_CALL (find_total_reach)
+  ├─ STRING_OP (detect_spam) [buy followers now click here]
+  ├─ BUILTIN_CALL (clamp_engagement)
+  ├─ STRING_OP (reverse) [Hello World]
+  ├─ DISPLAY (Built)
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 62
+   Maximum depth: 5
+   Average branching factor: 12.40
+=====================================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "functions builtins"
+   2: create_account Built
+   3: Built.likes = 40
+   4: Built.followers = 100
+   5: Built.comments = 10
+   6: Built.shares = 5
+   7: t0 = call Ping
+   8: t1 = 7
+   9: param t1
+  10: t2 = call AddFive
+  11: t3 = 3
+  12: param t3
+  13: t4 = 4
+  14: param t4
+  15: t5 = call AddTwo
+  16: t6 = 1
+  17: param t6
+  18: t7 = 2
+  19: param t7
+  20: t8 = call AddFive
+  21: calculate_virality Built
+  22: calculate_engagement Built
+  23: analyze_growth Built
+  24: check_if_trending Built
+  25: count_total_engagement 
+  26: find_top_post 
+  27: find_max_viral_account 
+  28: reverse_growth Built
+  29: feed_decl size=3 kind=posts
+  30: t9 = 0
+  31: t10 = 100
+  32: feed[t9].likes = t10
+  33: t11 = 1
+  34: t12 = 250
+  35: feed[t11].likes = t12
+  36: t13 = 2
+  37: t14 = 75
+  38: feed[t13].likes = t14
+  39: find_highest_reach 
+  40: find_total_reach 
+  41: detect_spam buy followers now click here
+  42: clamp_engagement 
+  43: reverse Hello World
+  44: display Built
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 44
+   Temporary variables: 15
+   Labels created: 0
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 8
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 0
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 0
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 0
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 0
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 11
+Temporary variables used: 0/15
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 44
+  Instructions after:  33
+  Instructions removed: 11
+  Reduction: 25.0%
+  Total optimizations applied: 19
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "functions builtins"
+   2: create_account Built
+   3: Built.likes = 40
+   4: Built.followers = 100
+   5: Built.comments = 10
+   6: Built.shares = 5
+   7: t0 = call Ping
+   8: param 7
+   9: t2 = call AddFive
+  10: param 3
+  11: param 4
+  12: t5 = call AddTwo
+  13: param 1
+  14: param 2
+  15: t8 = call AddFive
+  16: calculate_virality Built
+  17: calculate_engagement Built
+  18: analyze_growth Built
+  19: check_if_trending Built
+  20: count_total_engagement 
+  21: find_top_post 
+  22: find_max_viral_account 
+  23: reverse_growth Built
+  24: feed_decl size=3 kind=posts
+  25: feed[t9].likes = 100
+  26: feed[t11].likes = 250
+  27: feed[t13].likes = 75
+  28: find_highest_reach 
+  29: find_total_reach 
+  30: detect_spam buy followers now click here
+  31: clamp_engagement 
+  32: reverse Hello World
+  33: display Built
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 33
+   Temporary variables: 15
+   Labels created: 0
+========================================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 2] 📢 Announcement: functions builtins
+[Line 4] ✨ Created account: Built
+[Line 5] 📊 Built started with 40 likes
+[Line 6] 👥 Built started with 100 followers
+[Line 7] 📊 Built started with 10 comments
+[Line 8] 📊 Built started with 5 shares
+[Line 16] 📖 Defined function: 'Ping'
+[Line 23] 📖 Defined function: 'AddFive' (params: 1)
+[Line 30] 📖 Defined function: 'AddTwo' (params: 2)
+[Line 33] 📞 Calling function: 'Ping'
+[Line 13] 📢 Announcement: PING
+[Line 14] ↩️  Return value: 1
+   Returned: 1
+[Line 34] 📞 Calling function: 'AddFive'
+   Bound param 'x' = 7
+[Line 21] ↩️  Return value: 12
+   Returned: 12
+[Line 35] 📞 Calling function: 'AddTwo'
+   Bound param 'a' = 3
+   Bound param 'b' = 4
+[Line 28] ↩️  Return value: 7
+   Returned: 7
+[Line 36] 📞 Calling function: 'AddFive'
+[Line 36] ❌ RUNTIME ERROR: Function 'AddFive' expects 1 argument(s), got 2
+[Line 63] 📊 RESULT: Virality score for 'Built' = 140
+[Line 63] 📈 RESULT: Engagement rate for 'Built' = 40.00%
+[Line 63] 📊 RESULT: Growth rate for 'Built' = 50.00%
+[Line 42] 📈 RESULT: 'Built' is TRENDING! 🔥
+[Line 43] 💬 RESULT: Total engagement across all accounts = 55
+[Line 44] 🏆 RESULT: Top performing post is from 'Built' with 0 views
+[Line 63] 🏆 RESULT: Most viral account is 'Built' with viral score: 140
+[Line 46] 📉 Reversed growth for 'Built': now -50.00%
+[Line 49] 🧱 Feed declared: 3 posts
+[Line 50] 📝 feed[0].likes = 100
+[Line 51] 📝 feed[1].likes = 250
+[Line 52] 📝 feed[2].likes = 75
+[Line 53] 📡 RESULT: Highest reach = 0.00 (account: Built)
+[Line 54] 📡 RESULT: Total reach in feed = 0.00
+[Line 57] 🔍 Spam detection for "buy followers now click here": ⚠️ SPAM DETECTED!
+[Line 58] 🔧 Clamped Built engagement: 40.00 → 40.00
+[Line 59] 🔄 Reversed caption: "dlroW olleH"
+[Line 61] 📊 Account Built: Likes=40, Followers=100, Views=0, Comments=10, Shares=5
+        Engagement Rate: 40.00%
+==========================================
+❌ Program execution completed with 1 runtime/semantic error(s).
+
+📋 Symbol Table:
+================
+b                    | Type: Variable | Value: 0 (int), 0.00 (float)
+a                    | Type: Variable | Value: 0 (int), 0.00 (float)
+x                    | Type: Variable | Value: 0 (int), 0.00 (float)
+AddTwo               | Type: Function
+AddFive              | Type: Function
+Ping                 | Type: Function
+Built                | Type: Account | Likes: 40, Followers: 100, Views: 0, Comments: 10, Shares: 5
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 7
+   Accounts: 1
+   Functions: 3
+   Variables: 3
+============================
+
+❌ Execution completed with runtime/semantic errors
+   Lexical errors  : 0
+   Syntax errors   : 0
+   Semantic errors : 1
+   TAC temporaries : 15
+   TAC labels      : 0

@@ -1,0 +1,203 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/semantic_runtime_safety_test.txt
+==========================================
+
+⚠️  Warning line 4: Account 'Safety' already exists
+❌ Error line 6: Undeclared symbol 'Ghost'
+❌ Error line 7: Undeclared symbol 'safety'
+
+✅ Parse successful! AST built.
+
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ACCOUNT_CREATE (Safety)
+  ├─ ACCOUNT_CREATE (Safety)
+  ├─ ACCOUNT_CREATE (Safety)
+  ├─ ACCOUNT_INIT (Ghost)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (safety)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (Safety)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (Safety)
+    ├─ METRIC (likes)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [10]
+      ├─ LITERAL_INT [0]
+  ├─ ACCOUNT_INIT (Safety)
+    ├─ METRIC (comments)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [10]
+      ├─ LITERAL_INT [0]
+  ├─ FEED_DECLARE
+    ├─ METRIC (posts)
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_FLOAT [1.50]
+    ├─ LITERAL_INT [77]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [5]
+    ├─ LITERAL_INT [99]
+  ├─ FUNCTION_DEF (addone)
+    Body:
+      ├─ RETURN
+        ├─ BINARY_OP
+          ├─ IDENTIFIER (x)
+          ├─ LITERAL_INT [1]
+    ├─ IDENTIFIER (x)
+  ├─ FUNCTION_CALL (addone)
+    ├─ LITERAL_INT [1]
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 36
+   Maximum depth: 5
+   Average branching factor: 7.20
+=====================================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: create_account Safety
+   2: create_account Safety
+   3: Ghost.likes = 10
+   4: safety.likes = 1
+   5: Safety.likes = 0
+   6: t0 = 10
+   7: t1 = 0
+   8: t2 = t0 / t1
+   9: Safety.likes = t2
+  10: t3 = 10
+  11: t4 = 0
+  12: t5 = t3 % t4
+  13: Safety.comments = t5
+  14: feed_decl size=2 kind=posts
+  15: t6 = 1.50
+  16: t7 = 77
+  17: feed[t6].likes = t7
+  18: t8 = 5
+  19: t9 = 99
+  20: feed[t8].likes = t9
+  21: t10 = 1
+  22: param t10
+  23: t11 = 2
+  24: param t11
+  25: t12 = call addone
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 25
+   Temporary variables: 13
+   Labels created: 0
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 8
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 2
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 0
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 0
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 2
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 12
+Temporary variables used: 0/13
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 25
+  Instructions after:  13
+  Instructions removed: 12
+  Reduction: 48.0%
+  Total optimizations applied: 24
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: create_account Safety
+   2: create_account Safety
+   3: Ghost.likes = 10
+   4: safety.likes = 1
+   5: Safety.likes = 0
+   6: Safety.likes = 0
+   7: Safety.comments = 0
+   8: feed_decl size=2 kind=posts
+   9: feed[t6].likes = 77
+  10: feed[t8].likes = 99
+  11: param 1
+  12: param 2
+  13: t12 = call addone
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 13
+   Temporary variables: 13
+   Labels created: 0
+========================================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 3] ✨ Created account: Safety
+[Line 4] ✨ Created account: Safety
+❌ Type Error at line 9: Float→Int conversion not allowed for 'likes' (attempted 2.50)
+❌ Runtime Error line 11: Division by zero
+❌ Runtime Error line 11: Division by zero
+[Line 11] 📊 Safety started with 0 likes
+❌ Runtime Error line 13: Modulo by zero
+[Line 13] 📊 Safety started with 0 comments
+[Line 15] 🧱 Feed declared: 2 posts
+❌ Runtime Error line 17: Feed index must be integer
+❌ Runtime Error line 18: Feed index 5 out of bounds [0, 2)
+[Line 24] 📖 Defined function: 'addone' (params: 1)
+[Line 25] 📞 Calling function: 'addone'
+[Line 25] ❌ RUNTIME ERROR: Function 'addone' expects 1 argument(s), got 2
+==========================================
+❌ Program execution completed with 8 runtime/semantic error(s).
+
+📋 Symbol Table:
+================
+addone               | Type: Function
+Safety               | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 2
+   Accounts: 1
+   Functions: 1
+   Variables: 0
+============================
+
+❌ Execution completed with runtime/semantic errors
+   Lexical errors  : 0
+   Syntax errors   : 0
+   Semantic errors : 8
+   TAC temporaries : 13
+   TAC labels      : 0

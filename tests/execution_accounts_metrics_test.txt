@@ -1,0 +1,32 @@
+Go live.
+Announce "execution accounts metrics".
+
+// --- primary account: full metric lifecycle ---
+The account Exec was created.
+The account Exec started with 100 likes.
+The account Exec started with 250 followers.
+The account Exec now has 10 plus 15 comments.
+The account Exec gained 5 likes.
+The account Exec lost 3 followers.
+The account Exec increased by 20 views.
+The account Exec decreased by 2 comments.
+The account Exec posted about "Execution Story" that had 500 views.
+The account Exec now has 2 times 50 likes.
+
+// --- second account: float metric + status flags ---
+The account Beta was created.
+The account Beta started with 200 followers.
+The account Beta began at 3.5 engagement rate.
+The account Beta is viral.
+The account Beta is trending.
+
+// --- update forms ---
+The account Beta was updated to 500 followers.
+The account Beta became 400 likes.
+
+// --- display ---
+Display Exec likes.
+Display Exec.
+Display Beta followers.
+Display Beta.
+End live.

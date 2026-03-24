@@ -1,0 +1,19 @@
+Go live.
+The account A was created.
+The account B was created.
+// malformed: "gained" missing numeric value before metric keyword
+When A likes more than 0
+{
+    Announce "inside block".
+    The account A gained likes.
+    Announce "after malformed statement".
+}
+// malformed: $ is an invalid character (tests lexical fallthrough into parse recovery)
+$invalid
+Announce "continued after dollar error".
+// malformed: missing value in expression (bare keyword used as operand)
+When B followers more than 0
+{
+    Announce "B branch".
+}
+End live.

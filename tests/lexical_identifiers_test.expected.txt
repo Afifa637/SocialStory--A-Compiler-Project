@@ -1,0 +1,14 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/lexical_identifiers_test.txt
+==========================================
+
+
+❌ SYNTAX ERROR at line 23: near 'dfsdfs' — syntax error
+⚠️ Syntax error at line 24: Recovered
+
+❌ SYNTAX ERROR at line 25: near '' — syntax error
+
+❌ COMPILATION FAILED
+   Lexical errors  : 1
+   Semantic errors : 1

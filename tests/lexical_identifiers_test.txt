@@ -1,0 +1,24 @@
+Go live.
+// single-line comment (should be silently ignored)
+/* multi-line
+   comment also silently ignored */
+The account TechInfluencer was created.
+The account _underscore was created.
+The account 124bro was created.
+The account 99problems was created.
+The account 2fast2furious was created.
+The account 7daysPlan was created.
+// Case-sensitive identifiers: both should exist independently
+The account Flow was created.
+The account flow was created.
+The account TechInfluencer now has 0xFF likes.
+The account TechInfluencer started with 010 posts.
+The account TechInfluencer began at 1.5e2 engagement rate.
+The account Flow gained 3 likes.
+The account flow gained 9 likes.
+Display Flow likes.
+Display flow likes.
+Announce "identifier coverage".
+Announce "escape sequences: tab\there".
+@dfsdfs
+End live.

@@ -1,0 +1,251 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/execution_accounts_metrics_test.txt
+==========================================
+
+
+✅ Parse successful! AST built.
+
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ANNOUNCE (execution accounts metrics)
+  ├─ ANNOUNCE (execution accounts metrics)
+  ├─ ACCOUNT_CREATE (Exec)
+  ├─ ACCOUNT_INIT (Exec)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (Exec)
+    ├─ METRIC (followers)
+  ├─ ACCOUNT_INIT (Exec)
+    ├─ METRIC (comments)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [10]
+      ├─ LITERAL_INT [15]
+  ├─ ACCOUNT_UPDATE (Exec)
+    ├─ METRIC (likes)
+    ├─ LITERAL_INT [5]
+  ├─ ACCOUNT_UPDATE (Exec)
+    ├─ METRIC (followers)
+    ├─ LITERAL_INT [3]
+  ├─ ACCOUNT_UPDATE (Exec)
+    ├─ METRIC (views)
+    ├─ LITERAL_INT [20]
+  ├─ ACCOUNT_UPDATE (Exec)
+    ├─ METRIC (comments)
+    ├─ LITERAL_INT [2]
+  ├─ STORY_POST (Exec)
+    ├─ LITERAL_STRING (Execution Story)
+  ├─ ACCOUNT_INIT (Exec)
+    ├─ METRIC (likes)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [2]
+      ├─ LITERAL_INT [50]
+  ├─ ACCOUNT_CREATE (Beta)
+  ├─ ACCOUNT_INIT (Beta)
+    ├─ METRIC (followers)
+  ├─ ACCOUNT_INIT (Beta)
+    ├─ METRIC (engagement rate)
+  ├─ ACCOUNT_UPDATE (Beta)
+    ├─ METRIC (viral)
+  ├─ ACCOUNT_UPDATE (Beta)
+    ├─ METRIC (trending)
+  ├─ ACCOUNT_INIT (Beta)
+    ├─ METRIC (followers)
+  ├─ ACCOUNT_INIT (Beta)
+    ├─ METRIC (likes)
+  ├─ DISPLAY (Exec) [likes]
+  ├─ DISPLAY (Exec)
+  ├─ DISPLAY (Beta) [followers]
+  ├─ DISPLAY (Beta)
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 48
+   Maximum depth: 4
+   Average branching factor: 12.00
+=====================================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "execution accounts metrics"
+   2: create_account Exec
+   3: Exec.likes = 100
+   4: Exec.followers = 250
+   5: t0 = 10
+   6: t1 = 15
+   7: t2 = t0 + t1
+   8: Exec.comments = t2
+   9: t3 = Exec.likes
+  10: t4 = 5
+  11: t5 = t3 + t4
+  12: Exec.likes = t5
+  13: t6 = Exec.followers
+  14: t7 = 3
+  15: t8 = t6 - t7
+  16: Exec.followers = t8
+  17: t9 = Exec.views
+  18: t10 = 20
+  19: t11 = t9 + t10
+  20: Exec.views = t11
+  21: t12 = Exec.comments
+  22: t13 = 2
+  23: t14 = t12 - t13
+  24: Exec.comments = t14
+  25: t15 = 2
+  26: t16 = 50
+  27: t17 = t15 * t16
+  28: Exec.likes = t17
+  29: create_account Beta
+  30: Beta.followers = 200
+  31: Beta.engagement rate = 3.50
+  32: t18 = Beta.viral
+  33: t19 = t18 + 0
+  34: Beta.viral = t19
+  35: t20 = Beta.trending
+  36: t21 = t20 + 0
+  37: Beta.trending = t21
+  38: Beta.followers = 500
+  39: Beta.likes = 400
+  40: display Exec
+  41: display Exec
+  42: display Beta
+  43: display Beta
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 43
+   Temporary variables: 22
+   Labels created: 0
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 8
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 2
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 2
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 0
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 13
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 18
+Temporary variables used: 4/22
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 43
+  Instructions after:  25
+  Instructions removed: 18
+  Reduction: 41.9%
+  Total optimizations applied: 43
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "execution accounts metrics"
+   2: create_account Exec
+   3: Exec.likes = 100
+   4: Exec.followers = 250
+   5: Exec.comments = 25
+   6: t5 = 100 + 5
+   7: Exec.likes = t5
+   8: t8 = 250 - 3
+   9: Exec.followers = t8
+  10: t11 = Exec.views + 20
+  11: Exec.views = t11
+  12: t14 = 25 - 2
+  13: Exec.comments = t14
+  14: Exec.likes = 100
+  15: create_account Beta
+  16: Beta.followers = 200
+  17: Beta.engagement rate = 3.50
+  18: Beta.viral = Beta.viral
+  19: Beta.trending = Beta.trending
+  20: Beta.followers = 500
+  21: Beta.likes = 400
+  22: display Exec
+  23: display Exec
+  24: display Beta
+  25: display Beta
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 25
+   Temporary variables: 22
+   Labels created: 0
+========================================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 2] 📢 Announcement: execution accounts metrics
+[Line 5] ✨ Created account: Exec
+[Line 6] 📊 Exec started with 100 likes
+[Line 7] 👥 Exec started with 250 followers
+[Line 8] 📊 Exec started with 25 comments
+[Line 9] ❤️  Exec gained/increased likes by 5 (now: 105)
+[Line 10] 📉 Exec lost/decreased followers by 3: 250 → 247
+[Line 11] 👁️  Exec gained/increased views by 20 (now: 20)
+[Line 12] 📉 Exec lost/decreased comments by 2: 25 → 23
+[Line 13] 📱 Exec posted story: "Execution Story" (500 views)
+[Line 14] 📊 Exec started with 100 likes
+[Line 17] ✨ Created account: Beta
+[Line 18] 👥 Beta started with 200 followers
+[Line 19] 📊 Beta began at 3.50 engagement rate
+[Line 20] 🔥 Beta is now VIRAL!
+[Line 21] 📈 Beta is now TRENDING!
+[Line 24] 👥 Beta started with 500 followers
+[Line 25] 📊 Beta started with 400 likes
+[Line 28] 📊 Exec.likes = 100
+[Line 29] 📊 Account Exec: Likes=100, Followers=247, Views=520, Comments=23, Shares=0
+[Line 30] 📊 Beta.followers = 500
+[Line 31] 📊 Account Beta: Likes=400, Followers=500, Views=0, Comments=0, Shares=0
+        Engagement Rate: 3.50%
+==========================================
+✅ Program execution complete with no runtime/semantic errors.
+
+📋 Symbol Table:
+================
+Beta                 | Type: Account | Likes: 400, Followers: 500, Views: 0, Comments: 0, Shares: 0
+Exec                 | Type: Account | Likes: 100, Followers: 247, Views: 520, Comments: 23, Shares: 0
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 2
+   Accounts: 2
+   Functions: 0
+   Variables: 0
+============================
+
+✅ Compilation and execution completed successfully
+   Lexical errors  : 0
+   Syntax errors   : 0
+   Semantic errors : 0
+   TAC temporaries : 22
+   TAC labels      : 0

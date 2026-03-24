@@ -1,0 +1,46 @@
+Go live.
+Announce "arrays optimizer integration".
+
+// --- FEED DECLARATION ---
+The feed contains 3 posts.
+
+// --- INDEXED ASSIGNMENT: literal and expression values ---
+The feed at index 0 now has 5 plus 5 likes.
+The feed at index 1 now has 20 likes.
+The feed at index 2 now has 1 times 30 likes.
+
+// --- ACCOUNT WITH FEED-DRIVEN EXPRESSIONS ---
+The account Arr was created.
+The account arr was created.
+The account Arr now has the feed at index 0 likes plus the feed at index 1 likes likes.
+The account Arr now has the feed contains posts followers.
+The account arr started with 2 likes.
+
+// --- DISPLAY: individual metric + feed slot ---
+Display Arr likes.
+Display arr likes.
+Display the feed at index 2 likes.
+
+// --- LOOP: for each post in feed ---
+For each post in the feed
+{
+    Announce "looping feed".
+}
+
+// --- OPTIMIZER SHOWCASE: algebraic simplification triggers ---
+// x + 0 = x
+The account Arr now has 50 plus 0 likes.
+// x * 1 = x
+The account Arr now has 50 times 1 followers.
+// constant folding: 10 + 20 folded to 30
+The account Arr now has 10 plus 20 comments.
+
+// --- STRENGTH REDUCTION SHOWCASE: non-constant operand * power-of-two ---
+// uses account metric refs (not literals) so pass can rewrite in TAC
+The account Arr now has Arr likes times 2 views.
+The account Arr now has Arr likes times 4 shares.
+
+// --- OUT-OF-BOUNDS: intentional runtime error to prove bounds check ---
+The feed at index 9 now has 99 likes.
+Display Arr.
+End live.

@@ -1,0 +1,25 @@
+Go live.
+Announce "engagement health check".
+
+The account Pulse was created.
+The account Pulse started with 980 followers.
+The account Pulse started with 310 likes.
+The account Pulse started with 5100 views.
+The account Pulse started with 70 comments.
+The account Pulse started with 25 shares.
+
+When Pulse likes more than 800 also Pulse followers more than 2000
+{
+    Announce "health: viral-ready".
+}
+Otherwise if Pulse likes more than 300 also Pulse followers more than 900
+{
+    Announce "health: stable growth".
+}
+Otherwise
+{
+    Announce "health: needs campaign boost".
+}
+
+Display Pulse.
+End live.

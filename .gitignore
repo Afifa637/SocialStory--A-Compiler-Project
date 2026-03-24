@@ -1,0 +1,16 @@
+# Build artifacts
+*.o
+*.obj
+*.exe
+socialstory
+socialstory.exe
+
+# Generated run artifacts
+output_*.txt
+
+# Editor folders
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db

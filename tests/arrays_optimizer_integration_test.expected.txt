@@ -1,0 +1,282 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : tests/arrays_optimizer_integration_test.txt
+==========================================
+
+
+✅ Parse successful! AST built.
+
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ANNOUNCE (arrays optimizer integration)
+  ├─ ANNOUNCE (arrays optimizer integration)
+  ├─ FEED_DECLARE
+    ├─ METRIC (posts)
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [0]
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [5]
+      ├─ LITERAL_INT [5]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [1]
+    ├─ LITERAL_INT [20]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [2]
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [1]
+      ├─ LITERAL_INT [30]
+  ├─ ACCOUNT_CREATE (Arr)
+  ├─ ACCOUNT_CREATE (arr)
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (likes)
+    ├─ BINARY_OP
+      ├─ FEED_GET (likes)
+        ├─ LITERAL_INT [0]
+      ├─ FEED_GET (likes)
+        ├─ LITERAL_INT [1]
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (followers)
+    ├─ FEED_LENGTH (posts)
+  ├─ ACCOUNT_INIT (arr)
+    ├─ METRIC (likes)
+  ├─ DISPLAY (Arr) [likes]
+  ├─ DISPLAY (arr) [likes]
+  ├─ FEED_DISPLAY (likes)
+    ├─ LITERAL_INT [2]
+  ├─ LOOP_COLLECTION (post)
+    Body:
+      ├─ ANNOUNCE (looping feed)
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (likes)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [50]
+      ├─ LITERAL_INT [0]
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (followers)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [50]
+      ├─ LITERAL_INT [1]
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (comments)
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [10]
+      ├─ LITERAL_INT [20]
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (views)
+    ├─ BINARY_OP
+      ├─ ACCOUNT_REF (Arr) [likes]
+      ├─ LITERAL_INT [2]
+  ├─ ACCOUNT_INIT (Arr)
+    ├─ METRIC (shares)
+    ├─ BINARY_OP
+      ├─ ACCOUNT_REF (Arr) [likes]
+      ├─ LITERAL_INT [4]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [9]
+    ├─ LITERAL_INT [99]
+  ├─ DISPLAY (Arr)
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 66
+   Maximum depth: 5
+   Average branching factor: 13.20
+=====================================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "arrays optimizer integration"
+   2: feed_decl size=3 kind=posts
+   3: t0 = 0
+   4: t1 = 5
+   5: t2 = 5
+   6: t3 = t1 + t2
+   7: feed[t0].likes = t3
+   8: t4 = 1
+   9: t5 = 20
+  10: feed[t4].likes = t5
+  11: t6 = 2
+  12: t7 = 1
+  13: t8 = 30
+  14: t9 = t7 * t8
+  15: feed[t6].likes = t9
+  16: create_account Arr
+  17: create_account arr
+  18: t10 = 0
+  19: t11 = feed[t10].likes
+  20: t12 = 1
+  21: t13 = feed[t12].likes
+  22: t14 = t11 + t13
+  23: Arr.likes = t14
+  24: t15 = feed_length(posts)
+  25: Arr.followers = t15
+  26: arr.likes = 2
+  27: display Arr
+  28: display arr
+  29: t16 = 2
+  30: display feed[t16].likes
+  31: t17 = 50
+  32: t18 = 0
+  33: t19 = t17 + t18
+  34: Arr.likes = t19
+  35: t20 = 50
+  36: t21 = 1
+  37: t22 = t20 * t21
+  38: Arr.followers = t22
+  39: t23 = 10
+  40: t24 = 20
+  41: t25 = t23 + t24
+  42: Arr.comments = t25
+  43: t26 = 2
+  44: t27 = Arr * t26
+  45: Arr.views = t27
+  46: t28 = 4
+  47: t29 = Arr * t28
+  48: Arr.shares = t29
+  49: t30 = 9
+  50: t31 = 99
+  51: feed[t30].likes = t31
+  52: display Arr
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 52
+   Temporary variables: 32
+   Labels created: 0
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 14
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 5
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 0
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 3
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 5
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 26
+Temporary variables used: 7/33
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 52
+  Instructions after:  27
+  Instructions removed: 25
+  Reduction: 48.1%
+  Total optimizations applied: 53
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "arrays optimizer integration"
+   2: feed_decl size=3 kind=posts
+   3: feed[t0].likes = 10
+   4: feed[t4].likes = 20
+   5: feed[t6].likes = 30
+   6: create_account Arr
+   7: create_account arr
+   8: t11 = feed[t10].likes
+   9: t13 = feed[t12].likes
+  10: t14 = t11 + t13
+  11: Arr.likes = t14
+  12: t15 = feed_length(posts)
+  13: Arr.followers = t15
+  14: arr.likes = 2
+  15: display Arr
+  16: display arr
+  17: display feed[t16].likes
+  18: Arr.likes = 50
+  19: Arr.followers = 50
+  20: Arr.comments = 30
+  21: t27 = Arr + Arr
+  22: Arr.views = t27
+  23: t32 = Arr + Arr
+  24: t29 = t32 + t32
+  25: Arr.shares = t29
+  26: feed[t30].likes = 99
+  27: display Arr
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 27
+   Temporary variables: 33
+   Labels created: 0
+========================================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 2] 📢 Announcement: arrays optimizer integration
+[Line 5] 🧱 Feed declared: 3 posts
+[Line 8] 📝 feed[0].likes = 10
+[Line 9] 📝 feed[1].likes = 20
+[Line 10] 📝 feed[2].likes = 30
+[Line 13] ✨ Created account: Arr
+[Line 14] ✨ Created account: arr
+[Line 15] 📊 Arr started with 30 likes
+[Line 16] 👥 Arr started with 3 followers
+[Line 17] 📊 arr started with 2 likes
+[Line 20] 📊 Arr.likes = 30
+[Line 21] 📊 arr.likes = 2
+[Line 22] 📦 feed[2].likes = 30
+[Line 28] 🔄 Collection loop (post) - 3 iterations
+[Line 27] 📢 Announcement: looping feed
+[Line 27] 📢 Announcement: looping feed
+[Line 27] 📢 Announcement: looping feed
+[Line 32] 📊 Arr started with 50 likes
+[Line 34] 👥 Arr started with 50 followers
+[Line 36] 📊 Arr started with 30 comments
+[Line 40] 👁️  Arr started with 100 views
+[Line 41] 📊 Arr started with 200 shares
+❌ Runtime Error line 44: Feed index 9 out of bounds [0, 3)
+[Line 45] 📊 Account Arr: Likes=50, Followers=50, Views=100, Comments=30, Shares=200
+==========================================
+❌ Program execution completed with 1 runtime/semantic error(s).
+
+📋 Symbol Table:
+================
+arr                  | Type: Account | Likes: 2, Followers: 0, Views: 0, Comments: 0, Shares: 0
+Arr                  | Type: Account | Likes: 50, Followers: 50, Views: 100, Comments: 30, Shares: 200
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 2
+   Accounts: 2
+   Functions: 0
+   Variables: 0
+============================
+
+❌ Execution completed with runtime/semantic errors
+   Lexical errors  : 0
+   Syntax errors   : 0
+   Semantic errors : 1
+   TAC temporaries : 33
+   TAC labels      : 0

@@ -1,0 +1,18 @@
+Go live.
+Announce "baseline account report".
+
+The account BrandA was created.
+The account BrandA started with 1200 followers.
+The account BrandA started with 260 likes.
+The account BrandA started with 4200 views.
+The account BrandA started with 45 comments.
+The account BrandA started with 22 shares.
+The account BrandA began at 3.4 engagement rate.
+
+Calculate engagement for The account BrandA.
+Check if trending for The account BrandA.
+
+Display BrandA likes.
+Display BrandA followers.
+Display BrandA.
+End live.
