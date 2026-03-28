@@ -1,12 +1,19 @@
+// ===============================================
+// CONTROLFLOW LOOPS TEST
+// Demonstrates all loop forms, break/continue controls,
+// full conditional chain, and logical operators.
+// ===============================================
+
 Go live.
 Announce "controlflow loops".
 
+// --- BASELINE ACCOUNT ---
 The account Flow was created.
 The account Flow started with 0 likes.
 The account Flow started with 10 followers.
 The account Flow started with 0 comments.
 
-// --- LOOP TYPE 1: Every day for N days (count-controlled) ---
+// --- 1) EVERY-DAY LOOP + CONTINUE (Skip this post) ---
 Every day for 3 days,
 {
     The account Flow gained 2 likes.
@@ -17,25 +24,25 @@ Every day for 3 days,
     The account Flow gained 100 likes.
 }
 
-// --- LOOP TYPE 2: incrementing by step ---
+// --- 2) INCREMENTING LOOP ---
 Every 4 days incrementing by 2
 {
     The account Flow gained 1 followers.
 }
 
-// --- LOOP TYPE 3: decrementing by step ---
+// --- 3) DECREMENTING LOOP ---
 Every 4 days decrementing by 2
 {
     The account Flow gained 1 comments.
 }
 
-// --- LOOP TYPE 4: range (for each follower from X to Y) ---
+// --- 4) RANGE LOOP ---
 For each follower from 1 to 3
 {
     The account Flow gained 1 shares.
 }
 
-// --- LOOP TYPE 5: trending loop until condition (break inside) ---
+// --- 5) TRENDING LOOP + BREAK (Stop the story) ---
 trending loop until Flow likes more than 20
 {
     The account Flow gained 5 likes.
@@ -45,7 +52,7 @@ trending loop until Flow likes more than 20
     }
 }
 
-// --- CONDITIONALS: When / Otherwise if / Otherwise + special comparisons ---
+// --- 6) IF / OTHERWISE IF / OTHERWISE CHAIN ---
 When Flow likes more than 20
 {
     Announce "if branch".
@@ -59,10 +66,22 @@ Otherwise
     Announce "else branch".
 }
 
-// --- NOT (opposite) operator ---
+// --- 7) OPPOSITE (NOT) ---
 When opposite Flow followers more than 9999
 {
     Announce "opposite branch taken".
+}
+
+// --- 8) AND (also) ---
+When Flow likes more than 5 also Flow followers more than 0
+{
+    Announce "and branch taken".
+}
+
+// --- 9) OR (either) ---
+When Flow likes more than 9999 either Flow followers more than 0
+{
+    Announce "or branch taken".
 }
 
 Display Flow likes.

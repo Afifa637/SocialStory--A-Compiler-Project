@@ -1,24 +1,44 @@
+// ===============================================
+// LEXICAL IDENTIFIERS TEST
+// Covers comments, identifier policies, number formats,
+// case sensitivity, string escapes, and 1 intentional lexical error.
+// ===============================================
+
 Go live.
-// single-line comment (should be silently ignored)
+
+// --- COMMENT STYLES ---
+// single-line comment
+# hash-style single-line comment
 /* multi-line
-   comment also silently ignored */
+   comment block */
+
+// --- IDENTIFIER POLICY SHOWCASE ---
 The account TechInfluencer was created.
-The account _underscore was created.
+The account _internal was created.
 The account 124bro was created.
 The account 99problems was created.
 The account 2fast2furious was created.
 The account 7daysPlan was created.
-// Case-sensitive identifiers: both should exist independently
+
+// --- CASE SENSITIVITY (Flow != flow) ---
 The account Flow was created.
 The account flow was created.
+
+// --- NUMERIC TOKEN FORMS ---
 The account TechInfluencer now has 0xFF likes.
 The account TechInfluencer started with 010 posts.
 The account TechInfluencer began at 1.5e2 engagement rate.
+
+// --- INDEPENDENT STATE FOR CASED IDENTIFIERS ---
 The account Flow gained 3 likes.
 The account flow gained 9 likes.
 Display Flow likes.
 Display flow likes.
-Announce "identifier coverage".
-Announce "escape sequences: tab\there".
-@dfsdfs
+
+// --- STRING ESCAPE SHOWCASE ---
+Announce "tab:\there and newline".
+
+// --- INTENTIONAL LEXICAL ERROR (exactly one) ---
+@
+
 End live.

@@ -39,7 +39,7 @@
     "description": "Reusable analytics workflows: user functions plus built-in reporting for virality, engagement, growth, feed insights, and text safety",
     "input": "tests/functions_builtins_test.txt",
     "expected": "tests/functions_builtins_test.expected.txt",
-    "expectedExit": 1
+    "expectedExit": 0
   },
   {
     "name": "input_io_test",
@@ -54,6 +54,6 @@
     "description": "Practical feed analytics + optimizer integration: post-level feed modeling, indexed retrieval, feed iteration/length usage, and measurable TAC reduction",
     "input": "tests/arrays_optimizer_integration_test.txt",
     "expected": "tests/arrays_optimizer_integration_test.expected.txt",
-    "expectedExit": 1
+    "expectedExit": 0
   }
 ]

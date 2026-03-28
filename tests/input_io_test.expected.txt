@@ -236,28 +236,28 @@ L1:
 
 🎬 Executing SocialStoryScript Program...
 ==========================================
-[Line 2] 📢 Announcement: input io
-[Line 4] 🎤 INPUT: input_likes = 12 (integer)
-[Line 5] 🎤 INPUT: input_followers = 100 (integer)
-[Line 6] 🎤 INPUT: posts_per_week = 4 (integer)
-[Line 8] ✨ Created account: InputUser
-[Line 9] ✨ Created account: inputuser
-[Line 10] 📊 InputUser started with 0 likes
-[Line 11] 👥 InputUser started with 0 followers
-[Line 12] 📊 InputUser started with 0 comments
-[Line 13] 📊 InputUser started with 0 posts
-[Line 14] 📊 inputuser started with 1 likes
-[Line 15] ❤️  InputUser gained/increased likes by 12 (now: 12)
-[Line 16] 👥 InputUser gained/increased followers by 100 (now: 100)
-[Line 17] 📊 InputUser gained/increased comments by 16 (now: 16)
-[Line 18] 📊 InputUser gained/increased posts by 4 (now: 4)
-[Line 22] 📢 Announcement: strong start
-[Line 33] 📊 InputUser.likes = 12
-[Line 34] 📊 inputuser.likes = 1
-[Line 35] 📊 InputUser.comments = 16
-[Line 36] 📊 InputUser.posts = 4
-[Line 37] 📊 Account InputUser: Likes=12, Followers=100, Views=0, Comments=16, Shares=0
-[Line 38] 📊 Account inputuser: Likes=1, Followers=0, Views=0, Comments=0, Shares=0
+[Line 8] 📢 Announcement: input io
+[Line 11] 🎤 INPUT: input_likes = 12 (integer)
+[Line 12] 🎤 INPUT: input_followers = 100 (integer)
+[Line 13] 🎤 INPUT: posts_per_week = 4 (integer)
+[Line 16] ✨ Created account: InputUser
+[Line 17] ✨ Created account: inputuser
+[Line 20] 📊 InputUser started with 0 likes
+[Line 21] 👥 InputUser started with 0 followers
+[Line 22] 📊 InputUser started with 0 comments
+[Line 23] 📊 InputUser started with 0 posts
+[Line 24] 📊 inputuser started with 1 likes
+[Line 27] ❤️  InputUser gained/increased likes by 12 (now: 12)
+[Line 28] 👥 InputUser gained/increased followers by 100 (now: 100)
+[Line 29] 📊 InputUser gained/increased comments by 16 (now: 16)
+[Line 30] 📊 InputUser gained/increased posts by 4 (now: 4)
+[Line 35] 📢 Announcement: strong start
+[Line 47] 📊 InputUser.likes = 12
+[Line 48] 📊 inputuser.likes = 1
+[Line 49] 📊 InputUser.comments = 16
+[Line 50] 📊 InputUser.posts = 4
+[Line 51] 📊 Account InputUser: Likes=12, Followers=100, Views=0, Comments=16, Shares=0
+[Line 52] 📊 Account inputuser: Likes=1, Followers=0, Views=0, Comments=0, Shares=0
 ==========================================
 ✅ Program execution complete with no runtime/semantic errors.
 

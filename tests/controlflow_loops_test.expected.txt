@@ -75,13 +75,35 @@ Input file : tests/controlflow_loops_test.txt
           ├─ LITERAL_INT [9999]
     Body:
       ├─ ANNOUNCE (opposite branch taken)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ LOGICAL_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [likes]
+          ├─ LITERAL_INT [5]
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [followers]
+          ├─ LITERAL_INT [0]
+    Body:
+      ├─ ANNOUNCE (and branch taken)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ LOGICAL_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [likes]
+          ├─ LITERAL_INT [9999]
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [followers]
+          ├─ LITERAL_INT [0]
+    Body:
+      ├─ ANNOUNCE (or branch taken)
   ├─ DISPLAY (Flow) [likes]
 
 📊 Abstract Syntax Tree Statistics:
 =====================================
-   Total nodes: 72
+   Total nodes: 90
    Maximum depth: 7
-   Average branching factor: 10.29
+   Average branching factor: 12.86
 =====================================
 
 🔧 THREE-ADDRESS CODE:
@@ -196,13 +218,29 @@ L15:
   86: if t44 == false goto L18
   87: print "opposite branch taken"
 L18:
-  88: display Flow
+  88: t45 = 5
+  89: t46 = Flow > t45
+  90: t47 = 0
+  91: t48 = Flow > t47
+  92: t49 = t46 && t48
+  93: if t49 == false goto L20
+  94: print "and branch taken"
+L20:
+  95: t50 = 9999
+  96: t51 = Flow > t50
+  97: t52 = 0
+  98: t53 = Flow > t52
+  99: t54 = t51 || t53
+ 100: if t54 == false goto L22
+ 101: print "or branch taken"
+L22:
+ 102: display Flow
 
 ========================================
 📊 TAC Statistics:
-   Total instructions: 88
-   Temporary variables: 45
-   Labels created: 20
+   Total instructions: 102
+   Temporary variables: 55
+   Labels created: 24
 ========================================
 
 ⚡ RUNNING CODE OPTIMIZATIONS
@@ -210,7 +248,7 @@ L18:
 
 🔧 OPTIMIZATION: Temp Constant Propagation
 ==========================================
-Total temp constant propagations: 14
+Total temp constant propagations: 18
 
 🔧 OPTIMIZATION: Constant Folding
 ======================================
@@ -230,17 +268,17 @@ Total copy propagations: 19
 
 🔧 OPTIMIZATION: Dead Code Elimination
 =======================================
-Total dead code eliminations: 20
-Temporary variables used: 25/45
+Total dead code eliminations: 24
+Temporary variables used: 31/55
 
 ========================================
 📊 OPTIMIZATION SUMMARY
 ========================================
-  Instructions before: 88
-  Instructions after:  68
-  Instructions removed: 20
-  Reduction: 22.7%
-  Total optimizations applied: 53
+  Instructions before: 102
+  Instructions after:  78
+  Instructions removed: 24
+  Reduction: 23.5%
+  Total optimizations applied: 61
 ========================================
 
 💻 OPTIMIZED TAC:
@@ -332,41 +370,55 @@ L15:
   66: if t44 == false goto L18
   67: print "opposite branch taken"
 L18:
-  68: display Flow
+  68: t46 = Flow > 5
+  69: t48 = Flow > 0
+  70: t49 = t46 && t48
+  71: if t49 == false goto L20
+  72: print "and branch taken"
+L20:
+  73: t51 = Flow > 9999
+  74: t53 = Flow > 0
+  75: t54 = t51 || t53
+  76: if t54 == false goto L22
+  77: print "or branch taken"
+L22:
+  78: display Flow
 
 ========================================
 📊 TAC Statistics:
-   Total instructions: 68
-   Temporary variables: 45
-   Labels created: 20
+   Total instructions: 78
+   Temporary variables: 55
+   Labels created: 24
 ========================================
 
 🎬 Executing SocialStoryScript Program...
 ==========================================
-[Line 2] 📢 Announcement: controlflow loops
-[Line 4] ✨ Created account: Flow
-[Line 5] 📊 Flow started with 0 likes
-[Line 6] 👥 Flow started with 10 followers
-[Line 7] 📊 Flow started with 0 comments
-[Line 18] 🔄 Loop: days 1 to 3, step 1
-[Line 12] ❤️  Flow gained/increased likes by 2 (now: 2)
-[Line 17] ❤️  Flow gained/increased likes by 100 (now: 102)
-[Line 12] ❤️  Flow gained/increased likes by 2 (now: 104)
-[Line 12] ❤️  Flow gained/increased likes by 2 (now: 106)
-[Line 24] 🔄 Loop incrementing: start 1, end 4, step 2
-[Line 23] 👥 Flow gained/increased followers by 1 (now: 11)
-[Line 23] 👥 Flow gained/increased followers by 1 (now: 12)
-[Line 30] 🔄 Loop decrementing: start 4, end 1, step 2
-[Line 29] 📊 Flow gained/increased comments by 1 (now: 1)
-[Line 29] 📊 Flow gained/increased comments by 1 (now: 2)
-[Line 36] 🔄 Loop range: from 1 to 3
-[Line 35] 📊 Flow gained/increased shares by 1 (now: 1)
-[Line 35] 📊 Flow gained/increased shares by 1 (now: 2)
-[Line 35] 📊 Flow gained/increased shares by 1 (now: 3)
-[Line 46] 🔄 Trending loop until condition met
-[Line 51] 📢 Announcement: if branch
-[Line 65] 📢 Announcement: opposite branch taken
-[Line 68] 📊 Flow.likes = 106
+[Line 8] 📢 Announcement: controlflow loops
+[Line 11] ✨ Created account: Flow
+[Line 12] 📊 Flow started with 0 likes
+[Line 13] 👥 Flow started with 10 followers
+[Line 14] 📊 Flow started with 0 comments
+[Line 25] 🔄 Loop: days 1 to 3, step 1
+[Line 19] ❤️  Flow gained/increased likes by 2 (now: 2)
+[Line 24] ❤️  Flow gained/increased likes by 100 (now: 102)
+[Line 19] ❤️  Flow gained/increased likes by 2 (now: 104)
+[Line 19] ❤️  Flow gained/increased likes by 2 (now: 106)
+[Line 31] 🔄 Loop incrementing: start 1, end 4, step 2
+[Line 30] 👥 Flow gained/increased followers by 1 (now: 11)
+[Line 30] 👥 Flow gained/increased followers by 1 (now: 12)
+[Line 37] 🔄 Loop decrementing: start 4, end 1, step 2
+[Line 36] 📊 Flow gained/increased comments by 1 (now: 1)
+[Line 36] 📊 Flow gained/increased comments by 1 (now: 2)
+[Line 43] 🔄 Loop range: from 1 to 3
+[Line 42] 📊 Flow gained/increased shares by 1 (now: 1)
+[Line 42] 📊 Flow gained/increased shares by 1 (now: 2)
+[Line 42] 📊 Flow gained/increased shares by 1 (now: 3)
+[Line 53] 🔄 Trending loop until condition met
+[Line 58] 📢 Announcement: if branch
+[Line 72] 📢 Announcement: opposite branch taken
+[Line 78] 📢 Announcement: and branch taken
+[Line 84] 📢 Announcement: or branch taken
+[Line 87] 📊 Flow.likes = 106
 ==========================================
 ✅ Program execution complete with no runtime/semantic errors.
 
@@ -387,5 +439,5 @@ Flow                 | Type: Account | Likes: 106, Followers: 12, Views: 0, Comm
    Lexical errors  : 0
    Syntax errors   : 0
    Semantic errors : 0
-   TAC temporaries : 45
-   TAC labels      : 20
+   TAC temporaries : 55
+   TAC labels      : 24

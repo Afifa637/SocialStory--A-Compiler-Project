@@ -828,14 +828,14 @@ static const yytype_int16 yyrline[] =
      628,   634,   640,   646,   654,   660,   670,   682,   691,   700,
      710,   720,   730,   735,   744,   752,   760,   770,   775,   782,
      789,   796,   802,   811,   816,   823,   830,   837,   844,   851,
-     858,   864,   871,   879,   886,   893,   900,   907,   914,   921,
-     929,   937,   946,   953,   962,   968,   974,   980,   989,   995,
-    1002,  1010,  1023,  1032,  1041,  1051,  1061,  1071,  1081,  1088,
-    1100,  1111,  1120,  1137,  1146,  1155,  1164,  1173,  1180,  1190,
-    1191,  1197,  1206,  1207,  1213,  1219,  1225,  1231,  1237,  1246,
-    1247,  1248,  1249,  1250,  1258,  1264,  1270,  1274,  1280,  1286,
-    1292,  1298,  1304,  1310,  1316,  1322,  1328,  1337,  1342,  1347,
-    1352,  1357
+     858,   864,   874,   882,   889,   896,   903,   910,   917,   924,
+     932,   940,   949,   956,   965,   971,   977,   983,   992,   998,
+    1005,  1013,  1026,  1035,  1044,  1054,  1064,  1074,  1084,  1091,
+    1103,  1114,  1123,  1140,  1149,  1158,  1167,  1176,  1183,  1193,
+    1194,  1200,  1209,  1210,  1216,  1222,  1228,  1234,  1240,  1249,
+    1250,  1251,  1252,  1253,  1261,  1267,  1273,  1277,  1283,  1289,
+    1295,  1301,  1307,  1313,  1319,  1325,  1331,  1340,  1345,  1350,
+    1355,  1360
 };
 #endif
 
@@ -3003,95 +3003,98 @@ yyreduce:
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_max_viral_account");
         (yyval.node)->line_number = yylineno;
+
+        free((yyvsp[-4].sval));
+        free((yyvsp[-2].sval));
     }
-#line 3008 "socialstory_parser.tab.c"
+#line 3011 "socialstory_parser.tab.c"
     break;
 
   case 92: /* builtin_call: T_REVERSE_THE_CAPTION T_LPAREN T_TEXT T_RPAREN T_DOT  */
-#line 872 "socialstory_parser.y"
+#line 875 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_STRING_OP);
         (yyval.node)->sval = strdup("reverse");
         (yyval.node)->sval2 = (yyvsp[-2].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3019 "socialstory_parser.tab.c"
+#line 3022 "socialstory_parser.tab.c"
     break;
 
   case 93: /* builtin_call: T_CHECK_IF_TRENDING T_FOR T_THE_ACCOUNT T_ID T_DOT  */
-#line 880 "socialstory_parser.y"
+#line 883 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("check_if_trending");
         (yyval.node)->sval2 = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3030 "socialstory_parser.tab.c"
+#line 3033 "socialstory_parser.tab.c"
     break;
 
   case 94: /* builtin_call: T_CHECK_IF_TRENDING T_DOT  */
-#line 887 "socialstory_parser.y"
+#line 890 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("check_if_trending");
         (yyval.node)->line_number = yylineno;
     }
-#line 3040 "socialstory_parser.tab.c"
+#line 3043 "socialstory_parser.tab.c"
     break;
 
   case 95: /* builtin_call: T_COUNT_TOTAL_ENGAGEMENT T_DOT  */
-#line 894 "socialstory_parser.y"
+#line 897 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("count_total_engagement");
         (yyval.node)->line_number = yylineno;
     }
-#line 3050 "socialstory_parser.tab.c"
+#line 3053 "socialstory_parser.tab.c"
     break;
 
   case 96: /* builtin_call: T_FIND_TOP_POST T_DOT  */
-#line 901 "socialstory_parser.y"
+#line 904 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_top_post");
         (yyval.node)->line_number = yylineno;
     }
-#line 3060 "socialstory_parser.tab.c"
+#line 3063 "socialstory_parser.tab.c"
     break;
 
   case 97: /* builtin_call: T_FIND_HIGHEST_REACH T_THE_FEED T_DOT  */
-#line 908 "socialstory_parser.y"
+#line 911 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_highest_reach");
         (yyval.node)->line_number = yylineno;
     }
-#line 3070 "socialstory_parser.tab.c"
+#line 3073 "socialstory_parser.tab.c"
     break;
 
   case 98: /* builtin_call: T_FIND_TOTAL_REACH T_THE_FEED T_DOT  */
-#line 915 "socialstory_parser.y"
+#line 918 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("find_total_reach");
         (yyval.node)->line_number = yylineno;
     }
-#line 3080 "socialstory_parser.tab.c"
+#line 3083 "socialstory_parser.tab.c"
     break;
 
   case 99: /* builtin_call: T_DETECT_SPAM T_TEXT T_DOT  */
-#line 922 "socialstory_parser.y"
+#line 925 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_STRING_OP);
         (yyval.node)->sval = strdup("detect_spam");
         (yyval.node)->sval2 = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3091 "socialstory_parser.tab.c"
+#line 3094 "socialstory_parser.tab.c"
     break;
 
   case 100: /* builtin_call: T_CLAMP_ENGAGEMENT T_NUMBER T_AND_THEN T_NUMBER T_DOT  */
-#line 930 "socialstory_parser.y"
+#line 933 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("clamp_engagement");
@@ -3099,11 +3102,11 @@ yyreduce:
         (yyval.node)->ival2 = (yyvsp[-1].ival);
         (yyval.node)->line_number = yylineno;
     }
-#line 3103 "socialstory_parser.tab.c"
+#line 3106 "socialstory_parser.tab.c"
     break;
 
   case 101: /* builtin_call: T_CLAMP_ENGAGEMENT T_DECIMAL T_AND_THEN T_DECIMAL T_DOT  */
-#line 938 "socialstory_parser.y"
+#line 941 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("clamp_engagement");
@@ -3111,62 +3114,62 @@ yyreduce:
         (yyval.node)->ival2 = (int)(yyvsp[-1].fval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3115 "socialstory_parser.tab.c"
+#line 3118 "socialstory_parser.tab.c"
     break;
 
   case 102: /* builtin_call: T_REVERSE_GROWTH T_FOR T_THE_ACCOUNT T_ID T_DOT  */
-#line 947 "socialstory_parser.y"
+#line 950 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("reverse_growth");
         (yyval.node)->sval2 = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3126 "socialstory_parser.tab.c"
+#line 3129 "socialstory_parser.tab.c"
     break;
 
   case 103: /* builtin_call: T_REVERSE_GROWTH T_DOT  */
-#line 954 "socialstory_parser.y"
+#line 957 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_BUILTIN_CALL);
         (yyval.node)->sval = strdup("reverse_growth");
         (yyval.node)->line_number = yylineno;
     }
-#line 3136 "socialstory_parser.tab.c"
+#line 3139 "socialstory_parser.tab.c"
     break;
 
   case 104: /* io_statement: T_ANNOUNCE T_TEXT T_DOT  */
-#line 963 "socialstory_parser.y"
+#line 966 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ANNOUNCE);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3146 "socialstory_parser.tab.c"
+#line 3149 "socialstory_parser.tab.c"
     break;
 
   case 105: /* io_statement: T_DISPLAY T_TEXT T_DOT  */
-#line 969 "socialstory_parser.y"
+#line 972 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ANNOUNCE);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3156 "socialstory_parser.tab.c"
+#line 3159 "socialstory_parser.tab.c"
     break;
 
   case 106: /* io_statement: T_DISPLAY T_ID T_DOT  */
-#line 975 "socialstory_parser.y"
+#line 978 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_DISPLAY);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3166 "socialstory_parser.tab.c"
+#line 3169 "socialstory_parser.tab.c"
     break;
 
   case 107: /* io_statement: T_DISPLAY T_ID metric T_DOT  */
-#line 981 "socialstory_parser.y"
+#line 984 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_DISPLAY);
         (yyval.node)->sval = (yyvsp[-2].sval);
@@ -3174,32 +3177,32 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         free((yyvsp[-1].node));
     }
-#line 3178 "socialstory_parser.tab.c"
+#line 3181 "socialstory_parser.tab.c"
     break;
 
   case 108: /* io_statement: T_ASK_FOR T_ID T_DOT  */
-#line 990 "socialstory_parser.y"
+#line 993 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ASK_FOR);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3188 "socialstory_parser.tab.c"
+#line 3191 "socialstory_parser.tab.c"
     break;
 
   case 109: /* io_statement: T_ANNOUNCE T_ID T_DOT  */
-#line 996 "socialstory_parser.y"
+#line 999 "socialstory_parser.y"
     {
         /* Display a variable's value via Announce */
         (yyval.node) = make_node(AST_DISPLAY);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3199 "socialstory_parser.tab.c"
+#line 3202 "socialstory_parser.tab.c"
     break;
 
   case 110: /* io_statement: T_DISPLAY T_THE_FEED T_AT_INDEX expression metric T_DOT  */
-#line 1003 "socialstory_parser.y"
+#line 1006 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_DISPLAY);
         (yyval.node)->left = (yyvsp[-2].node);           /* index expression */
@@ -3207,20 +3210,20 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         free((yyvsp[-1].node));
     }
-#line 3211 "socialstory_parser.tab.c"
+#line 3214 "socialstory_parser.tab.c"
     break;
 
   case 111: /* io_statement: T_DISPLAY T_THE_FEED T_DOT  */
-#line 1011 "socialstory_parser.y"
+#line 1014 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_DISPLAY);
         (yyval.node)->line_number = yylineno;
     }
-#line 3220 "socialstory_parser.tab.c"
+#line 3223 "socialstory_parser.tab.c"
     break;
 
   case 112: /* account_update_ext: T_THE_ACCOUNT T_ID T_WAS_UPDATED_TO T_NUMBER metric T_DOT  */
-#line 1024 "socialstory_parser.y"
+#line 1027 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3229,11 +3232,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3233 "socialstory_parser.tab.c"
+#line 3236 "socialstory_parser.tab.c"
     break;
 
   case 113: /* account_update_ext: T_THE_ACCOUNT T_ID T_BECAME T_NUMBER metric T_DOT  */
-#line 1033 "socialstory_parser.y"
+#line 1036 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3242,11 +3245,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3246 "socialstory_parser.tab.c"
+#line 3249 "socialstory_parser.tab.c"
     break;
 
   case 114: /* account_update_ext: T_THE_ACCOUNT T_ID T_MULTIPLIED_BY T_NUMBER metric T_DOT  */
-#line 1042 "socialstory_parser.y"
+#line 1045 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3256,11 +3259,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3260 "socialstory_parser.tab.c"
+#line 3263 "socialstory_parser.tab.c"
     break;
 
   case 115: /* account_update_ext: T_THE_ACCOUNT T_ID T_MULTIPLIED_BY expression metric T_DOT  */
-#line 1052 "socialstory_parser.y"
+#line 1055 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3270,11 +3273,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3274 "socialstory_parser.tab.c"
+#line 3277 "socialstory_parser.tab.c"
     break;
 
   case 116: /* account_update_ext: T_THE_ACCOUNT T_ID T_DIVIDED_BY T_NUMBER metric T_DOT  */
-#line 1062 "socialstory_parser.y"
+#line 1065 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3284,11 +3287,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3288 "socialstory_parser.tab.c"
+#line 3291 "socialstory_parser.tab.c"
     break;
 
   case 117: /* account_update_ext: T_THE_ACCOUNT T_ID T_DIVIDED_BY expression metric T_DOT  */
-#line 1072 "socialstory_parser.y"
+#line 1075 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3298,22 +3301,22 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-4].sval), yylineno);
     }
-#line 3302 "socialstory_parser.tab.c"
+#line 3305 "socialstory_parser.tab.c"
     break;
 
   case 118: /* account_update_ext: T_THE_CAPTION T_READS T_TEXT T_DOT  */
-#line 1082 "socialstory_parser.y"
+#line 1085 "socialstory_parser.y"
     {
         /* Caption assignment */
         (yyval.node) = make_node(AST_ANNOUNCE);
         (yyval.node)->sval = (yyvsp[-1].sval);
         (yyval.node)->line_number = yylineno;
     }
-#line 3313 "socialstory_parser.tab.c"
+#line 3316 "socialstory_parser.tab.c"
     break;
 
   case 119: /* account_update_ext: T_THE_ACCOUNT T_ID T_IS_VIRAL T_DOT  */
-#line 1089 "socialstory_parser.y"
+#line 1092 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-2].sval);
@@ -3325,11 +3328,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-2].sval), yylineno);
     }
-#line 3329 "socialstory_parser.tab.c"
+#line 3332 "socialstory_parser.tab.c"
     break;
 
   case 120: /* account_update_ext: T_THE_ACCOUNT T_ID T_IS_TRENDING T_DOT  */
-#line 1101 "socialstory_parser.y"
+#line 1104 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_UPDATE);
         (yyval.node)->sval = (yyvsp[-2].sval);
@@ -3340,11 +3343,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         check_account_exists((yyvsp[-2].sval), yylineno);
     }
-#line 3344 "socialstory_parser.tab.c"
+#line 3347 "socialstory_parser.tab.c"
     break;
 
   case 121: /* account_update_ext: T_THE_POST T_ID T_STARTED_WITH T_NUMBER metric T_DOT  */
-#line 1112 "socialstory_parser.y"
+#line 1115 "socialstory_parser.y"
     {
         /* Post metrics (reuse account_init semantics) */
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
@@ -3353,11 +3356,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 3357 "socialstory_parser.tab.c"
+#line 3360 "socialstory_parser.tab.c"
     break;
 
   case 122: /* account_update_ext: T_THE_POST T_ID T_NOW_HAS T_NUMBER metric T_DOT  */
-#line 1121 "socialstory_parser.y"
+#line 1124 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_ACCOUNT_INIT);
         (yyval.node)->sval = (yyvsp[-4].sval);
@@ -3365,11 +3368,11 @@ yyreduce:
         (yyval.node)->left = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 3369 "socialstory_parser.tab.c"
+#line 3372 "socialstory_parser.tab.c"
     break;
 
   case 123: /* feed_statement: T_THE_FEED T_CONTAINS T_NUMBER T_POSTS T_DOT  */
-#line 1138 "socialstory_parser.y"
+#line 1141 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_DECLARE);
         (yyval.node)->ival = (yyvsp[-2].ival);
@@ -3378,11 +3381,11 @@ yyreduce:
         (yyval.node)->left = m;
         (yyval.node)->line_number = yylineno;
     }
-#line 3382 "socialstory_parser.tab.c"
+#line 3385 "socialstory_parser.tab.c"
     break;
 
   case 124: /* feed_statement: T_THE_FEED T_CONTAINS T_NUMBER T_STORIES T_DOT  */
-#line 1147 "socialstory_parser.y"
+#line 1150 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_DECLARE);
         (yyval.node)->ival = (yyvsp[-2].ival);
@@ -3391,11 +3394,11 @@ yyreduce:
         (yyval.node)->left = m;
         (yyval.node)->line_number = yylineno;
     }
-#line 3395 "socialstory_parser.tab.c"
+#line 3398 "socialstory_parser.tab.c"
     break;
 
   case 125: /* feed_statement: T_THE_FEED T_AT_INDEX expression T_NOW_HAS expression metric T_DOT  */
-#line 1156 "socialstory_parser.y"
+#line 1159 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_SET);
         (yyval.node)->left = (yyvsp[-4].node);            /* index expression */
@@ -3404,11 +3407,11 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         free((yyvsp[-1].node));
     }
-#line 3408 "socialstory_parser.tab.c"
+#line 3411 "socialstory_parser.tab.c"
     break;
 
   case 126: /* feed_statement: T_THE_FEED T_AT_INDEX expression T_STARTED_WITH expression metric T_DOT  */
-#line 1165 "socialstory_parser.y"
+#line 1168 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_SET);
         (yyval.node)->left = (yyvsp[-4].node);            /* index expression */
@@ -3417,149 +3420,149 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         free((yyvsp[-1].node));
     }
-#line 3421 "socialstory_parser.tab.c"
+#line 3424 "socialstory_parser.tab.c"
     break;
 
   case 127: /* feed_statement: T_FOR_EACH T_POST_IN T_THE_FEED T_LBRACE statements T_RBRACE  */
-#line 1174 "socialstory_parser.y"
+#line 1177 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_COLLECTION);
         (yyval.node)->sval = strdup("post");
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 3432 "socialstory_parser.tab.c"
+#line 3435 "socialstory_parser.tab.c"
     break;
 
   case 128: /* feed_statement: T_FOR_EACH T_STORY_IN T_THE_FEED T_LBRACE statements T_RBRACE  */
-#line 1181 "socialstory_parser.y"
+#line 1184 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_LOOP_COLLECTION);
         (yyval.node)->sval = strdup("story");
         (yyval.node)->body = (yyvsp[-1].node);
         (yyval.node)->line_number = yylineno;
     }
-#line 3443 "socialstory_parser.tab.c"
+#line 3446 "socialstory_parser.tab.c"
     break;
 
   case 129: /* expression: term  */
-#line 1190 "socialstory_parser.y"
+#line 1193 "socialstory_parser.y"
          { (yyval.node) = (yyvsp[0].node); }
-#line 3449 "socialstory_parser.tab.c"
+#line 3452 "socialstory_parser.tab.c"
     break;
 
   case 130: /* expression: expression T_PLUS term  */
-#line 1192 "socialstory_parser.y"
+#line 1195 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_ADD;
         (yyval.node)->line_number = yylineno;
     }
-#line 3459 "socialstory_parser.tab.c"
+#line 3462 "socialstory_parser.tab.c"
     break;
 
   case 131: /* expression: expression T_MINUS term  */
-#line 1198 "socialstory_parser.y"
+#line 1201 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_SUB;
         (yyval.node)->line_number = yylineno;
     }
-#line 3469 "socialstory_parser.tab.c"
+#line 3472 "socialstory_parser.tab.c"
     break;
 
   case 132: /* term: factor  */
-#line 1206 "socialstory_parser.y"
+#line 1209 "socialstory_parser.y"
            { (yyval.node) = (yyvsp[0].node); }
-#line 3475 "socialstory_parser.tab.c"
+#line 3478 "socialstory_parser.tab.c"
     break;
 
   case 133: /* term: term T_TIMES factor  */
-#line 1208 "socialstory_parser.y"
+#line 1211 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_MUL;
         (yyval.node)->line_number = yylineno;
     }
-#line 3485 "socialstory_parser.tab.c"
+#line 3488 "socialstory_parser.tab.c"
     break;
 
   case 134: /* term: term T_MULTIPLY factor  */
-#line 1214 "socialstory_parser.y"
+#line 1217 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_MUL;
         (yyval.node)->line_number = yylineno;
     }
-#line 3495 "socialstory_parser.tab.c"
+#line 3498 "socialstory_parser.tab.c"
     break;
 
   case 135: /* term: term T_DIVIDED_BY factor  */
-#line 1220 "socialstory_parser.y"
+#line 1223 "socialstory_parser.y"
     {
     (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
     (yyval.node)->ival = OP_DIV;
     (yyval.node)->line_number = yylineno;
     }
-#line 3505 "socialstory_parser.tab.c"
+#line 3508 "socialstory_parser.tab.c"
     break;
 
   case 136: /* term: term T_DIVIDE factor  */
-#line 1226 "socialstory_parser.y"
+#line 1229 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_DIV;
         (yyval.node)->line_number = yylineno;
     }
-#line 3515 "socialstory_parser.tab.c"
+#line 3518 "socialstory_parser.tab.c"
     break;
 
   case 137: /* term: term T_DIVIDED_EVENLY_BY factor  */
-#line 1232 "socialstory_parser.y"
+#line 1235 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_DIV;
         (yyval.node)->line_number = yylineno;
     }
-#line 3525 "socialstory_parser.tab.c"
+#line 3528 "socialstory_parser.tab.c"
     break;
 
   case 138: /* term: term T_MODULO factor  */
-#line 1238 "socialstory_parser.y"
+#line 1241 "socialstory_parser.y"
     {
         (yyval.node) = make_binary_op(AST_BINARY_OP, (yyvsp[-2].node), (yyvsp[0].node));
         (yyval.node)->ival = OP_MOD;
         (yyval.node)->line_number = yylineno;
     }
-#line 3535 "socialstory_parser.tab.c"
+#line 3538 "socialstory_parser.tab.c"
     break;
 
   case 139: /* factor: literal  */
-#line 1246 "socialstory_parser.y"
+#line 1249 "socialstory_parser.y"
             { (yyval.node) = (yyvsp[0].node); }
-#line 3541 "socialstory_parser.tab.c"
+#line 3544 "socialstory_parser.tab.c"
     break;
 
   case 140: /* factor: account_metric_ref  */
-#line 1247 "socialstory_parser.y"
+#line 1250 "socialstory_parser.y"
                          { (yyval.node) = (yyvsp[0].node); }
-#line 3547 "socialstory_parser.tab.c"
+#line 3550 "socialstory_parser.tab.c"
     break;
 
   case 141: /* factor: metric  */
-#line 1248 "socialstory_parser.y"
+#line 1251 "socialstory_parser.y"
              { (yyval.node) = (yyvsp[0].node); }
-#line 3553 "socialstory_parser.tab.c"
+#line 3556 "socialstory_parser.tab.c"
     break;
 
   case 142: /* factor: T_ID  */
-#line 1249 "socialstory_parser.y"
+#line 1252 "socialstory_parser.y"
            { (yyval.node) = make_node_with_string(AST_IDENTIFIER, (yyvsp[0].sval)); }
-#line 3559 "socialstory_parser.tab.c"
+#line 3562 "socialstory_parser.tab.c"
     break;
 
   case 143: /* factor: T_THE_FEED T_AT_INDEX expression metric  */
-#line 1251 "socialstory_parser.y"
+#line 1254 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_GET);
         (yyval.node)->left = (yyvsp[-1].node);           /* index expression */
@@ -3567,182 +3570,182 @@ yyreduce:
         (yyval.node)->line_number = yylineno;
         free((yyvsp[0].node));
     }
-#line 3571 "socialstory_parser.tab.c"
+#line 3574 "socialstory_parser.tab.c"
     break;
 
   case 144: /* factor: T_THE_FEED T_CONTAINS T_POSTS  */
-#line 1259 "socialstory_parser.y"
+#line 1262 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_LENGTH);
         (yyval.node)->sval = strdup("posts");
         (yyval.node)->line_number = yylineno;
     }
-#line 3581 "socialstory_parser.tab.c"
+#line 3584 "socialstory_parser.tab.c"
     break;
 
   case 145: /* factor: T_THE_FEED T_CONTAINS T_STORIES  */
-#line 1265 "socialstory_parser.y"
+#line 1268 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_FEED_LENGTH);
         (yyval.node)->sval = strdup("stories");
         (yyval.node)->line_number = yylineno;
     }
-#line 3591 "socialstory_parser.tab.c"
+#line 3594 "socialstory_parser.tab.c"
     break;
 
   case 146: /* factor: T_LPAREN expression T_RPAREN  */
-#line 1270 "socialstory_parser.y"
+#line 1273 "socialstory_parser.y"
                                    { (yyval.node) = (yyvsp[-1].node); }
-#line 3597 "socialstory_parser.tab.c"
+#line 3600 "socialstory_parser.tab.c"
     break;
 
   case 147: /* metric: T_LIKES  */
-#line 1275 "socialstory_parser.y"
+#line 1278 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("likes");
         (yyval.node)->line_number = yylineno;
     }
-#line 3607 "socialstory_parser.tab.c"
+#line 3610 "socialstory_parser.tab.c"
     break;
 
   case 148: /* metric: T_FOLLOWERS  */
-#line 1281 "socialstory_parser.y"
+#line 1284 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("followers");
         (yyval.node)->line_number = yylineno;
     }
-#line 3617 "socialstory_parser.tab.c"
+#line 3620 "socialstory_parser.tab.c"
     break;
 
   case 149: /* metric: T_VIEWS  */
-#line 1287 "socialstory_parser.y"
+#line 1290 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("views");
         (yyval.node)->line_number = yylineno;
     }
-#line 3627 "socialstory_parser.tab.c"
+#line 3630 "socialstory_parser.tab.c"
     break;
 
   case 150: /* metric: T_COMMENTS  */
-#line 1293 "socialstory_parser.y"
+#line 1296 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("comments");
         (yyval.node)->line_number = yylineno;
     }
-#line 3637 "socialstory_parser.tab.c"
+#line 3640 "socialstory_parser.tab.c"
     break;
 
   case 151: /* metric: T_SHARES  */
-#line 1299 "socialstory_parser.y"
+#line 1302 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("shares");
         (yyval.node)->line_number = yylineno;
     }
-#line 3647 "socialstory_parser.tab.c"
+#line 3650 "socialstory_parser.tab.c"
     break;
 
   case 152: /* metric: T_REACH  */
-#line 1305 "socialstory_parser.y"
+#line 1308 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("reach");
         (yyval.node)->line_number = yylineno;
     }
-#line 3657 "socialstory_parser.tab.c"
+#line 3660 "socialstory_parser.tab.c"
     break;
 
   case 153: /* metric: T_ENGAGEMENT_RATE  */
-#line 1311 "socialstory_parser.y"
+#line 1314 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("engagement rate");
         (yyval.node)->line_number = yylineno;
     }
-#line 3667 "socialstory_parser.tab.c"
+#line 3670 "socialstory_parser.tab.c"
     break;
 
   case 154: /* metric: T_GROWTH_RATE  */
-#line 1317 "socialstory_parser.y"
+#line 1320 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("growth rate");
         (yyval.node)->line_number = yylineno;
     }
-#line 3677 "socialstory_parser.tab.c"
+#line 3680 "socialstory_parser.tab.c"
     break;
 
   case 155: /* metric: T_POSTS  */
-#line 1323 "socialstory_parser.y"
+#line 1326 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("posts");
         (yyval.node)->line_number = yylineno;
     }
-#line 3687 "socialstory_parser.tab.c"
+#line 3690 "socialstory_parser.tab.c"
     break;
 
   case 156: /* metric: T_STORIES  */
-#line 1329 "socialstory_parser.y"
+#line 1332 "socialstory_parser.y"
     {
         (yyval.node) = make_node(AST_METRIC);
         (yyval.node)->sval = strdup("stories");
         (yyval.node)->line_number = yylineno;
     }
-#line 3697 "socialstory_parser.tab.c"
+#line 3700 "socialstory_parser.tab.c"
     break;
 
   case 157: /* literal: T_NUMBER  */
-#line 1338 "socialstory_parser.y"
+#line 1341 "socialstory_parser.y"
     {
         (yyval.node) = make_node_with_int(AST_LITERAL_INT, (yyvsp[0].ival));
         (yyval.node)->line_number = yylineno;
     }
-#line 3706 "socialstory_parser.tab.c"
+#line 3709 "socialstory_parser.tab.c"
     break;
 
   case 158: /* literal: T_DECIMAL  */
-#line 1343 "socialstory_parser.y"
+#line 1346 "socialstory_parser.y"
     {
         (yyval.node) = make_node_with_float(AST_LITERAL_FLOAT, (yyvsp[0].fval));
         (yyval.node)->line_number = yylineno;
     }
-#line 3715 "socialstory_parser.tab.c"
+#line 3718 "socialstory_parser.tab.c"
     break;
 
   case 159: /* literal: T_TEXT  */
-#line 1348 "socialstory_parser.y"
+#line 1351 "socialstory_parser.y"
     {
         (yyval.node) = make_node_with_string(AST_LITERAL_STRING, (yyvsp[0].sval));
         (yyval.node)->line_number = yylineno;
     }
-#line 3724 "socialstory_parser.tab.c"
+#line 3727 "socialstory_parser.tab.c"
     break;
 
   case 160: /* literal: T_TRUE_STORY  */
-#line 1353 "socialstory_parser.y"
+#line 1356 "socialstory_parser.y"
     {
         (yyval.node) = make_node_with_int(AST_LITERAL_BOOL, 1);
         (yyval.node)->line_number = yylineno;
     }
-#line 3733 "socialstory_parser.tab.c"
+#line 3736 "socialstory_parser.tab.c"
     break;
 
   case 161: /* literal: T_FALSE_ALARM  */
-#line 1358 "socialstory_parser.y"
+#line 1361 "socialstory_parser.y"
     {
         (yyval.node) = make_node_with_int(AST_LITERAL_BOOL, 0);
         (yyval.node)->line_number = yylineno;
     }
-#line 3742 "socialstory_parser.tab.c"
+#line 3745 "socialstory_parser.tab.c"
     break;
 
 
-#line 3746 "socialstory_parser.tab.c"
+#line 3749 "socialstory_parser.tab.c"
 
       default: break;
     }
@@ -3935,7 +3938,7 @@ yyreturnlab:
   return yyresult;
 }
 
-#line 1364 "socialstory_parser.y"
+#line 1367 "socialstory_parser.y"
 
 
 /* ========================================
@@ -3972,16 +3975,6 @@ void yyerror(const char *s) {
     }
 }
 
-/* ========================================
- * MAIN FUNCTION
- * ======================================== */
-/* main() has been moved to main.c for cleaner code organization. */
-
-/* ============================================================
- * compiler_run() — Full compiler pipeline
- * Called by main.c after files are opened.
- * Returns 0 on success, 1 on error.
- * ============================================================ */
 int compiler_run(const char* input_filename,
                  const char* output_filename,
                  FILE* input_file,

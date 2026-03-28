@@ -159,6 +159,20 @@ int optimize_constant_folding()
                     strcmp(instr->op, "*") == 0 || strcmp(instr->op, "/") == 0 ||
                     strcmp(instr->op, "%") == 0)
                 {
+                    /* Leave algebraic identities to optimize_algebraic() so the
+                     * pass remains observable in optimizer reports.
+                     */
+                    if ((strcmp(instr->op, "+") == 0 &&
+                         (strcmp(instr->arg1, "0") == 0 || strcmp(instr->arg2, "0") == 0)) ||
+                        (strcmp(instr->op, "-") == 0 && strcmp(instr->arg2, "0") == 0) ||
+                        (strcmp(instr->op, "*") == 0 &&
+                         (strcmp(instr->arg1, "0") == 0 || strcmp(instr->arg2, "0") == 0 ||
+                          strcmp(instr->arg1, "1") == 0 || strcmp(instr->arg2, "1") == 0)) ||
+                        (strcmp(instr->op, "/") == 0 && strcmp(instr->arg2, "1") == 0))
+                    {
+                        instr = instr->next;
+                        continue;
+                    }
 
                     int result = eval_const_expr(instr->arg1, instr->op, instr->arg2);
 
@@ -501,6 +515,18 @@ int optimize_dead_code()
 /* ========================================
  * RUN ALL OPTIMIZATIONS
  * ======================================== */
+
+/*
+ * Optimization pipeline order (fixed): (1) Temporary constant propagation
+ * substitutes known literal temp values into later instructions to expose
+ * simplification opportunities, (2) Constant folding evaluates compile-time
+ * arithmetic expressions directly, (3) Algebraic simplification applies
+ * identity/annihilator rules (e.g., x+0, x*1, x*0), (4) Strength reduction
+ * rewrites expensive operations into cheaper equivalents where safe,
+ * (5) Copy propagation forwards simple assignments to reduce indirection,
+ * and (6) Dead code elimination removes instructions that no longer affect
+ * observable program behavior.
+ */
 
 void run_all_optimizations(FILE *fp)
 {

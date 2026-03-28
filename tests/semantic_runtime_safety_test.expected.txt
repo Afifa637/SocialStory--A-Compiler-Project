@@ -3,9 +3,9 @@ SocialStoryScript Compiler — Output Report
 Input file : tests/semantic_runtime_safety_test.txt
 ==========================================
 
-⚠️  Warning line 4: Account 'Safety' already exists
-❌ Error line 6: Undeclared symbol 'Ghost'
-❌ Error line 7: Undeclared symbol 'safety'
+⚠️  Warning line 12: Account 'Safety' already exists
+❌ Error line 15: Undeclared symbol 'Ghost'
+❌ Error line 18: Undeclared symbol 'safety'
 
 ✅ Parse successful! AST built.
 
@@ -69,7 +69,7 @@ Input file : tests/semantic_runtime_safety_test.txt
    2: create_account Safety
    3: Ghost.likes = 10
    4: safety.likes = 1
-   5: Safety.likes = 0
+   5: Safety.likes = 10
    6: t0 = 10
    7: t1 = 0
    8: t2 = t0 / t1
@@ -145,7 +145,7 @@ Temporary variables used: 0/13
    2: create_account Safety
    3: Ghost.likes = 10
    4: safety.likes = 1
-   5: Safety.likes = 0
+   5: Safety.likes = 10
    6: Safety.likes = 0
    7: Safety.comments = 0
    8: feed_decl size=2 kind=posts
@@ -164,22 +164,22 @@ Temporary variables used: 0/13
 
 🎬 Executing SocialStoryScript Program...
 ==========================================
-[Line 3] ✨ Created account: Safety
-[Line 4] ✨ Created account: Safety
-❌ Type Error at line 9: Float→Int conversion not allowed for 'likes' (attempted 2.50)
-❌ Runtime Error line 11: Division by zero
-❌ Runtime Error line 11: Division by zero
-[Line 11] 📊 Safety started with 0 likes
-❌ Runtime Error line 13: Modulo by zero
-[Line 13] 📊 Safety started with 0 comments
-[Line 15] 🧱 Feed declared: 2 posts
-❌ Runtime Error line 17: Feed index must be integer
-❌ Runtime Error line 18: Feed index 5 out of bounds [0, 2)
-[Line 24] 📖 Defined function: 'addone' (params: 1)
-[Line 25] 📞 Calling function: 'addone'
-[Line 25] ❌ RUNTIME ERROR: Function 'addone' expects 1 argument(s), got 2
+[Line 9] ✨ Created account: Safety
+[Line 12] ✨ Created account: Safety
+[Line 21] 📊 Safety started with 10 likes
+❌ Runtime Error line 24: Division by zero
+❌ Runtime Error line 24: Division by zero
+[Line 24] 📊 Safety started with 0 likes
+❌ Runtime Error line 27: Modulo by zero
+[Line 27] 📊 Safety started with 0 comments
+[Line 30] 🧱 Feed declared: 2 posts
+❌ Runtime Error line 33: Feed index must be integer
+❌ Runtime Error line 36: Feed index 5 out of bounds [0, 2)
+[Line 43] 📖 Defined function: 'addone' (params: 1)
+[Line 46] 📞 Calling function: 'addone'
+[Line 46] ❌ RUNTIME ERROR: Function 'addone' expects 1 argument(s), got 2
 ==========================================
-❌ Program execution completed with 8 runtime/semantic error(s).
+❌ Program execution completed with 7 runtime/semantic error(s).
 
 📋 Symbol Table:
 ================
@@ -198,6 +198,6 @@ Safety               | Type: Account | Likes: 0, Followers: 0, Views: 0, Comment
 ❌ Execution completed with runtime/semantic errors
    Lexical errors  : 0
    Syntax errors   : 0
-   Semantic errors : 8
+   Semantic errors : 7
    TAC temporaries : 13
    TAC labels      : 0

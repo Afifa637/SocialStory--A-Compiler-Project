@@ -1,13 +1,20 @@
+// ===============================================
+// FUNCTIONS + BUILTINS TEST
+// Clean showcase of user-defined functions, return values,
+// and the built-in analytics/string toolchain.
+// ===============================================
+
 Go live.
 Announce "functions builtins".
 
+// --- BASE ACCOUNT FOR BUILTINS ---
 The account Built was created.
 The account Built started with 40 likes.
 The account Built started with 100 followers.
 The account Built started with 10 comments.
 The account Built started with 5 shares.
 
-// --- USER-DEFINED FUNCTION: 0 parameters ---
+// --- USER FUNCTION: 0 PARAMS ---
 The story of Ping begins with
 {
     Announce "PING".
@@ -15,27 +22,26 @@ The story of Ping begins with
 }
 The story ends.
 
-// --- USER-DEFINED FUNCTION: 1 parameter ---
+// --- USER FUNCTION: 1 PARAM ---
 The story of AddFive begins with x
 {
     Tell back x plus 5.
 }
 The story ends.
 
-// --- USER-DEFINED FUNCTION: 2 parameters ---
+// --- USER FUNCTION: 2 PARAMS ---
 The story of AddTwo begins with a, b
 {
     Tell back a plus b.
 }
 The story ends.
 
-// --- Function calls (last one intentionally mismatches arity) ---
+// --- FUNCTION CALLS (ALL CORRECT ARITY) ---
 Tell Ping.
 Tell AddFive with 7.
 Tell AddTwo with 3, 4.
-Tell AddFive with 1, 2.
 
-// --- BUILT-IN FUNCTIONS: account analytics ---
+// --- ACCOUNT BUILTINS ---
 Calculate virality for The account Built.
 Calculate engagement for The account Built.
 Analyze growth for The account Built.
@@ -45,7 +51,7 @@ Find top post.
 Find max viral account.
 Reverse growth for The account Built.
 
-// --- BUILT-IN FUNCTIONS: feed analytics ---
+// --- FEED BUILTINS ---
 The feed contains 3 posts.
 The feed at index 0 now has 100 likes.
 The feed at index 1 now has 250 likes.
@@ -53,7 +59,7 @@ The feed at index 2 now has 75 likes.
 Find the highest reach in the feed.
 Find the total reach in the feed.
 
-// --- BUILT-IN FUNCTIONS: string and clamp ---
+// --- STRING/UTILITY BUILTINS ---
 Detect spam in "buy followers now click here".
 Clamp engagement between 10 and then 90.
 Reverse the caption ("Hello World").

@@ -1,32 +1,41 @@
+// ===============================================
+// EXECUTION ACCOUNTS METRICS TEST
+// Clean account-lifecycle showcase: creation, init/update forms,
+// expressions, float metrics, status flags, posting, and displays.
+// ===============================================
+
 Go live.
 Announce "execution accounts metrics".
 
-// --- primary account: full metric lifecycle ---
+// --- ACCOUNT CREATION ---
 The account Exec was created.
+The account Beta was created.
+
+// --- INIT FORMS (started with / now has / began at) ---
 The account Exec started with 100 likes.
 The account Exec started with 250 followers.
 The account Exec now has 10 plus 15 comments.
+The account Exec now has 2 times 50 likes.
+The account Beta began at 3.5 engagement rate.
+The account Beta now has 200 followers.
+
+// --- UPDATE FORMS (gained / lost / increased by / decreased by) ---
 The account Exec gained 5 likes.
 The account Exec lost 3 followers.
 The account Exec increased by 20 views.
 The account Exec decreased by 2 comments.
-The account Exec posted about "Execution Story" that had 500 views.
-The account Exec now has 2 times 50 likes.
 
-// --- second account: float metric + status flags ---
-The account Beta was created.
-The account Beta started with 200 followers.
-The account Beta began at 3.5 engagement rate.
+// --- STATUS FLAGS ---
 The account Beta is viral.
 The account Beta is trending.
 
-// --- update forms ---
-The account Beta was updated to 500 followers.
-The account Beta became 400 likes.
+// --- STORY POSTING ---
+The account Exec posted about "Campaign Launch" that had 5000 views.
 
-// --- display ---
+// --- DISPLAY METRICS + FULL ACCOUNT ---
 Display Exec likes.
 Display Exec.
 Display Beta followers.
 Display Beta.
+
 End live.

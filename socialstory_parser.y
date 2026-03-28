@@ -866,6 +866,9 @@ builtin_call:
         $$ = make_node(AST_BUILTIN_CALL);
         $$->sval = strdup("find_max_viral_account");
         $$->line_number = yylineno;
+
+        free($3);
+        free($5);
     }
     /* NEW FEATURE: Reverse the caption */
     | T_REVERSE_THE_CAPTION T_LPAREN T_TEXT T_RPAREN T_DOT
@@ -1397,16 +1400,6 @@ void yyerror(const char *s) {
     }
 }
 
-/* ========================================
- * MAIN FUNCTION
- * ======================================== */
-/* main() has been moved to main.c for cleaner code organization. */
-
-/* ============================================================
- * compiler_run() — Full compiler pipeline
- * Called by main.c after files are opened.
- * Returns 0 on success, 1 on error.
- * ============================================================ */
 int compiler_run(const char* input_filename,
                  const char* output_filename,
                  FILE* input_file,

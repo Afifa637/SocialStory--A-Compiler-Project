@@ -1,22 +1,35 @@
+// ===============================================
+// INPUT I/O TEST
+// Demonstrates Ask-for variables from stdin, variable expressions,
+// conditionals, and case-sensitive account identities.
+// ===============================================
+
 Go live.
 Announce "input io".
 
+// --- ASK FOR INPUT (stdin-backed) ---
 Ask for input_likes.
 Ask for input_followers.
 Ask for posts_per_week.
 
+// --- CASE-SENSITIVE ACCOUNT PAIR ---
 The account InputUser was created.
 The account inputuser was created.
+
+// --- BASE INITIALIZATION ---
 The account InputUser started with 0 likes.
 The account InputUser started with 0 followers.
 The account InputUser started with 0 comments.
 The account InputUser started with 0 posts.
 The account inputuser started with 1 likes.
+
+// --- USE INPUT VARIABLES IN EXPRESSIONS ---
 The account InputUser gained (input_likes) likes.
 The account InputUser gained (input_followers) followers.
 The account InputUser gained (input_likes plus posts_per_week) comments.
 The account InputUser gained (posts_per_week) posts.
 
+// --- BRANCHING BASED ON INPUT-DRIVEN STATE ---
 When InputUser likes more than 10 also InputUser followers more than 50
 {
     Announce "strong start".
@@ -30,6 +43,7 @@ Otherwise
     Announce "needs growth".
 }
 
+// --- DISPLAY SUMMARY ---
 Display InputUser likes.
 Display inputuser likes.
 Display InputUser comments.

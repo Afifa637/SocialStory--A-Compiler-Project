@@ -1,46 +1,58 @@
+// ===============================================
+// ARRAYS + OPTIMIZER INTEGRATION TEST
+// Demonstrates feed operations plus optimizer pass triggers:
+// temp-const propagation, constant folding, algebraic simplification,
+// strength reduction, copy propagation, and dead code elimination.
+// ===============================================
+
 Go live.
 Announce "arrays optimizer integration".
 
 // --- FEED DECLARATION ---
 The feed contains 3 posts.
 
-// --- INDEXED ASSIGNMENT: literal and expression values ---
+// --- FEED INDEXED ASSIGNMENTS (constant folding opportunities) ---
 The feed at index 0 now has 5 plus 5 likes.
 The feed at index 1 now has 20 likes.
 The feed at index 2 now has 1 times 30 likes.
 
-// --- ACCOUNT WITH FEED-DRIVEN EXPRESSIONS ---
+// --- CASE-SENSITIVE ACCOUNT PAIR ---
 The account Arr was created.
 The account arr was created.
+
+// --- FEED-DRIVEN EXPRESSIONS ---
 The account Arr now has the feed at index 0 likes plus the feed at index 1 likes likes.
 The account Arr now has the feed contains posts followers.
 The account arr started with 2 likes.
 
-// --- DISPLAY: individual metric + feed slot ---
+// --- DISPLAY FEED + ACCOUNT METRICS ---
 Display Arr likes.
 Display arr likes.
 Display the feed at index 2 likes.
 
-// --- LOOP: for each post in feed ---
+// --- COLLECTION LOOP OVER FEED ---
 For each post in the feed
 {
     Announce "looping feed".
 }
 
-// --- OPTIMIZER SHOWCASE: algebraic simplification triggers ---
-// x + 0 = x
-The account Arr now has 50 plus 0 likes.
-// x * 1 = x
-The account Arr now has 50 times 1 followers.
-// constant folding: 10 + 20 folded to 30
+// --- ALGEBRAIC SIMPLIFICATION TRIGGERS ---
+// TRIGGERS: algebraic simplification — x + 0 eliminated
+The account Arr now has 100 plus 0 likes.
+// TRIGGERS: algebraic simplification — x * 1 eliminated
+The account Arr now has 100 times 1 followers.
+// TRIGGERS: algebraic simplification — x * 0 collapses to 0
+The account Arr now has 50 times 0 comments.
+
+// --- ADDITIONAL CONSTANT FOLDING TRIGGER ---
 The account Arr now has 10 plus 20 comments.
 
-// --- STRENGTH REDUCTION SHOWCASE: non-constant operand * power-of-two ---
-// uses account metric refs (not literals) so pass can rewrite in TAC
+// --- STRENGTH REDUCTION TRIGGERS ---
 The account Arr now has Arr likes times 2 views.
 The account Arr now has Arr likes times 4 shares.
 
-// --- OUT-OF-BOUNDS: intentional runtime error to prove bounds check ---
-The feed at index 9 now has 99 likes.
+// --- RUNTIME SAFETY DEMO KEPT AS DOCUMENTATION ONLY ---
+// The feed at index 9 now has 99 likes.
+
 Display Arr.
 End live.

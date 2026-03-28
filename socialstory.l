@@ -283,18 +283,8 @@ MULTI_COMMENT_END "*/"
                     }
 
 .                   {
-                      char ch = yytext[0];
-                      fprintf(stderr, "\n\xE2\x9D\x8C LEXICAL ERROR at line %d:\n", yylineno);
-                      fprintf(stderr, "   Unexpected character: '%c' (ASCII %d)\n", ch, (int)ch);
-                      if (ch == '@') fprintf(stderr, "   Hint: '@' is not valid. Did you mean an account name? Use: The account NAME was created.\n");
-                      else if (ch == '$') fprintf(stderr, "   Hint: '$' is not valid. Variables are plain names, e.g.: The account myAcct\n");
-                      else if (ch == '^') fprintf(stderr, "   Hint: '^' is not a valid operator. Use: plus, minus, times, divided by, or +, -, *, /\n");
-                      else if (ch == '&') fprintf(stderr, "   Hint: Use 'also' for AND logic, not '&'\n");
-                      else if (ch == '|') fprintf(stderr, "   Hint: Use 'either' for OR logic, not '|'\n");
-                      else if (ch == '!') fprintf(stderr, "   Hint: Use 'opposite' for NOT logic, not '!'\n");
-                      else fprintf(stderr, "   Fix: Remove or replace this character. Check the SocialStoryScript syntax guide.\n");
-                      fprintf(stderr, "\n");
-                      error_count++;
-                    }
+                                            fprintf(stderr, "\n❌ LEXICAL ERROR at line %d:\n   Unrecognized character: '%s'\n   Fix: Remove or replace this character.\n\n", yylineno, yytext);
+                                            error_count++;
+                                        }
 
 %%

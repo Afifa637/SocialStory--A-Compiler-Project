@@ -4,14 +4,164 @@ Input file : tests/syntax_error_recovery_test.txt
 ==========================================
 
 
-❌ SYNTAX ERROR at line 8: near '.' — syntax error
-⚠️ Syntax error at line 8: Recovered
+❌ SYNTAX ERROR at line 19: near '.' — syntax error
+⚠️ Syntax error at line 19: Recovered
 
-❌ SYNTAX ERROR at line 12: near 'invalid' — syntax error
-⚠️ Syntax error at line 13: Recovered
+❌ SYNTAX ERROR at line 25: near 'invalid_keyword' — syntax error
+⚠️ Syntax error at line 25: Recovered
 
 ✅ Parse successful! AST built.
 
-❌ COMPILATION FAILED
-   Lexical errors  : 1
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ACCOUNT_CREATE (A)
+  ├─ ACCOUNT_CREATE (A)
+  ├─ ACCOUNT_CREATE (B)
+  ├─ ACCOUNT_INIT (A)
+    ├─ METRIC (likes)
+  ├─ ANNOUNCE (continued after error one)
+  ├─ ACCOUNT_INIT (B)
+    ├─ METRIC (followers)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ LOGICAL_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (A) [likes]
+          ├─ LITERAL_INT [0]
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (B) [followers]
+          ├─ LITERAL_INT [0]
+    Body:
+      ├─ ANNOUNCE (both accounts active)
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 17
+   Maximum depth: 5
+   Average branching factor: 3.40
+=====================================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: create_account A
+   2: create_account B
+   3: A.likes = 2
+   4: print "continued after error one"
+   5: B.followers = 7
+   6: t0 = 0
+   7: t1 = A > t0
+   8: t2 = 0
+   9: t3 = B > t2
+  10: t4 = t1 && t3
+  11: if t4 == false goto L0
+  12: print "both accounts active"
+L0:
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 12
+   Temporary variables: 5
+   Labels created: 2
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 2
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 0
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 0
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 0
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 0
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 2
+Temporary variables used: 3/5
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 12
+  Instructions after:  10
+  Instructions removed: 2
+  Reduction: 16.7%
+  Total optimizations applied: 4
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: create_account A
+   2: create_account B
+   3: A.likes = 2
+   4: print "continued after error one"
+   5: B.followers = 7
+   6: t1 = A > 0
+   7: t3 = B > 0
+   8: t4 = t1 && t3
+   9: if t4 == false goto L0
+  10: print "both accounts active"
+L0:
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 10
+   Temporary variables: 5
+   Labels created: 2
+========================================
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 14] ✨ Created account: A
+[Line 15] ✨ Created account: B
+[Line 16] 📊 A started with 2 likes
+[Line 22] 📢 Announcement: continued after error one
+[Line 28] 👥 B started with 7 followers
+[Line 33] 📢 Announcement: both accounts active
+==========================================
+❌ Program execution completed with 2 runtime/semantic error(s).
+
+📋 Symbol Table:
+================
+B                    | Type: Account | Likes: 0, Followers: 7, Views: 0, Comments: 0, Shares: 0
+A                    | Type: Account | Likes: 2, Followers: 0, Views: 0, Comments: 0, Shares: 0
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 2
+   Accounts: 2
+   Functions: 0
+   Variables: 0
+============================
+
+❌ Execution completed with runtime/semantic errors
+   Lexical errors  : 0
+   Syntax errors   : 0
    Semantic errors : 2
+   TAC temporaries : 5
+   TAC labels      : 2

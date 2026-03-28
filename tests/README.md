@@ -21,9 +21,9 @@ python3 tests/run_tests.py ./socialstory
 | `semantic_runtime_safety_test` | 1 | Safety guardrails: undeclared use, type coercion, divide/modulo-by-zero, feed index type+bounds, arity mismatch |
 | `execution_accounts_metrics_test` | 0 | Practical account analytics lifecycle and reporting |
 | `controlflow_loops_test` | 0 | Growth simulation and policy decisions with all loop/control-flow forms |
-| `functions_builtins_test` | 1 | Reusable analytics workflows (user functions + built-in analytics suite), including arity safety signaling |
+| `functions_builtins_test` | 0 | Reusable analytics workflows (user functions + built-in analytics suite), clean-arity success path |
 | `input_io_test` | 0 | Input-driven planning and decision logic from live campaign data |
-| `arrays_optimizer_integration_test` | 1 | Weekly feed/post analytics plus optimizer impact on realistic workload, including strength reduction, DCE, and feed bounds safety signaling |
+| `arrays_optimizer_integration_test` | 0 | Weekly feed/post analytics plus optimizer impact on realistic workload, including strength reduction, DCE, and measurable TAC reduction |
 
 ## Policy notes for evaluators
 

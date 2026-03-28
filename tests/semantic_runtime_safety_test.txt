@@ -1,26 +1,48 @@
+// ===============================================
+// SEMANTIC + RUNTIME SAFETY TEST
+// Intentional error showcase for static and dynamic checks.
+// ===============================================
+
 Go live.
-// CHECK 1: duplicate account declaration (warning)
+
+// --- BASELINE DECLARATION ---
 The account Safety was created.
+
+// --- INTENTIONAL ERROR 1: duplicate account declaration ---
 The account Safety was created.
-// CHECK 2: case-sensitive symbol check (different case => undeclared)
-The account Ghost now has 10 likes.
-The account safety now has 1 likes.
-// CHECK 3: float-to-int (began at on likes — type coercion)
-The account Safety began at 2.5 likes.
-// CHECK 4: division by zero
+
+// --- INTENTIONAL ERROR 2: undeclared symbol ---
+The account Ghost started with 10 likes.
+
+// --- INTENTIONAL ERROR 3: case-sensitive mismatch (safety != Safety) ---
+The account safety started with 1 likes.
+
+// --- SAFE BASELINE VALUE FOR LATER RUNTIME OPS ---
+The account Safety started with 10 likes.
+
+// --- INTENTIONAL ERROR 4: division by zero ---
 The account Safety now has 10 divide 0 likes.
-// CHECK 4b: modulo by zero
+
+// --- INTENTIONAL ERROR 5: modulo by zero ---
 The account Safety now has 10 modulo 0 comments.
-// CHECK 5: feed out-of-bounds (declare 2, access index 5)
+
+// --- FEED SAFETY CHECKS ---
 The feed contains 2 posts.
-// CHECK 5b: feed index type safety (float index is invalid)
+
+// --- INTENTIONAL ERROR 6: non-integer feed index ---
 The feed at index 1.5 now has 77 likes.
+
+// --- INTENTIONAL ERROR 7: out-of-bounds feed index ---
 The feed at index 5 now has 99 likes.
-// CHECK 6: function arity mismatch
+
+// --- FUNCTION ARITY SAFETY CHECK ---
 The story of addone begins with x
 {
     Tell back x plus 1.
 }
 The story ends.
+
+// --- INTENTIONAL ERROR 8: arity mismatch ---
 Tell addone with 1, 2.
+
 End live.

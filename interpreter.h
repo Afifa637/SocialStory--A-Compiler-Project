@@ -595,7 +595,7 @@ void execute_statement(ASTNode *node)
             float float_value = has_expr ? execute_expression_float(node->right) : node->fval;
 
             /* ========================================
-             * TYPE CHECKING (A+ FEATURE)
+             * TYPE CHECKING 
              * Detect float→int and string→numeric errors
              * ======================================== */
 
@@ -742,7 +742,7 @@ void execute_statement(ASTNode *node)
         if (acc)
         {
             int views = node->ival > 0 ? node->ival : 5000;
-            acc->views += views; // FIX BUG #4: Store views in account
+            acc->views += views; // Store views in account
             acc->stories++;
 
             const char *caption = (node->left && node->left->type == AST_LITERAL_STRING)
