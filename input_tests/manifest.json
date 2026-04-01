@@ -2,58 +2,58 @@
   {
     "name": "lexical_identifiers_test",
     "description": "Lexical reliability for analyst scripts: valid naming patterns, numeric forms, comments, escapes, and invalid-token recovery",
-    "input": "tests/lexical_identifiers_test.txt",
-    "expected": "tests/lexical_identifiers_test.expected.txt",
+    "input": "lexical_identifiers_test.txt",
+    "expected": "lexical_identifiers_test.expected.txt",
     "expectedExit": 1
   },
   {
     "name": "syntax_error_recovery_test",
     "description": "Robust parser diagnostics for malformed analytics scripts with multi-point recovery and continued parsing",
-    "input": "tests/syntax_error_recovery_test.txt",
-    "expected": "tests/syntax_error_recovery_test.expected.txt",
+    "input": "syntax_error_recovery_test.txt",
+    "expected": "syntax_error_recovery_test.expected.txt",
     "expectedExit": 1
   },
   {
     "name": "semantic_runtime_safety_test",
     "description": "Combined semantic+runtime guardrails: duplicate declarations, undeclared symbols, type coercion, divide/modulo-by-zero, feed index type+bounds, and arity mismatch diagnostics",
-    "input": "tests/semantic_runtime_safety_test.txt",
-    "expected": "tests/semantic_runtime_safety_test.expected.txt",
+    "input": "semantic_runtime_safety_test.txt",
+    "expected": "semantic_runtime_safety_test.expected.txt",
     "expectedExit": 1
   },
   {
     "name": "execution_accounts_metrics_test",
     "description": "End-to-end account analytics lifecycle: setup, updates, arithmetic metric changes, status flags, story posting, and reporting",
-    "input": "tests/execution_accounts_metrics_test.txt",
-    "expected": "tests/execution_accounts_metrics_test.expected.txt",
+    "input": "execution_accounts_metrics_test.txt",
+    "expected": "execution_accounts_metrics_test.expected.txt",
     "expectedExit": 0
   },
   {
     "name": "controlflow_loops_test",
     "description": "Growth simulation and strategy logic: all loop types, break/continue controls, and rule-based decisions with AND/OR/NOT",
-    "input": "tests/controlflow_loops_test.txt",
-    "expected": "tests/controlflow_loops_test.expected.txt",
+    "input": "controlflow_loops_test.txt",
+    "expected": "controlflow_loops_test.expected.txt",
     "expectedExit": 0
   },
   {
     "name": "functions_builtins_test",
     "description": "Reusable analytics workflows: user functions plus built-in reporting for virality, engagement, growth, feed insights, and text safety",
-    "input": "tests/functions_builtins_test.txt",
-    "expected": "tests/functions_builtins_test.expected.txt",
+    "input": "functions_builtins_test.txt",
+    "expected": "functions_builtins_test.expected.txt",
     "expectedExit": 0
   },
   {
     "name": "input_io_test",
     "description": "Interactive planning workflow: stdin-driven metrics, variable expressions, and branching strategy decisions from live input",
-    "input": "tests/input_io_test.txt",
-    "stdin": "tests/input_io_test.stdin.txt",
-    "expected": "tests/input_io_test.expected.txt",
+    "input": "input_io_test.txt",
+    "stdin": "input_io_test.stdin.txt",
+    "expected": "input_io_test.expected.txt",
     "expectedExit": 0
   },
   {
     "name": "arrays_optimizer_integration_test",
     "description": "Practical feed analytics + optimizer integration: post-level feed modeling, indexed retrieval, feed iteration/length usage, and measurable TAC reduction",
-    "input": "tests/arrays_optimizer_integration_test.txt",
-    "expected": "tests/arrays_optimizer_integration_test.expected.txt",
+    "input": "arrays_optimizer_integration_test.txt",
+    "expected": "arrays_optimizer_integration_test.expected.txt",
     "expectedExit": 0
   }
 ]

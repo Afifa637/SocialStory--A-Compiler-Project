@@ -1,24 +1,10 @@
-/* ========================================
- * STATISTICS.H
- * Compiler Statistics Module
- * 
- * This module handles:
- * - AST node counting
- * - AST depth calculation
- * - Symbol table statistics
- * - Compiler metrics reporting
- * ======================================== */
 
 #ifndef STATISTICS_H
 #define STATISTICS_H
 
 #include <stdio.h>
 
-/* ========================================
- * AST STATISTICS
- * ======================================== */
-
-/* Count total number of nodes in AST */
+ // AST STATISTICS
 int count_ast_nodes(ASTNode* node) {
     if (!node) return 0;
     
@@ -32,13 +18,11 @@ int count_ast_nodes(ASTNode* node) {
            count_ast_nodes(node->param);
 }
 
-/* Calculate maximum depth of AST */
 int calculate_ast_depth(ASTNode* node, int current_depth) {
     if (!node) return current_depth;
     
     int max_depth = current_depth;
     
-    // Calculate depth of all child nodes
     int depths[] = {
         calculate_ast_depth(node->left, current_depth + 1),
         calculate_ast_depth(node->right, current_depth + 1),
@@ -49,7 +33,7 @@ int calculate_ast_depth(ASTNode* node, int current_depth) {
         calculate_ast_depth(node->next, current_depth)
     };
     
-    // Find maximum depth
+    // find maximum depth
     for (int i = 0; i < 7; i++) {
         if (depths[i] > max_depth) {
             max_depth = depths[i];
@@ -59,7 +43,7 @@ int calculate_ast_depth(ASTNode* node, int current_depth) {
     return max_depth;
 }
 
-/* Print AST statistics to file */
+
 void print_ast_statistics(FILE* fp) {
     int total_nodes = count_ast_nodes(ast_root);
     int max_depth = calculate_ast_depth(ast_root, 0);
@@ -77,11 +61,8 @@ void print_ast_statistics(FILE* fp) {
     fprintf(fp, "=====================================\n");
 }
 
-/* ========================================
- * SYMBOL TABLE STATISTICS
- * ======================================== */
 
-/* Count symbols by type and print statistics */
+
 void print_symbol_table_stats(FILE* fp) {
     int account_count = 0;
     int function_count = 0;
@@ -114,4 +95,4 @@ void print_symbol_table_stats(FILE* fp) {
     fprintf(fp, "============================\n");
 }
 
-#endif /* STATISTICS_H */
+#endif

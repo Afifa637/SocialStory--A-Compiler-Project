@@ -1,7 +1,4 @@
-/* ========================================
- * INTERPRETER.H
- * Program Execution Engine
- * ======================================== */
+//Program Execution Engine 
 
 #ifndef INTERPRETER_H
 #define INTERPRETER_H
@@ -12,18 +9,15 @@
 #include <math.h>
 #include <ctype.h>
 
-/* Forward declarations */
 void execute_statement(ASTNode *node);
 void execute_statements(ASTNode *node);
 int execute_expression(ASTNode *node);
 float execute_expression_float(ASTNode *node);
 
-/* ===== Function Return Handling ===== */
-int return_flag = 0;      /* Set to 1 when Tell back is executed */
-int return_value = 0;     /* Holds the integer return value */
-float return_value_f = 0; /* Holds the float return value */
+int return_flag = 0;
+int return_value = 0;
+float return_value_f = 0;
 
-/* ===== Feed/Array Runtime Storage ===== */
 typedef struct FeedEntry
 {
     int likes;
@@ -159,12 +153,6 @@ int eval_feed_index(ASTNode *idx_expr, int line_number, int *ok)
     return idx;
 }
 
-/* ========================================
- * TYPE CHECKING HELPERS (A+ FEATURE)
- * Detect type mismatches at compile/runtime
- * ======================================== */
-
-/* Check if a metric expects float values */
 int is_float_metric(const char *metric_name)
 {
     return (strcmp(metric_name, "engagement rate") == 0 ||
@@ -174,7 +162,6 @@ int is_float_metric(const char *metric_name)
             strcmp(metric_name, "reach") == 0);
 }
 
-/* Check if a metric expects integer values */
 int is_int_metric(const char *metric_name)
 {
     return (strcmp(metric_name, "likes") == 0 ||
@@ -185,10 +172,6 @@ int is_int_metric(const char *metric_name)
             strcmp(metric_name, "posts") == 0 ||
             strcmp(metric_name, "stories") == 0);
 }
-
-/* ========================================
- * ACCOUNT METRIC ACCESSORS
- * ======================================== */
 
 int get_account_metric(SymbolEntry *acc, const char *metric)
 {
@@ -250,10 +233,6 @@ void set_account_metric_float(SymbolEntry *acc, const char *metric, float value)
         acc->reach = value;
 }
 
-/* ========================================
- * BUILTIN FUNCTIONS
- * ======================================== */
-
 void builtin_calculate_virality(const char *account_name)
 {
     SymbolEntry *acc = lookup_symbol(account_name);
@@ -288,7 +267,6 @@ void builtin_analyze_growth(const char *account_name)
     if (!acc)
         return;
 
-    // Simple growth calculation based on current metrics
     acc->growth_rate = (acc->followers > 500) ? 100.0 : 50.0;
     fprintf(output_file, "[Line %d] 📊 RESULT: Growth rate for '%s' = %.2f%%\n",
             yylineno, account_name, acc->growth_rate);
@@ -321,9 +299,20 @@ void builtin_find_max_viral()
     }
 }
 
-/* ========================================
- * EXPRESSION EVALUATION
- * ======================================== */
+int convert_string_to_int_value(const char *text)
+{
+    unsigned int hash = 5381u;
+    if (!text)
+        return 0;
+
+    while (*text)
+    {
+        hash = ((hash << 5) + hash) + (unsigned char)(*text); /* hash * 33 + c */
+        text++;
+    }
+
+    return (int)(hash & 0x7fffffff);
+}
 
 int execute_expression(ASTNode *node)
 {
@@ -343,7 +332,7 @@ int execute_expression(ASTNode *node)
 
     case AST_METRIC:
     {
-        // Sum across all accounts
+        // sum across all accounts
         int total = 0;
         SymbolEntry *current = symbol_table;
         while (current)
@@ -359,7 +348,7 @@ int execute_expression(ASTNode *node)
 
     case AST_ACCOUNT_REF:
     {
-        // Get metric for specific account
+        // get metric for specific account name & metric
         if (node->sval && node->sval2)
         {
             SymbolEntry *acc = lookup_symbol(node->sval);
@@ -389,7 +378,7 @@ int execute_expression(ASTNode *node)
             {
                 fprintf(stderr, "❌ Runtime Error line %d: Division by zero\n", node->line_number);
                 fprintf(output_file, "❌ Runtime Error line %d: Division by zero\n", node->line_number);
-                semantic_errors++; // COUNT THIS ERROR
+                semantic_errors++;
                 return 0;
             }
             return left / right;
@@ -398,7 +387,7 @@ int execute_expression(ASTNode *node)
             {
                 fprintf(stderr, "❌ Runtime Error line %d: Modulo by zero\n", node->line_number);
                 fprintf(output_file, "❌ Runtime Error line %d: Modulo by zero\n", node->line_number);
-                semantic_errors++; // COUNT THIS ERROR
+                semantic_errors++;
                 return 0;
             }
             return left % right;
@@ -434,22 +423,21 @@ int execute_expression(ASTNode *node)
         int left = execute_expression(node->left);
         int right = execute_expression(node->right);
 
-        if (node->ival == 0)
-            return left && right; // AND
+        if (node->ival == LOGICAL_AND)
+            return left && right;
         else
-            return left || right; // OR
+            return left || right;
     }
 
-    /* NEW: Unary operations like opposite (NOT) */
     case AST_UNARY_OP:
     {
         int operand = execute_expression(node->left);
-        if (node->ival == 0)
-            return !operand; // NOT
+        if (node->ival == UNARY_NOT)
+            return !operand;
         return operand;
     }
 
-    /* Variable lookup (for Ask for / user-defined variables) */
+    // variable lookup (for Ask for / user-defined variables)
     case AST_IDENTIFIER:
     {
         if (node->sval)
@@ -564,10 +552,6 @@ float execute_expression_float(ASTNode *node)
     }
 }
 
-/* ========================================
- * STATEMENT EXECUTION
- * ======================================== */
-
 void execute_statement(ASTNode *node)
 {
     if (!node || loop_break_flag || return_flag)
@@ -594,11 +578,6 @@ void execute_statement(ASTNode *node)
             int int_value = has_expr ? execute_expression(node->right) : node->ival;
             float float_value = has_expr ? execute_expression_float(node->right) : node->fval;
 
-            /* ========================================
-             * TYPE CHECKING 
-             * Detect float→int and string→numeric errors
-             * ======================================== */
-
             // Check for float value assigned to integer metric
             if (has_float_literal && is_int_metric(metric))
             {
@@ -607,7 +586,7 @@ void execute_statement(ASTNode *node)
                 fprintf(output_file, "❌ Type Error at line %d: Float→Int conversion not allowed for '%s' (attempted %.2f)\n",
                         node->line_number, metric, float_value);
                 semantic_errors++;
-                break; // Don't execute this assignment
+                break;
             }
 
             // Warn about int→float conversion (allowed but warn)
@@ -615,12 +594,9 @@ void execute_statement(ASTNode *node)
             {
                 fprintf(output_file, "⚠️  Warning at line %d: Implicitly converting int %d to float for '%s'\n",
                         node->line_number, int_value, metric);
-                float_value = (float)int_value; // Auto-convert
+                float_value = (float)int_value;
             }
 
-            /* ======================================== */
-
-            // Check if it's a float metric
             if (strcmp(metric, "engagement rate") == 0 ||
                 strcmp(metric, "engagement_rate") == 0 ||
                 strcmp(metric, "growth rate") == 0 ||
@@ -657,20 +633,18 @@ void execute_statement(ASTNode *node)
             int old_value = get_account_metric(acc, metric);
             int new_value;
 
-            /* Evaluate the expression amount (node->right holds expression tree) */
             int amount = node->right ? execute_expression(node->right) : node->ival;
 
-            if (node->ival2 == 1)
+            if (node->ival2 == UPDATE_MODE_MULTIPLY)
             {
-                /* multiply */
                 new_value = old_value * amount;
                 set_account_metric(acc, metric, new_value);
                 fprintf(output_file, "[Line %d] ✖️  %s multiplied %s by %d (now: %d)\n",
                         node->line_number, node->sval, metric, amount, new_value);
             }
-            else if (node->ival2 == 2)
+            else if (node->ival2 == UPDATE_MODE_DIVIDE)
             {
-                /* divide */
+
                 if (amount != 0)
                 {
                     new_value = old_value / amount;
@@ -685,21 +659,21 @@ void execute_statement(ASTNode *node)
                     semantic_errors++;
                 }
             }
-            else if (node->ival2 == 3)
+            else if (node->ival2 == UPDATE_MODE_SET_VIRAL)
             {
                 /* set viral */
                 acc->is_viral = 1;
                 fprintf(output_file, "[Line %d] 🔥 %s is now VIRAL!\n",
                         node->line_number, node->sval);
             }
-            else if (node->ival2 == 4)
+            else if (node->ival2 == UPDATE_MODE_SET_TRENDING)
             {
                 /* set trending */
                 acc->is_trending = 1;
                 fprintf(output_file, "[Line %d] 📈 %s is now TRENDING!\n",
                         node->line_number, node->sval);
             }
-            else if (node->ival == -1)
+            else if (node->ival == UPDATE_SUB)
             {
                 /* subtract (lost / decreased by) — clamp to 0, metrics can't go negative */
                 new_value = old_value - amount;
@@ -717,7 +691,7 @@ void execute_statement(ASTNode *node)
             }
             else
             {
-                /* normal add (gained / increased by) */
+
                 new_value = old_value + amount;
                 set_account_metric(acc, metric, new_value);
 
@@ -741,8 +715,8 @@ void execute_statement(ASTNode *node)
         SymbolEntry *acc = lookup_symbol(node->sval);
         if (acc)
         {
-            int views = node->ival > 0 ? node->ival : 5000;
-            acc->views += views; // Store views in account
+            int views = node->ival > 0 ? node->ival : 500;
+            acc->views += views; 
             acc->stories++;
 
             const char *caption = (node->left && node->left->type == AST_LITERAL_STRING)
@@ -863,21 +837,20 @@ void execute_statement(ASTNode *node)
         break;
     }
 
-    /* NEW: trending loop until CONDITION */
+    // loop until CONDITION
     case AST_LOOP_TRENDING:
     {
         fprintf(output_file, "[Line %d] 🔄 Trending loop until condition met\n",
                 node->line_number);
 
-        int max_iterations = 1000; // Safety limit
+        int max_iterations = 1000;
         int iterations = 0;
 
         while (iterations < max_iterations && !loop_break_flag)
         {
-            // Check condition - loop UNTIL it's true
             if (node->condition && execute_expression(node->condition))
             {
-                break; // Condition met, exit loop
+                break;
             }
 
             loop_continue_flag = 0;
@@ -896,7 +869,6 @@ void execute_statement(ASTNode *node)
         break;
     }
 
-    /* NEW: String operations */
     case AST_STRING_OP:
     {
         if (strcmp(node->sval, "reverse") == 0 && node->sval2)
@@ -915,7 +887,6 @@ void execute_statement(ASTNode *node)
         }
         else if (strcmp(node->sval, "detect_spam") == 0 && node->sval2)
         {
-            /* Simple spam detection: check for spam keywords */
             const char *spam_words[] = {"spam", "free", "click", "win", "prize", "buy now", NULL};
             int is_spam = 0;
             char lower_text[512];
@@ -952,7 +923,7 @@ void execute_statement(ASTNode *node)
         feed_size = requested;
         if (feed_size > 0)
         {
-            feed_entries = (FeedEntry *)calloc((size_t)feed_size, sizeof(FeedEntry));
+            feed_entries = (FeedEntry *)calloc((size_t)feed_size, sizeof(FeedEntry)); // 0 init
             if (!feed_entries)
             {
                 fprintf(stderr, "❌ Runtime Error line %d: Memory allocation failed for feed\n", node->line_number);
@@ -1052,7 +1023,7 @@ void execute_statement(ASTNode *node)
 
     case AST_LOOP_COLLECTION:
     {
-        /* For each post/story in the feed */
+        // For each post/story in the feed
         int count = feed_size;
         fprintf(output_file, "[Line %d] 🔄 Collection loop (%s) - %d iterations\n",
                 node->line_number, node->sval ? node->sval : "item", count);
@@ -1112,7 +1083,7 @@ void execute_statement(ASTNode *node)
                     node->line_number, node->sval, acc->likes, acc->followers,
                     acc->views, acc->comments, acc->shares);
 
-            // FIX BUG #5: Display float metrics even if not explicitly computed
+            // Display float metrics even if not explicitly computed
             if (acc->engagement_rate > 0.001)
             {
                 fprintf(output_file, "        Engagement Rate: %.2f%%\n", acc->engagement_rate);
@@ -1134,14 +1105,13 @@ void execute_statement(ASTNode *node)
     {
         if (node->sval)
         {
-            /* Print prompt to both console and terminal */
             printf("\n🎤 INPUT REQUIRED: Enter value for '%s': ", node->sval);
             fflush(stdout);
 
             char input_buf[256];
             if (fgets(input_buf, sizeof(input_buf), stdin))
             {
-                /* Try to parse as integer first, then float */
+                // Try to parse as integer first, then float
                 char *endptr;
                 long int_val = strtol(input_buf, &endptr, 10);
 
@@ -1153,7 +1123,6 @@ void execute_statement(ASTNode *node)
 
                 if (*endptr == '\n' || *endptr == '\0' || *endptr == '\r')
                 {
-                    /* Valid integer */
                     var->likes = (int)int_val;
                     printf("   ✅ Stored: %s = %d\n\n", node->sval, (int)int_val);
                     fprintf(output_file, "[Line %d] 🎤 INPUT: %s = %d (integer)\n",
@@ -1164,7 +1133,6 @@ void execute_statement(ASTNode *node)
                     float f_val = strtof(input_buf, &endptr);
                     if (*endptr == '\n' || *endptr == '\0' || *endptr == '\r')
                     {
-                        /* Valid float */
                         var->engagement_rate = f_val;
                         printf("   ✅ Stored: %s = %.2f\n\n", node->sval, f_val);
                         fprintf(output_file, "[Line %d] 🎤 INPUT: %s = %.2f (float)\n",
@@ -1172,12 +1140,12 @@ void execute_statement(ASTNode *node)
                     }
                     else
                     {
-                        /* Treat as string: store length as value */
+                        /* Treat as string: store converted integer value */
                         input_buf[strcspn(input_buf, "\r\n")] = 0;
-                        var->likes = (int)strlen(input_buf);
-                        printf("   ✅ Stored string: %s = \"%s\"\n\n", node->sval, input_buf);
-                        fprintf(output_file, "[Line %d] 🎤 INPUT: %s = \"%s\" (string, length stored)\n",
-                                node->line_number, node->sval, input_buf);
+                        var->likes = convert_string_to_int_value(input_buf);
+                        printf("   ✅ Stored string: %s = \"%s\" -> %d\n\n", node->sval, input_buf, var->likes);
+                        fprintf(output_file, "[Line %d] 🎤 INPUT: %s = \"%s\" (string converted to int: %d)\n",
+                                node->line_number, node->sval, input_buf, var->likes);
                     }
                 }
             }
@@ -1191,10 +1159,7 @@ void execute_statement(ASTNode *node)
         break;
     }
 
-    /* ========================================
-     * FUNCTION DEFINITION
-     * Store function body and params in symbol table
-     * ======================================== */
+        // FUNCTION DEFINITION
     case AST_FUNCTION_DEF:
     {
         if (node->sval)
@@ -1212,7 +1177,7 @@ void execute_statement(ASTNode *node)
             func->function_params = node->param;
             fprintf(output_file, "[Line %d] 📖 Defined function: '%s'",
                     node->line_number, node->sval);
-            /* Count params */
+
             int pcount = 0;
             ASTNode *p = node->param;
             while (p)
@@ -1227,10 +1192,7 @@ void execute_statement(ASTNode *node)
         break;
     }
 
-    /* ========================================
-     * FUNCTION CALL
-     * Execute stored function body with arguments
-     * ======================================== */
+        // FUNCTION CALL
     case AST_FUNCTION_CALL:
     {
         if (node->sval)
@@ -1275,11 +1237,10 @@ void execute_statement(ASTNode *node)
                 break;
             }
 
-            /* Bind arguments to parameter names in symbol table */
             ASTNode *param = func->function_params;
             ASTNode *arg = node->param;
 
-            /* Save old values of param names so we can restore after call */
+            // Saving old values of param names so i can restore after call 
             typedef struct
             {
                 char *name;
@@ -1300,7 +1261,7 @@ void execute_statement(ASTNode *node)
                     saved[saved_count].old_likes = pvar->likes;
                     saved_count++;
 
-                    /* Evaluate argument and bind */
+                    // evaluate argument and bind
                     if (arg)
                     {
                         int val = execute_expression(arg);
@@ -1316,7 +1277,7 @@ void execute_statement(ASTNode *node)
                     break;
             }
 
-            /* Execute function body */
+            // execute function body
             return_flag = 0;
             return_value = 0;
             if (func->function_body)
@@ -1330,7 +1291,7 @@ void execute_statement(ASTNode *node)
                 return_flag = 0;
             }
 
-            /* Restore old parameter values */
+            // restore old parameter values
             for (int i = 0; i < saved_count; i++)
             {
                 SymbolEntry *pvar = lookup_symbol(saved[i].name);
@@ -1341,9 +1302,7 @@ void execute_statement(ASTNode *node)
         break;
     }
 
-    /* ========================================
-     * RETURN (Tell back VALUE)
-     * ======================================== */
+        // RETURN (Tell back VALUE)
     case AST_RETURN:
     {
         return_value = execute_expression(node->left);
@@ -1442,33 +1401,43 @@ void execute_statement(ASTNode *node)
         }
         else if (strcmp(node->sval, "find_highest_reach") == 0)
         {
-            float max_reach = -1;
-            char *max_name = NULL;
-            SymbolEntry *cur = symbol_table;
-            while (cur)
+            if (!feed_entries || feed_size <= 0)
             {
-                if (cur->type == SYM_ACCOUNT && cur->reach > max_reach)
-                {
-                    max_reach = cur->reach;
-                    max_name = cur->name;
-                }
-                cur = cur->next;
+                fprintf(output_file, "[Line %d] 📡 RESULT: Highest reach in feed = 0.00 (index: -1)\n",
+                        node->line_number);
             }
-            if (max_name)
+            else
             {
-                fprintf(output_file, "[Line %d] 📡 RESULT: Highest reach = %.2f (account: %s)\n",
-                        node->line_number, max_reach, max_name);
+                int max_index = 0;
+                float max_reach = get_feed_metric_float(&feed_entries[0], "reach");
+                if (max_reach == 0.0f)
+                    max_reach = (float)get_feed_metric_int(&feed_entries[0], "likes");
+
+                for (int i = 1; i < feed_size; i++)
+                {
+                    float current = get_feed_metric_float(&feed_entries[i], "reach");
+                    if (current == 0.0f)
+                        current = (float)get_feed_metric_int(&feed_entries[i], "likes");
+                    if (current > max_reach)
+                    {
+                        max_reach = current;
+                        max_index = i;
+                    }
+                }
+
+                fprintf(output_file, "[Line %d] 📡 RESULT: Highest reach in feed = %.2f (index: %d)\n",
+                        node->line_number, max_reach, max_index);
             }
         }
         else if (strcmp(node->sval, "find_total_reach") == 0)
         {
             float total = 0;
-            SymbolEntry *cur = symbol_table;
-            while (cur)
+            for (int i = 0; i < feed_size; i++)
             {
-                if (cur->type == SYM_ACCOUNT)
-                    total += cur->reach;
-                cur = cur->next;
+                float value = get_feed_metric_float(&feed_entries[i], "reach");
+                if (value == 0.0f)
+                    value = (float)get_feed_metric_int(&feed_entries[i], "likes");
+                total += value;
             }
             fprintf(output_file, "[Line %d] 📡 RESULT: Total reach in feed = %.2f\n",
                     node->line_number, total);
@@ -1528,10 +1497,6 @@ void execute_statement(ASTNode *node)
     }
 }
 
-/* ========================================
- * EXECUTE A LINKED LIST OF STATEMENTS
- * Respects return_flag and loop_break_flag
- * ======================================== */
 void execute_statements(ASTNode *node)
 {
     while (node && !loop_break_flag && !return_flag)
@@ -1540,10 +1505,6 @@ void execute_statements(ASTNode *node)
         node = node->next;
     }
 }
-
-/* ========================================
- * MAIN EXECUTION FUNCTION
- * ======================================== */
 
 void execute(ASTNode *root)
 {
@@ -1573,4 +1534,4 @@ void execute(ASTNode *root)
     }
 }
 
-#endif /* INTERPRETER_H */
+#endif

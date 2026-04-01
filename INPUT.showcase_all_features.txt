@@ -1,0 +1,189 @@
+// ============================================================
+// SOCIALSTORYSCRIPT — SINGLE FILE FULL FEATURE SHOWCASE
+// Purpose: one evaluator-run input covering lexical, syntax,
+// semantic execution, AST/TAC/optimization, control flow,
+// functions, feed analytics, built-ins, and input I/O.
+// ============================================================
+
+Go live.
+Announce "full compiler showcase".
+
+// --- COMMENT STYLES ---
+# hash comment style
+/* multi-line
+   comment style */
+
+// --- IDENTIFIERS + CASE SENSITIVITY ---
+The account Prime was created.
+The account prime was created.
+The account Aux_1 was created.
+The account 42crew was created.
+
+// --- NUMERIC FORMS (HEX/OCTAL/SCIENTIFIC/FLOAT) ---
+The account Prime now has 0x64 likes.
+The account Prime started with 012 posts.
+The account Prime began at 2.5e1 engagement rate.
+The account prime started with 3 likes.
+
+// --- FEED DECLARE + INDEX SET/GET ---
+The feed contains 4 posts.
+The feed at index 0 now has 10 likes.
+The feed at index 1 now has 5 plus 15 likes.
+The feed at index 2 now has 2 times 20 likes.
+The feed at index 3 now has 90 divided evenly by 3 likes.
+Display the feed at index 2 likes.
+
+// --- ACCOUNT INIT / UPDATE FORMS ---
+The account Prime started with 20 followers.
+The account Prime started with 5 comments.
+The account Prime started with 2 shares.
+The account Prime now has the feed at index 1 likes plus 5 likes.
+The account Prime now has the feed contains posts followers.
+The account Prime gained 7 likes.
+The account Prime lost 2 followers.
+The account Prime increased by 10 views.
+The account Prime decreased by 1 comments.
+The account Prime now has (Prime likes modulo 13) comments.
+The account Prime now has (Prime likes divide 2) shares.
+
+// --- STATUS FLAGS + STORY POSTING ---
+The account Prime is viral.
+The account Prime is trending.
+The account Prime posted about "Launch Week" that had 5000 views.
+
+// --- INPUT I/O (enter values when prompted) ---
+Ask for input_likes.
+Ask for input_followers.
+The account Prime gained (input_likes) likes.
+The account Prime gained (input_followers) followers.
+
+// --- USER FUNCTIONS ---
+The story of Ping begins with
+{
+    Announce "PING".
+    Tell back 1.
+}
+The story ends.
+
+The story of AddFive begins with x
+{
+    Tell back x plus 5.
+}
+The story ends.
+
+The story of Mix begins with a, b
+{
+    Tell back a times b minus 1.
+}
+The story ends.
+
+Tell Ping.
+Tell AddFive with 7.
+Tell Mix with 3, 4.
+
+// --- LOOPS (ALL MAJOR FORMS) ---
+Every day for 3 days,
+{
+    The account Prime gained 2 likes.
+    When Prime likes more than 110
+    {
+        Skip this post.
+    }
+    The account Prime gained 100 likes.
+}
+
+Every 4 days incrementing by 2
+{
+    The account Prime gained 1 followers.
+}
+
+Every 6 days decrementing by 2
+{
+    The account Prime gained 1 comments.
+}
+
+For each follower from 1 to 3
+{
+    The account Prime gained 1 shares.
+}
+
+For each post in the feed
+{
+    Announce "iterating feed".
+}
+
+trending loop until Prime likes more than 140
+{
+    The account Prime gained 5 likes.
+    When Prime likes more than 135 also Prime followers less than 999 either Prime comments more than 1000
+    {
+        Stop the story.
+    }
+}
+
+// --- CONDITIONAL CHAIN + LOGICAL (also/either/opposite) ---
+When Prime likes more than 100
+{
+    Announce "if branch".
+}
+Otherwise if Prime followers exceeded 20
+{
+    Announce "elseif branch".
+}
+Otherwise
+{
+    Announce "else branch".
+}
+
+When opposite Prime followers more than 9999
+{
+    Announce "opposite branch taken".
+}
+
+When Prime likes more than 5 also Prime followers more than 0
+{
+    Announce "and branch taken".
+}
+
+When Prime likes more than 9999 either Prime followers more than 0
+{
+    Announce "or branch taken".
+}
+
+// --- BUILT-IN ANALYTICS + STRING UTILITIES ---
+Calculate virality for The account Prime.
+Calculate engagement for The account Prime.
+Analyze growth for The account Prime.
+Check if trending for The account Prime.
+Count total engagement.
+Find top post.
+Find max viral account.
+Reverse growth for The account Prime.
+Find the highest reach in the feed.
+Find the total reach in the feed.
+Detect spam in "buy followers now click here".
+Clamp engagement between 10 and then 90.
+Reverse the caption ("Hello Showcase").
+
+// --- SYNTAX HINT + RECOVERY DEMO (intentional parser errors) ---
+// These lines intentionally trigger parser hints and recovery,
+// then continue with valid statements to prove resilient parsing.
+The account Prime gained likes.
+Announce "recovered after error one".
+
+The account Prime now has 10 + likes.
+Announce "recovered after error two".
+
+The account Prime started with 5, likes.
+Announce "recovered after error three".
+
+invalid_keyword goes here.
+Announce "recovered after error four".
+
+// --- FINAL REPORTS ---
+Display Prime likes.
+Display Prime followers.
+Display Prime.
+Display prime.
+
+End live.

@@ -1,4 +1,4 @@
-# SocialStoryScript build system (MSYS2/MinGW64-friendly)
+# build run test
 
 CC ?= gcc
 FLEX ?= flex
@@ -18,7 +18,10 @@ HEADERS := compiler.h ast_functions.h symbol_table.h statistics.h tac_generator.
 HAVE_FLEX := $(shell command -v $(FLEX) >/dev/null 2>&1 && echo 1 || echo 0)
 HAVE_BISON := $(shell command -v $(BISON) >/dev/null 2>&1 && echo 1 || echo 0)
 
-.PHONY: build clean distclean run test regen tools-check submission-clean
+.PHONY: build clean distclean run test showcase regen tools-check submission-clean
+
+SHOWCASE_INPUT ?= INPUT.showcase_all_features.txt
+SHOWCASE_STDIN_FILE ?= INPUT.showcase_runtime_values.txt
 
 build: $(TARGET)
 
@@ -76,15 +79,40 @@ run: build
 	./$(TARGET) $(INPUT)
 
 test: build
-	@if [ -z "$(PYTHON)" ]; then \
+	@set -e; \
+	if [ -z "$(PYTHON)" ]; then \
 		echo "Error: no Python interpreter found (python3/python/py)."; \
 		exit 1; \
-	fi
-	@if [ -f ./$(TARGET).exe ]; then \
-		$(PYTHON) tests/run_tests.py ./$(TARGET).exe; \
+	fi; \
+	TEST_RUNNER=""; \
+	if [ -f input_tests/run_tests.py ]; then \
+		TEST_RUNNER="input_tests/run_tests.py"; \
+	elif [ -f tests/run_tests.py ]; then \
+		TEST_RUNNER="tests/run_tests.py"; \
 	else \
-		$(PYTHON) tests/run_tests.py ./$(TARGET); \
+		echo "Error: cannot find run_tests.py in input_tests/ or tests/."; \
+		exit 1; \
+	fi; \
+	if [ -f ./$(TARGET).exe ]; then \
+		$(PYTHON) $$TEST_RUNNER ./$(TARGET).exe; \
+	else \
+		$(PYTHON) $$TEST_RUNNER ./$(TARGET); \
 	fi
+
+showcase: build
+	@if [ ! -f "$(SHOWCASE_INPUT)" ]; then \
+		echo "Error: showcase input file not found: $(SHOWCASE_INPUT)"; \
+		exit 1; \
+	fi
+	@if [ ! -f "$(SHOWCASE_STDIN_FILE)" ]; then \
+		echo "Error: showcase runtime-input file not found: $(SHOWCASE_STDIN_FILE)"; \
+		exit 1; \
+	fi
+	@echo "Running showcase with runtime input values from: $(SHOWCASE_STDIN_FILE)"
+	@echo "Note: showcase intentionally includes syntax-recovery demo; non-zero exit is expected."
+	@echo "Report will be written to: OUTPUT.showcase_all_feature.txt"
+	@cat "$(SHOWCASE_STDIN_FILE)" | ./$(TARGET) "$(SHOWCASE_INPUT)" || true
+	@echo "Showcase report file: OUTPUT.showcase_all_feature.txt"
 
 clean:
 	rm -f $(TARGET) $(TARGET).exe $(OBJS)

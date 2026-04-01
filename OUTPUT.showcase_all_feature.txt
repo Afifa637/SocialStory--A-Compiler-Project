@@ -1,0 +1,1106 @@
+SocialStoryScript Compiler — Output Report
+==========================================
+Input file : INPUT.showcase_all_features.txt
+==========================================
+
+
+❌ SYNTAX ERROR at line 171: near '.' — syntax error
+   Hint: Check the statement before this period for correct syntax.
+         All statements must end with a period (.)
+⚠️ Syntax error at line 171: Recovered
+
+❌ SYNTAX ERROR at line 174: near '.' — syntax error
+   Hint: Check the statement before this period for correct syntax.
+         All statements must end with a period (.)
+⚠️ Syntax error at line 174: Recovered
+
+❌ SYNTAX ERROR at line 177: near ',' — syntax error
+   Hint: Check for missing keywords or incorrect list syntax.
+         Function params: The story of name begins with a, b, c
+⚠️ Syntax error at line 177: Recovered
+
+❌ SYNTAX ERROR at line 180: near 'invalid_keyword' — syntax error
+   Hint: Check the SocialStoryScript syntax. Statements end with '.'.
+         e.g. 'The account Alice gained 50 likes.'
+⚠️ Syntax error at line 180: Recovered
+
+✅ Parse successful! AST built.
+
+ℹ️  Showcase note: The syntax errors above are intentional
+   to demonstrate parser hints, recovery, and error handling.
+
+🎬 Executing SocialStoryScript Program...
+==========================================
+[Line 9] 📢 Announcement: full compiler showcase
+[Line 17] ✨ Created account: Prime
+[Line 18] ✨ Created account: prime
+[Line 19] ✨ Created account: Aux_1
+[Line 20] ✨ Created account: 42crew
+[Line 23] 📊 Prime started with 100 likes
+[Line 24] 📊 Prime started with 10 posts
+[Line 25] 📊 Prime began at 25.00 engagement rate
+[Line 26] 📊 prime started with 3 likes
+[Line 29] 🧱 Feed declared: 4 posts
+[Line 30] 📝 feed[0].likes = 10
+[Line 31] 📝 feed[1].likes = 20
+[Line 32] 📝 feed[2].likes = 40
+[Line 33] 📝 feed[3].likes = 30
+[Line 34] 📦 feed[2].likes = 40
+[Line 37] 👥 Prime started with 20 followers
+[Line 38] 📊 Prime started with 5 comments
+[Line 39] 📊 Prime started with 2 shares
+[Line 40] 📊 Prime started with 25 likes
+[Line 41] 👥 Prime started with 4 followers
+[Line 42] ❤️  Prime gained/increased likes by 7 (now: 32)
+[Line 43] 📉 Prime lost/decreased followers by 2: 4 → 2
+[Line 44] 👁️  Prime gained/increased views by 10 (now: 10)
+[Line 45] 📉 Prime lost/decreased comments by 1: 5 → 4
+[Line 46] 📊 Prime started with 6 comments
+[Line 47] 📊 Prime started with 16 shares
+[Line 50] 🔥 Prime is now VIRAL!
+[Line 51] 📈 Prime is now TRENDING!
+[Line 52] 📱 Prime posted story: "Launch Week" (5000 views)
+[Line 55] 🎤 INPUT: input_likes = 12 (integer)
+[Line 56] 🎤 INPUT: input_followers = 100 (integer)
+[Line 57] ❤️  Prime gained/increased likes by 12 (now: 44)
+[Line 58] 👥 Prime gained/increased followers by 100 (now: 102)
+[Line 66] 📖 Defined function: 'Ping'
+[Line 72] 📖 Defined function: 'AddFive' (params: 1)
+[Line 78] 📖 Defined function: 'Mix' (params: 2)
+[Line 80] 📞 Calling function: 'Ping'
+[Line 63] 📢 Announcement: PING
+[Line 64] ↩️  Return value: 1
+   Returned: 1
+[Line 81] 📞 Calling function: 'AddFive'
+   Bound param 'x' = 7
+[Line 70] ↩️  Return value: 12
+   Returned: 12
+[Line 82] 📞 Calling function: 'Mix'
+   Bound param 'a' = 3
+   Bound param 'b' = 4
+[Line 76] ↩️  Return value: 11
+   Returned: 11
+[Line 93] 🔄 Loop: days 1 to 3, step 1
+[Line 87] ❤️  Prime gained/increased likes by 2 (now: 46)
+[Line 92] ❤️  Prime gained/increased likes by 100 (now: 146)
+[Line 87] ❤️  Prime gained/increased likes by 2 (now: 148)
+[Line 87] ❤️  Prime gained/increased likes by 2 (now: 150)
+[Line 98] 🔄 Loop incrementing: start 1, end 4, step 2
+[Line 97] 👥 Prime gained/increased followers by 1 (now: 103)
+[Line 97] 👥 Prime gained/increased followers by 1 (now: 104)
+[Line 103] 🔄 Loop decrementing: start 6, end 1, step 2
+[Line 102] 📊 Prime gained/increased comments by 1 (now: 7)
+[Line 102] 📊 Prime gained/increased comments by 1 (now: 8)
+[Line 102] 📊 Prime gained/increased comments by 1 (now: 9)
+[Line 108] 🔄 Loop range: from 1 to 3
+[Line 107] 📊 Prime gained/increased shares by 1 (now: 17)
+[Line 107] 📊 Prime gained/increased shares by 1 (now: 18)
+[Line 107] 📊 Prime gained/increased shares by 1 (now: 19)
+[Line 113] 🔄 Collection loop (post) - 4 iterations
+[Line 112] 📢 Announcement: iterating feed
+[Line 112] 📢 Announcement: iterating feed
+[Line 112] 📢 Announcement: iterating feed
+[Line 112] 📢 Announcement: iterating feed
+[Line 122] 🔄 Trending loop until condition met
+[Line 127] 📢 Announcement: if branch
+[Line 140] 📢 Announcement: opposite branch taken
+[Line 145] 📢 Announcement: and branch taken
+[Line 150] 📢 Announcement: or branch taken
+[Line 190] 📊 RESULT: Virality score for 'Prime' = 5264 (VIRAL!)
+[Line 190] 📈 RESULT: Engagement rate for 'Prime' = 144.23%
+[Line 190] 📊 RESULT: Growth rate for 'Prime' = 50.00%
+[Line 157] 📈 RESULT: 'Prime' is TRENDING! 🔥
+[Line 158] 💬 RESULT: Total engagement across all accounts = 181
+[Line 159] 🏆 RESULT: Top performing post is from 'Prime' with 5010 views
+[Line 190] 🏆 RESULT: Most viral account is 'Prime' with viral score: 5264
+[Line 161] 📉 Reversed growth for 'Prime': now -50.00%
+[Line 162] 📡 RESULT: Highest reach in feed = 40.00 (index: 2)
+[Line 163] 📡 RESULT: Total reach in feed = 100.00
+[Line 164] 🔍 Spam detection for "buy followers now click here": ⚠️ SPAM DETECTED!
+[Line 165] 🔧 Clamped 42crew engagement: 0.00 → 10.00
+[Line 165] 🔧 Clamped Aux_1 engagement: 0.00 → 10.00
+[Line 165] 🔧 Clamped prime engagement: 0.00 → 10.00
+[Line 165] 🔧 Clamped Prime engagement: 144.23 → 90.00
+[Line 166] 🔄 Reversed caption: "esacwohS olleH"
+[Line 172] 📢 Announcement: recovered after error one
+[Line 175] 📢 Announcement: recovered after error two
+[Line 178] 📢 Announcement: recovered after error three
+[Line 181] 📢 Announcement: recovered after error four
+[Line 184] 📊 Prime.likes = 150
+[Line 185] 📊 Prime.followers = 104
+[Line 186] 📊 Account Prime: Likes=150, Followers=104, Views=5010, Comments=9, Shares=19
+        Engagement Rate: 90.00%
+[Line 187] 📊 Account prime: Likes=3, Followers=0, Views=0, Comments=0, Shares=0
+        Engagement Rate: 10.00%
+==========================================
+❌ Program execution completed with 4 runtime/semantic error(s).
+
+🌲 ABSTRACT SYNTAX TREE:
+========================
+├─ PROGRAM
+  Body:
+    ├─ ANNOUNCE (full compiler showcase)
+    ├─ ACCOUNT_CREATE (Prime)
+    ├─ ACCOUNT_CREATE (prime)
+    ├─ ACCOUNT_CREATE (Aux_1)
+    ├─ ACCOUNT_CREATE (42crew)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (posts)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (engagement rate)
+    ├─ ACCOUNT_INIT (prime)
+      ├─ METRIC (likes)
+    ├─ FEED_DECLARE
+      ├─ METRIC (posts)
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [0]
+      ├─ LITERAL_INT [10]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [1]
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [5]
+        ├─ LITERAL_INT [15]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [2]
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [2]
+        ├─ LITERAL_INT [20]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [3]
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [90]
+        ├─ LITERAL_INT [3]
+    ├─ FEED_DISPLAY (likes)
+      ├─ LITERAL_INT [2]
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (comments)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (shares)
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (likes)
+      ├─ BINARY_OP
+        ├─ FEED_GET (likes)
+          ├─ LITERAL_INT [1]
+        ├─ LITERAL_INT [5]
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (followers)
+      ├─ FEED_LENGTH (posts)
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (likes)
+      ├─ LITERAL_INT [7]
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (followers)
+      ├─ LITERAL_INT [2]
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (views)
+      ├─ LITERAL_INT [10]
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (comments)
+      ├─ LITERAL_INT [1]
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ ACCOUNT_REF (Prime) [likes]
+        ├─ LITERAL_INT [13]
+    ├─ ACCOUNT_INIT (Prime)
+      ├─ METRIC (shares)
+      ├─ BINARY_OP
+        ├─ ACCOUNT_REF (Prime) [likes]
+        ├─ LITERAL_INT [2]
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (viral)
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (trending)
+    ├─ STORY_POST (Prime)
+      ├─ LITERAL_STRING (Launch Week)
+    ├─ ASK_FOR (input_likes)
+    ├─ ASK_FOR (input_followers)
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (likes)
+      ├─ IDENTIFIER (input_likes)
+    ├─ ACCOUNT_UPDATE (Prime)
+      ├─ METRIC (followers)
+      ├─ IDENTIFIER (input_followers)
+    ├─ FUNCTION_DEF (Ping)
+      Body:
+        ├─ ANNOUNCE (PING)
+        ├─ RETURN
+          ├─ LITERAL_INT [1]
+    ├─ FUNCTION_DEF (AddFive)
+      Body:
+        ├─ RETURN
+          ├─ BINARY_OP
+            ├─ IDENTIFIER (x)
+            ├─ LITERAL_INT [5]
+      ├─ IDENTIFIER (x)
+    ├─ FUNCTION_DEF (Mix)
+      Body:
+        ├─ RETURN
+          ├─ BINARY_OP
+            ├─ BINARY_OP
+              ├─ IDENTIFIER (a)
+              ├─ IDENTIFIER (b)
+            ├─ LITERAL_INT [1]
+      ├─ IDENTIFIER (a)
+    ├─ FUNCTION_CALL (Ping)
+    ├─ FUNCTION_CALL (AddFive)
+      ├─ LITERAL_INT [7]
+    ├─ FUNCTION_CALL (Mix)
+      ├─ LITERAL_INT [3]
+    ├─ LOOP [start:1, end:3, step:1]
+      Body:
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [2]
+        ├─ CONDITIONAL
+          Condition:
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Prime) [likes]
+              ├─ LITERAL_INT [110]
+          Body:
+            ├─ CONTINUE
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [100]
+    ├─ LOOP_INCREMENT [start:1, end:4, step:2]
+      Body:
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (followers)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_DECREMENT [start:6, end:1, step:2]
+      Body:
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (comments)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_RANGE [from:1, to:3]
+      Body:
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (shares)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_COLLECTION (post)
+      Body:
+        ├─ ANNOUNCE (iterating feed)
+    ├─ LOOP_TRENDING
+      Condition:
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [likes]
+          ├─ LITERAL_INT [140]
+      Body:
+        ├─ ACCOUNT_UPDATE (Prime)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [5]
+        ├─ CONDITIONAL
+          Condition:
+            ├─ LOGICAL_OP
+              ├─ LOGICAL_OP
+                ├─ COMPARISON
+                  ├─ ACCOUNT_REF (Prime) [likes]
+                  ├─ LITERAL_INT [135]
+                ├─ COMPARISON
+                  ├─ ACCOUNT_REF (Prime) [followers]
+                  ├─ LITERAL_INT [999]
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Prime) [comments]
+                ├─ LITERAL_INT [1000]
+          Body:
+            ├─ BREAK
+    ├─ CONDITIONAL
+      Condition:
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [likes]
+          ├─ LITERAL_INT [100]
+      Body:
+        ├─ ANNOUNCE (if branch)
+      Else:
+        ├─ CONDITIONAL
+          Condition:
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Prime) [followers]
+              ├─ LITERAL_INT [20]
+          Body:
+            ├─ ANNOUNCE (elseif branch)
+          Else:
+            ├─ CONDITIONAL
+              Body:
+                ├─ ANNOUNCE (else branch)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ UNARY_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [followers]
+            ├─ LITERAL_INT [9999]
+      Body:
+        ├─ ANNOUNCE (opposite branch taken)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ LOGICAL_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [likes]
+            ├─ LITERAL_INT [5]
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [followers]
+            ├─ LITERAL_INT [0]
+      Body:
+        ├─ ANNOUNCE (and branch taken)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ LOGICAL_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [likes]
+            ├─ LITERAL_INT [9999]
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [followers]
+            ├─ LITERAL_INT [0]
+      Body:
+        ├─ ANNOUNCE (or branch taken)
+    ├─ BUILTIN_CALL (calculate_virality) [Prime]
+    ├─ BUILTIN_CALL (calculate_engagement) [Prime]
+    ├─ BUILTIN_CALL (analyze_growth) [Prime]
+    ├─ BUILTIN_CALL (check_if_trending) [Prime]
+    ├─ BUILTIN_CALL (count_total_engagement)
+    ├─ BUILTIN_CALL (find_top_post)
+    ├─ BUILTIN_CALL (find_max_viral_account)
+    ├─ BUILTIN_CALL (reverse_growth) [Prime]
+    ├─ BUILTIN_CALL (find_highest_reach)
+    ├─ BUILTIN_CALL (find_total_reach)
+    ├─ STRING_OP (detect_spam) [buy followers now click here]
+    ├─ BUILTIN_CALL (clamp_engagement)
+    ├─ STRING_OP (reverse) [Hello Showcase]
+    ├─ ANNOUNCE (recovered after error one)
+    ├─ ANNOUNCE (recovered after error two)
+    ├─ ANNOUNCE (recovered after error three)
+    ├─ ANNOUNCE (recovered after error four)
+    ├─ DISPLAY (Prime) [likes]
+    ├─ DISPLAY (Prime) [followers]
+    ├─ DISPLAY (Prime)
+    ├─ DISPLAY (prime)
+  ├─ ANNOUNCE (full compiler showcase)
+  ├─ ACCOUNT_CREATE (Prime)
+  ├─ ACCOUNT_CREATE (prime)
+  ├─ ACCOUNT_CREATE (Aux_1)
+  ├─ ACCOUNT_CREATE (42crew)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (likes)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (posts)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (engagement rate)
+  ├─ ACCOUNT_INIT (prime)
+    ├─ METRIC (likes)
+  ├─ FEED_DECLARE
+    ├─ METRIC (posts)
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [0]
+    ├─ LITERAL_INT [10]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [1]
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [5]
+      ├─ LITERAL_INT [15]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [2]
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [2]
+      ├─ LITERAL_INT [20]
+  ├─ FEED_SET (likes)
+    ├─ LITERAL_INT [3]
+    ├─ BINARY_OP
+      ├─ LITERAL_INT [90]
+      ├─ LITERAL_INT [3]
+  ├─ FEED_DISPLAY (likes)
+    ├─ LITERAL_INT [2]
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (followers)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (comments)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (shares)
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (likes)
+    ├─ BINARY_OP
+      ├─ FEED_GET (likes)
+        ├─ LITERAL_INT [1]
+      ├─ LITERAL_INT [5]
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (followers)
+    ├─ FEED_LENGTH (posts)
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (likes)
+    ├─ LITERAL_INT [7]
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (followers)
+    ├─ LITERAL_INT [2]
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (views)
+    ├─ LITERAL_INT [10]
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (comments)
+    ├─ LITERAL_INT [1]
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (comments)
+    ├─ BINARY_OP
+      ├─ ACCOUNT_REF (Prime) [likes]
+      ├─ LITERAL_INT [13]
+  ├─ ACCOUNT_INIT (Prime)
+    ├─ METRIC (shares)
+    ├─ BINARY_OP
+      ├─ ACCOUNT_REF (Prime) [likes]
+      ├─ LITERAL_INT [2]
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (viral)
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (trending)
+  ├─ STORY_POST (Prime)
+    ├─ LITERAL_STRING (Launch Week)
+  ├─ ASK_FOR (input_likes)
+  ├─ ASK_FOR (input_followers)
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (likes)
+    ├─ IDENTIFIER (input_likes)
+  ├─ ACCOUNT_UPDATE (Prime)
+    ├─ METRIC (followers)
+    ├─ IDENTIFIER (input_followers)
+  ├─ FUNCTION_DEF (Ping)
+    Body:
+      ├─ ANNOUNCE (PING)
+      ├─ RETURN
+        ├─ LITERAL_INT [1]
+  ├─ FUNCTION_DEF (AddFive)
+    Body:
+      ├─ RETURN
+        ├─ BINARY_OP
+          ├─ IDENTIFIER (x)
+          ├─ LITERAL_INT [5]
+    ├─ IDENTIFIER (x)
+  ├─ FUNCTION_DEF (Mix)
+    Body:
+      ├─ RETURN
+        ├─ BINARY_OP
+          ├─ BINARY_OP
+            ├─ IDENTIFIER (a)
+            ├─ IDENTIFIER (b)
+          ├─ LITERAL_INT [1]
+    ├─ IDENTIFIER (a)
+  ├─ FUNCTION_CALL (Ping)
+  ├─ FUNCTION_CALL (AddFive)
+    ├─ LITERAL_INT [7]
+  ├─ FUNCTION_CALL (Mix)
+    ├─ LITERAL_INT [3]
+  ├─ LOOP [start:1, end:3, step:1]
+    Body:
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (likes)
+        ├─ LITERAL_INT [2]
+      ├─ CONDITIONAL
+        Condition:
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [likes]
+            ├─ LITERAL_INT [110]
+        Body:
+          ├─ CONTINUE
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (likes)
+        ├─ LITERAL_INT [100]
+  ├─ LOOP_INCREMENT [start:1, end:4, step:2]
+    Body:
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (followers)
+        ├─ LITERAL_INT [1]
+  ├─ LOOP_DECREMENT [start:6, end:1, step:2]
+    Body:
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (comments)
+        ├─ LITERAL_INT [1]
+  ├─ LOOP_RANGE [from:1, to:3]
+    Body:
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (shares)
+        ├─ LITERAL_INT [1]
+  ├─ LOOP_COLLECTION (post)
+    Body:
+      ├─ ANNOUNCE (iterating feed)
+  ├─ LOOP_TRENDING
+    Condition:
+      ├─ COMPARISON
+        ├─ ACCOUNT_REF (Prime) [likes]
+        ├─ LITERAL_INT [140]
+    Body:
+      ├─ ACCOUNT_UPDATE (Prime)
+        ├─ METRIC (likes)
+        ├─ LITERAL_INT [5]
+      ├─ CONDITIONAL
+        Condition:
+          ├─ LOGICAL_OP
+            ├─ LOGICAL_OP
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Prime) [likes]
+                ├─ LITERAL_INT [135]
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Prime) [followers]
+                ├─ LITERAL_INT [999]
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Prime) [comments]
+              ├─ LITERAL_INT [1000]
+        Body:
+          ├─ BREAK
+  ├─ CONDITIONAL
+    Condition:
+      ├─ COMPARISON
+        ├─ ACCOUNT_REF (Prime) [likes]
+        ├─ LITERAL_INT [100]
+    Body:
+      ├─ ANNOUNCE (if branch)
+    Else:
+      ├─ CONDITIONAL
+        Condition:
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Prime) [followers]
+            ├─ LITERAL_INT [20]
+        Body:
+          ├─ ANNOUNCE (elseif branch)
+        Else:
+          ├─ CONDITIONAL
+            Body:
+              ├─ ANNOUNCE (else branch)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ UNARY_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [followers]
+          ├─ LITERAL_INT [9999]
+    Body:
+      ├─ ANNOUNCE (opposite branch taken)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ LOGICAL_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [likes]
+          ├─ LITERAL_INT [5]
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [followers]
+          ├─ LITERAL_INT [0]
+    Body:
+      ├─ ANNOUNCE (and branch taken)
+  ├─ CONDITIONAL
+    Condition:
+      ├─ LOGICAL_OP
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [likes]
+          ├─ LITERAL_INT [9999]
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Prime) [followers]
+          ├─ LITERAL_INT [0]
+    Body:
+      ├─ ANNOUNCE (or branch taken)
+  ├─ BUILTIN_CALL (calculate_virality) [Prime]
+  ├─ BUILTIN_CALL (calculate_engagement) [Prime]
+  ├─ BUILTIN_CALL (analyze_growth) [Prime]
+  ├─ BUILTIN_CALL (check_if_trending) [Prime]
+  ├─ BUILTIN_CALL (count_total_engagement)
+  ├─ BUILTIN_CALL (find_top_post)
+  ├─ BUILTIN_CALL (find_max_viral_account)
+  ├─ BUILTIN_CALL (reverse_growth) [Prime]
+  ├─ BUILTIN_CALL (find_highest_reach)
+  ├─ BUILTIN_CALL (find_total_reach)
+  ├─ STRING_OP (detect_spam) [buy followers now click here]
+  ├─ BUILTIN_CALL (clamp_engagement)
+  ├─ STRING_OP (reverse) [Hello Showcase]
+  ├─ ANNOUNCE (recovered after error one)
+  ├─ ANNOUNCE (recovered after error two)
+  ├─ ANNOUNCE (recovered after error three)
+  ├─ ANNOUNCE (recovered after error four)
+  ├─ DISPLAY (Prime) [likes]
+  ├─ DISPLAY (Prime) [followers]
+  ├─ DISPLAY (Prime)
+  ├─ DISPLAY (prime)
+
+📊 Abstract Syntax Tree Statistics:
+=====================================
+   Total nodes: 215
+   Maximum depth: 7
+   Average branching factor: 30.71
+=====================================
+
+📋 Symbol Table:
+================
+b                    | Type: Variable | Value: 0 (int), 0.00 (float)
+a                    | Type: Variable | Value: 0 (int), 0.00 (float)
+x                    | Type: Variable | Value: 0 (int), 0.00 (float)
+Mix                  | Type: Function
+AddFive              | Type: Function
+Ping                 | Type: Function
+input_followers      | Type: Variable | Value: 100 (int), 0.00 (float)
+input_likes          | Type: Variable | Value: 12 (int), 0.00 (float)
+42crew               | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+Aux_1                | Type: Account | Likes: 0, Followers: 0, Views: 0, Comments: 0, Shares: 0
+prime                | Type: Account | Likes: 3, Followers: 0, Views: 0, Comments: 0, Shares: 0
+Prime                | Type: Account | Likes: 150, Followers: 104, Views: 5010, Comments: 9, Shares: 19
+================
+
+📋 Symbol Table Statistics:
+============================
+   Total symbols: 12
+   Accounts: 4
+   Functions: 3
+   Variables: 5
+============================
+
+🔧 THREE-ADDRESS CODE:
+======================
+
+💻 ORIGINAL TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "full compiler showcase"
+   2: create_account Prime
+   3: create_account prime
+   4: create_account Aux_1
+   5: create_account 42crew
+   6: Prime.likes = 100
+   7: Prime.posts = 10
+   8: Prime.engagement rate = 25.00
+   9: prime.likes = 3
+  10: feed_decl size=4 kind=posts
+  11: t0 = 0
+  12: t1 = 10
+  13: feed[t0].likes = t1
+  14: t2 = 1
+  15: t3 = 5
+  16: t4 = 15
+  17: t5 = t3 + t4
+  18: feed[t2].likes = t5
+  19: t6 = 2
+  20: t7 = 2
+  21: t8 = 20
+  22: t9 = t7 * t8
+  23: feed[t6].likes = t9
+  24: t10 = 3
+  25: t11 = 90
+  26: t12 = 3
+  27: t13 = t11 / t12
+  28: feed[t10].likes = t13
+  29: t14 = 2
+  30: display feed[t14].likes
+  31: Prime.followers = 20
+  32: Prime.comments = 5
+  33: Prime.shares = 2
+  34: t15 = 1
+  35: t16 = feed[t15].likes
+  36: t17 = 5
+  37: t18 = t16 + t17
+  38: Prime.likes = t18
+  39: t19 = feed_length(posts)
+  40: Prime.followers = t19
+  41: t20 = Prime.likes
+  42: t21 = 7
+  43: t22 = t20 + t21
+  44: Prime.likes = t22
+  45: t23 = Prime.followers
+  46: t24 = 2
+  47: t25 = t23 - t24
+  48: Prime.followers = t25
+  49: t26 = Prime.views
+  50: t27 = 10
+  51: t28 = t26 + t27
+  52: Prime.views = t28
+  53: t29 = Prime.comments
+  54: t30 = 1
+  55: t31 = t29 - t30
+  56: Prime.comments = t31
+  57: t32 = 13
+  58: t33 = Prime % t32
+  59: Prime.comments = t33
+  60: t34 = 2
+  61: t35 = Prime / t34
+  62: Prime.shares = t35
+  63: t36 = Prime.viral
+  64: t37 = t36 + 0
+  65: Prime.viral = t37
+  66: t38 = Prime.trending
+  67: t39 = t38 + 0
+  68: Prime.trending = t39
+  69: input input_likes
+  70: input input_followers
+  71: t40 = Prime.likes
+  72: t41 = t40 + input_likes
+  73: Prime.likes = t41
+  74: t42 = Prime.followers
+  75: t43 = t42 + input_followers
+  76: Prime.followers = t43
+  77: t44 = call Ping
+  78: t45 = 7
+  79: param t45
+  80: t46 = call AddFive
+  81: t47 = 3
+  82: param t47
+  83: t48 = 4
+  84: param t48
+  85: t49 = call Mix
+  86: loop_i_0 = 1
+L0:
+  87: t50 = loop_i_0 <= 3
+  88: if t50 == false goto L1
+  89: t51 = Prime.likes
+  90: t52 = 2
+  91: t53 = t51 + t52
+  92: Prime.likes = t53
+  93: t54 = 110
+  94: t55 = Prime > t54
+  95: if t55 == false goto L2
+  96: continue 
+L2:
+  97: t56 = Prime.likes
+  98: t57 = 100
+  99: t58 = t56 + t57
+ 100: Prime.likes = t58
+ 101: t59 = loop_i_0 + 1
+ 102: loop_i_0 = t59
+ 103: goto L0
+L1:
+ 104: loop_i_4 = 1
+L4:
+ 105: t60 = loop_i_4 <= 4
+ 106: if t60 == false goto L5
+ 107: t61 = Prime.followers
+ 108: t62 = 1
+ 109: t63 = t61 + t62
+ 110: Prime.followers = t63
+ 111: t64 = loop_i_4 + 2
+ 112: loop_i_4 = t64
+ 113: goto L4
+L5:
+ 114: loop_i_6 = 6
+L6:
+ 115: t65 = loop_i_6 >= 1
+ 116: if t65 == false goto L7
+ 117: t66 = Prime.comments
+ 118: t67 = 1
+ 119: t68 = t66 + t67
+ 120: Prime.comments = t68
+ 121: t69 = loop_i_6 - 2
+ 122: loop_i_6 = t69
+ 123: goto L6
+L7:
+ 124: range_i_8 = 1
+L8:
+ 125: t70 = range_i_8 <= 3
+ 126: if t70 == false goto L9
+ 127: t71 = Prime.shares
+ 128: t72 = 1
+ 129: t73 = t71 + t72
+ 130: Prime.shares = t73
+ 131: t74 = range_i_8 + 1
+ 132: range_i_8 = t74
+ 133: goto L8
+L9:
+L10:
+ 134: t75 = 140
+ 135: t76 = Prime > t75
+ 136: (null) = t76 ifTrue L11
+ 137: t77 = Prime.likes
+ 138: t78 = 5
+ 139: t79 = t77 + t78
+ 140: Prime.likes = t79
+ 141: t80 = 135
+ 142: t81 = Prime > t80
+ 143: t82 = 999
+ 144: t83 = Prime < t82
+ 145: t84 = t81 && t83
+ 146: t85 = 1000
+ 147: t86 = Prime > t85
+ 148: t87 = t84 || t86
+ 149: if t87 == false goto L12
+ 150: break 
+L12:
+ 151: goto L10
+L11:
+ 152: t88 = 100
+ 153: t89 = Prime > t88
+ 154: if t89 == false goto L14
+ 155: print "if branch"
+ 156: goto L15
+L14:
+ 157: t90 = 20
+ 158: t91 = Prime > t90
+ 159: if t91 == false goto L16
+ 160: print "elseif branch"
+ 161: goto L17
+L16:
+ 162: print "else branch"
+L17:
+L15:
+ 163: t92 = 9999
+ 164: t93 = Prime > t92
+ 165: t94 = ! t93
+ 166: if t94 == false goto L18
+ 167: print "opposite branch taken"
+L18:
+ 168: t95 = 5
+ 169: t96 = Prime > t95
+ 170: t97 = 0
+ 171: t98 = Prime > t97
+ 172: t99 = t96 && t98
+ 173: if t99 == false goto L20
+ 174: print "and branch taken"
+L20:
+ 175: t100 = 9999
+ 176: t101 = Prime > t100
+ 177: t102 = 0
+ 178: t103 = Prime > t102
+ 179: t104 = t101 || t103
+ 180: if t104 == false goto L22
+ 181: print "or branch taken"
+L22:
+ 182: calculate_virality Prime
+ 183: calculate_engagement Prime
+ 184: analyze_growth Prime
+ 185: check_if_trending Prime
+ 186: count_total_engagement 
+ 187: find_top_post 
+ 188: find_max_viral_account 
+ 189: reverse_growth Prime
+ 190: find_highest_reach 
+ 191: find_total_reach 
+ 192: detect_spam buy followers now click here
+ 193: clamp_engagement 
+ 194: reverse Hello Showcase
+ 195: print "recovered after error one"
+ 196: print "recovered after error two"
+ 197: print "recovered after error three"
+ 198: print "recovered after error four"
+ 199: display Prime
+ 200: display Prime
+ 201: display Prime
+ 202: display prime
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 202
+   Temporary variables: 105
+   Labels created: 24
+========================================
+
+⚡ RUNNING CODE OPTIMIZATIONS
+=========================================
+
+🔧 OPTIMIZATION: Temp Constant Propagation
+==========================================
+Total temp constant propagations: 35
+
+🔧 OPTIMIZATION: Constant Folding
+======================================
+Total constant folding optimizations: 3
+
+🔧 OPTIMIZATION: Algebraic Simplification
+==========================================
+Total algebraic simplifications: 2
+
+🔧 OPTIMIZATION: Strength Reduction
+====================================
+Total strength reductions: 0
+
+🔧 OPTIMIZATION: Copy Propagation
+===================================
+Total copy propagations: 38
+
+🔧 OPTIMIZATION: Dead Code Elimination
+=======================================
+Total dead code eliminations: 60
+Temporary variables used: 42/105
+
+========================================
+📊 OPTIMIZATION SUMMARY
+========================================
+  Instructions before: 202
+  Instructions after:  142
+  Instructions removed: 60
+  Reduction: 29.7%
+  Total optimizations applied: 138
+========================================
+
+💻 OPTIMIZED TAC:
+
+💻 THREE-ADDRESS CODE (TAC):
+========================================
+
+   1: print "full compiler showcase"
+   2: create_account Prime
+   3: create_account prime
+   4: create_account Aux_1
+   5: create_account 42crew
+   6: Prime.likes = 100
+   7: Prime.posts = 10
+   8: Prime.engagement rate = 25.00
+   9: prime.likes = 3
+  10: feed_decl size=4 kind=posts
+  11: feed[t0].likes = 10
+  12: feed[t2].likes = 20
+  13: feed[t6].likes = 40
+  14: feed[t10].likes = 30
+  15: display feed[t14].likes
+  16: Prime.followers = 20
+  17: Prime.comments = 5
+  18: Prime.shares = 2
+  19: t16 = feed[t15].likes
+  20: t18 = t16 + 5
+  21: Prime.likes = t18
+  22: t19 = feed_length(posts)
+  23: Prime.followers = t19
+  24: t22 = t18 + 7
+  25: Prime.likes = t22
+  26: t25 = t19 - 2
+  27: Prime.followers = t25
+  28: t28 = Prime.views + 10
+  29: Prime.views = t28
+  30: t31 = 5 - 1
+  31: Prime.comments = t31
+  32: t33 = Prime % 13
+  33: Prime.comments = t33
+  34: t35 = Prime / 2
+  35: Prime.shares = t35
+  36: Prime.viral = Prime.viral
+  37: Prime.trending = Prime.trending
+  38: input input_likes
+  39: input input_followers
+  40: t41 = t22 + input_likes
+  41: Prime.likes = t41
+  42: t43 = t25 + input_followers
+  43: Prime.followers = t43
+  44: t44 = call Ping
+  45: param 7
+  46: t46 = call AddFive
+  47: param 3
+  48: param 4
+  49: t49 = call Mix
+  50: loop_i_0 = 1
+L0:
+  51: t50 = 1 <= 3
+  52: if t50 == false goto L1
+  53: t53 = t41 + 2
+  54: Prime.likes = t53
+  55: t55 = Prime > 110
+  56: if t55 == false goto L2
+  57: continue 
+L2:
+  58: t58 = t53 + 100
+  59: Prime.likes = t58
+  60: t59 = 1 + 1
+  61: loop_i_0 = t59
+  62: goto L0
+L1:
+  63: loop_i_4 = 1
+L4:
+  64: t60 = 1 <= 4
+  65: if t60 == false goto L5
+  66: t63 = t43 + 1
+  67: Prime.followers = t63
+  68: t64 = 1 + 2
+  69: loop_i_4 = t64
+  70: goto L4
+L5:
+  71: loop_i_6 = 6
+L6:
+  72: t65 = 6 >= 1
+  73: if t65 == false goto L7
+  74: t68 = t33 + 1
+  75: Prime.comments = t68
+  76: t69 = 6 - 2
+  77: loop_i_6 = t69
+  78: goto L6
+L7:
+  79: range_i_8 = 1
+L8:
+  80: t70 = 1 <= 3
+  81: if t70 == false goto L9
+  82: t73 = t35 + 1
+  83: Prime.shares = t73
+  84: t74 = 1 + 1
+  85: range_i_8 = t74
+  86: goto L8
+L9:
+L10:
+  87: t76 = Prime > 140
+  88: (null) = t76 ifTrue L11
+  89: t79 = t58 + 5
+  90: Prime.likes = t79
+  91: t81 = Prime > 135
+  92: t83 = Prime < 999
+  93: t84 = t81 && t83
+  94: t86 = Prime > 1000
+  95: t87 = t84 || t86
+  96: if t87 == false goto L12
+  97: break 
+L12:
+  98: goto L10
+L11:
+  99: t89 = Prime > 100
+ 100: if t89 == false goto L14
+ 101: print "if branch"
+ 102: goto L15
+L14:
+ 103: t91 = Prime > 20
+ 104: if t91 == false goto L16
+ 105: print "elseif branch"
+ 106: goto L17
+L16:
+ 107: print "else branch"
+L17:
+L15:
+ 108: t93 = Prime > 9999
+ 109: t94 = ! t93
+ 110: if t94 == false goto L18
+ 111: print "opposite branch taken"
+L18:
+ 112: t96 = Prime > 5
+ 113: t98 = Prime > 0
+ 114: t99 = t96 && t98
+ 115: if t99 == false goto L20
+ 116: print "and branch taken"
+L20:
+ 117: t101 = Prime > 9999
+ 118: t103 = Prime > 0
+ 119: t104 = t101 || t103
+ 120: if t104 == false goto L22
+ 121: print "or branch taken"
+L22:
+ 122: calculate_virality Prime
+ 123: calculate_engagement Prime
+ 124: analyze_growth Prime
+ 125: check_if_trending Prime
+ 126: count_total_engagement 
+ 127: find_top_post 
+ 128: find_max_viral_account 
+ 129: reverse_growth Prime
+ 130: find_highest_reach 
+ 131: find_total_reach 
+ 132: detect_spam buy followers now click here
+ 133: clamp_engagement 
+ 134: reverse Hello Showcase
+ 135: print "recovered after error one"
+ 136: print "recovered after error two"
+ 137: print "recovered after error three"
+ 138: print "recovered after error four"
+ 139: display Prime
+ 140: display Prime
+ 141: display Prime
+ 142: display prime
+
+========================================
+📊 TAC Statistics:
+   Total instructions: 142
+   Temporary variables: 105
+   Labels created: 24
+========================================
+
+❌ Execution completed with runtime/semantic errors
+   Lexical errors  : 0
+   Syntax errors   : 0
+   Semantic errors : 4
+   TAC temporaries : 105
+   TAC labels      : 24

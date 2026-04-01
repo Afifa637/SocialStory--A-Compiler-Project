@@ -11,6 +11,73 @@ Input file : tests/arrays_optimizer_integration_test.txt
 ├─ PROGRAM
   Body:
     ├─ ANNOUNCE (arrays optimizer integration)
+    ├─ FEED_DECLARE
+      ├─ METRIC (posts)
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [0]
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [5]
+        ├─ LITERAL_INT [5]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [1]
+      ├─ LITERAL_INT [20]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [2]
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [1]
+        ├─ LITERAL_INT [30]
+    ├─ ACCOUNT_CREATE (Arr)
+    ├─ ACCOUNT_CREATE (arr)
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (likes)
+      ├─ BINARY_OP
+        ├─ FEED_GET (likes)
+          ├─ LITERAL_INT [0]
+        ├─ FEED_GET (likes)
+          ├─ LITERAL_INT [1]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (followers)
+      ├─ FEED_LENGTH (posts)
+    ├─ ACCOUNT_INIT (arr)
+      ├─ METRIC (likes)
+    ├─ DISPLAY (Arr) [likes]
+    ├─ DISPLAY (arr) [likes]
+    ├─ FEED_DISPLAY (likes)
+      ├─ LITERAL_INT [2]
+    ├─ LOOP_COLLECTION (post)
+      Body:
+        ├─ ANNOUNCE (looping feed)
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (likes)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [100]
+        ├─ LITERAL_INT [0]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (followers)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [100]
+        ├─ LITERAL_INT [1]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [50]
+        ├─ LITERAL_INT [0]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [10]
+        ├─ LITERAL_INT [20]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (views)
+      ├─ BINARY_OP
+        ├─ ACCOUNT_REF (Arr) [likes]
+        ├─ LITERAL_INT [2]
+    ├─ ACCOUNT_INIT (Arr)
+      ├─ METRIC (shares)
+      ├─ BINARY_OP
+        ├─ ACCOUNT_REF (Arr) [likes]
+        ├─ LITERAL_INT [4]
+    ├─ DISPLAY (Arr)
   ├─ ANNOUNCE (arrays optimizer integration)
   ├─ FEED_DECLARE
     ├─ METRIC (posts)

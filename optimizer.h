@@ -1,8 +1,3 @@
-/* ========================================
- * OPTIMIZER.H
- * Code Optimization Passes
- * ======================================== */
-
 #ifndef OPTIMIZER_H
 #define OPTIMIZER_H
 
@@ -11,12 +6,7 @@
 #include <string.h>
 #include <ctype.h>
 
-/* Track which temps are actually used */
 int temps_used[10000] = {0};
-
-/* ========================================
- * HELPER FUNCTIONS
- * ======================================== */
 
 int is_constant(const char *str)
 {
@@ -72,11 +62,6 @@ static TACInstruction *make_optimizer_instr(const char *op, const char *arg1, co
     return instr;
 }
 
-/* Replace temp operands with their known constant values (when available).
- * This enables later passes (constant folding / algebraic simplification)
- * on code lowered through temporaries like:
- *   t1 = 10; t2 = 20; t3 = t1 + t2
- */
 int optimize_temp_constant_propagation()
 {
     int count = 0;
@@ -85,7 +70,7 @@ int optimize_temp_constant_propagation()
     TACInstruction *instr = tac_head;
     while (instr)
     {
-        /* Replace arg1 temp with known constant */
+        // Replace arg1 temp with known constant
         if (instr->arg1 && strncmp(instr->arg1, "t", 1) == 0)
         {
             int n = atoi(instr->arg1 + 1);
@@ -93,11 +78,11 @@ int optimize_temp_constant_propagation()
             {
                 free(instr->arg1);
                 instr->arg1 = strdup(const_map[n]);
-                count++;
+                count++; 
             }
         }
 
-        /* Replace arg2 temp with known constant */
+        // Replace arg2 temp with known constant
         if (instr->arg2 && strncmp(instr->arg2, "t", 1) == 0)
         {
             int n = atoi(instr->arg2 + 1);
@@ -109,7 +94,7 @@ int optimize_temp_constant_propagation()
             }
         }
 
-        /* Update mapping for assignments to temps */
+        // Update mapping for assignments to temps 
         if (instr->op && strcmp(instr->op, "=") == 0 &&
             instr->result && strncmp(instr->result, "t", 1) == 0)
         {
@@ -136,13 +121,8 @@ int optimize_temp_constant_propagation()
     {
         free(const_map[i]);
     }
-
     return count;
 }
-
-/* ========================================
- * OPTIMIZATION PASS 1: Constant Folding
- * ======================================== */
 
 int optimize_constant_folding()
 {
@@ -159,9 +139,6 @@ int optimize_constant_folding()
                     strcmp(instr->op, "*") == 0 || strcmp(instr->op, "/") == 0 ||
                     strcmp(instr->op, "%") == 0)
                 {
-                    /* Leave algebraic identities to optimize_algebraic() so the
-                     * pass remains observable in optimizer reports.
-                     */
                     if ((strcmp(instr->op, "+") == 0 &&
                          (strcmp(instr->arg1, "0") == 0 || strcmp(instr->arg2, "0") == 0)) ||
                         (strcmp(instr->op, "-") == 0 && strcmp(instr->arg2, "0") == 0) ||
@@ -176,7 +153,7 @@ int optimize_constant_folding()
 
                     int result = eval_const_expr(instr->arg1, instr->op, instr->arg2);
 
-                    // Replace with direct assignment
+                    // replace with direct assignment
                     free(instr->op);
                     instr->op = strdup("=");
                     free(instr->arg1);
@@ -192,13 +169,8 @@ int optimize_constant_folding()
         }
         instr = instr->next;
     }
-
     return count;
 }
-
-/* ========================================
- * OPTIMIZATION PASS 2: Algebraic Simplification
- * ======================================== */
 
 int optimize_algebraic()
 {
@@ -289,10 +261,6 @@ int optimize_algebraic()
     return count;
 }
 
-/* ========================================
- * OPTIMIZATION PASS 3: Strength Reduction
- * ======================================== */
-
 int optimize_strength_reduction()
 {
     int count = 0;
@@ -333,12 +301,7 @@ int optimize_strength_reduction()
                     }
                     else
                     {
-                        /* Build chained doubling:
-                         * t0 = x + x
-                         * t1 = t0 + t0    (for *4)
-                         * t2 = t1 + t1    (for *8)
-                         * result = tN
-                         */
+                       
                         int doubles = 0;
                         int f = factor;
                         while (f > 1)
@@ -381,13 +344,8 @@ int optimize_strength_reduction()
         prev = instr;
         instr = instr->next;
     }
-
     return count;
 }
-
-/* ========================================
- * OPTIMIZATION PASS 4: Copy Propagation
- * ======================================== */
 
 int optimize_copy_propagation()
 {
@@ -396,25 +354,25 @@ int optimize_copy_propagation()
 
     while (instr)
     {
-        // Find assignments like t1 = t0
+        // find assignments like t1 = t0
         if (instr->op && strcmp(instr->op, "=") == 0 &&
             instr->arg1 && instr->result && !instr->arg2)
         {
-            // Replace uses of result with arg1 until result is redefined
+            // replace uses of result with arg1 until result is redefined
             TACInstruction *next_instr = instr->next;
             while (next_instr)
             {
                 if (next_instr->result && strcmp(next_instr->result, instr->result) == 0)
                     break;
 
-                // Replace in arg1
+                // replace in arg1
                 if (next_instr->arg1 && strcmp(next_instr->arg1, instr->result) == 0)
                 {
                     free(next_instr->arg1);
                     next_instr->arg1 = strdup(instr->arg1);
                     count++;
                 }
-                // Replace in arg2
+                //replace in arg2
                 if (next_instr->arg2 && strcmp(next_instr->arg2, instr->result) == 0)
                 {
                     free(next_instr->arg2);
@@ -426,23 +384,19 @@ int optimize_copy_propagation()
         }
         instr = instr->next;
     }
-
     return count;
 }
 
-/* ========================================
- * OPTIMIZATION PASS 5: Dead Code Elimination
- * ======================================== */
 
 int optimize_dead_code()
 {
     memset(temps_used, 0, sizeof(temps_used));
 
-    // First pass: mark all temps that are used
+    // first pass: mark all temps that are used
     TACInstruction *instr = tac_head;
     while (instr)
     {
-        // Mark temps used as operands
+        // mark temps used as operands
         if (instr->arg1 && strncmp(instr->arg1, "t", 1) == 0)
         {
             int num = atoi(instr->arg1 + 1);
@@ -458,7 +412,7 @@ int optimize_dead_code()
         instr = instr->next;
     }
 
-    // Second pass: remove assignments to unused temps
+    // second pass: remove assignments to unused temps
     int count = 0;
     instr = tac_head;
     TACInstruction *prev = NULL;
@@ -512,22 +466,6 @@ int optimize_dead_code()
     return count;
 }
 
-/* ========================================
- * RUN ALL OPTIMIZATIONS
- * ======================================== */
-
-/*
- * Optimization pipeline order (fixed): (1) Temporary constant propagation
- * substitutes known literal temp values into later instructions to expose
- * simplification opportunities, (2) Constant folding evaluates compile-time
- * arithmetic expressions directly, (3) Algebraic simplification applies
- * identity/annihilator rules (e.g., x+0, x*1, x*0), (4) Strength reduction
- * rewrites expensive operations into cheaper equivalents where safe,
- * (5) Copy propagation forwards simple assignments to reduce indirection,
- * and (6) Dead code elimination removes instructions that no longer affect
- * observable program behavior.
- */
-
 void run_all_optimizations(FILE *fp)
 {
     fprintf(fp, "\n⚡ RUNNING CODE OPTIMIZATIONS\n");
@@ -542,7 +480,7 @@ void run_all_optimizations(FILE *fp)
         instr = instr->next;
     }
 
-    // Run optimization passes
+    // run optimization passes
     fprintf(fp, "\n🔧 OPTIMIZATION: Temp Constant Propagation\n");
     fprintf(fp, "==========================================\n");
     int tcp_count = optimize_temp_constant_propagation();
@@ -609,4 +547,4 @@ void run_all_optimizations(FILE *fp)
     fprintf(fp, "========================================\n");
 }
 
-#endif /* OPTIMIZER_H */
+#endif 

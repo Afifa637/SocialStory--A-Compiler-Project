@@ -6,6 +6,7 @@ Performs exact output comparison (no substring matching).
 """
 
 import json
+import re
 import subprocess
 import sys
 import os
@@ -18,12 +19,20 @@ def normalize(s: str) -> str:
     return s.replace("\r\n", "\n").replace("\r", "\n")
 
 
-def run_single_test(compiler: Path, spec: dict) -> tuple[bool, str]:
+def normalize_input_file_line(s: str) -> str:
+    return re.sub(
+        r"Input file\s*:\s*.*(?:input_tests|tests)[/\\]([^/\\\n]+)",
+        r"Input file : tests/\1",
+        s,
+    )
+
+
+def run_single_test(compiler: Path, spec: dict, manifest_dir: Path) -> tuple[bool, str]:
     name        = spec["name"]
-    input_path  = Path(spec["input"])
-    expect_path = Path(spec["expected"])
+    input_path  = (manifest_dir / spec["input"]).resolve() if not Path(spec["input"]).is_absolute() else Path(spec["input"])
+    expect_path = (manifest_dir / spec["expected"]).resolve() if not Path(spec["expected"]).is_absolute() else Path(spec["expected"])
     expect_exit = int(spec.get("expectedExit", 0))
-    stdin_path  = Path(spec["stdin"]) if "stdin" in spec else None
+    stdin_path  = ((manifest_dir / spec["stdin"]).resolve() if not Path(spec["stdin"]).is_absolute() else Path(spec["stdin"])) if "stdin" in spec else None
 
     # --- pre-flight checks ---
     if not input_path.exists():
@@ -60,8 +69,11 @@ def run_single_test(compiler: Path, spec: dict) -> tuple[bool, str]:
     if not output_file.exists():
         return False, f"output file not created: {output_file}"
 
-    actual   = normalize(output_file.read_text(encoding="utf-8"))
+    actual = normalize(output_file.read_text(encoding="utf-8"))
     expected = normalize(expect_path.read_text(encoding="utf-8"))
+
+    actual = normalize_input_file_line(actual)
+    expected = normalize_input_file_line(expected)
 
     if actual != expected:
         # find first differing line for a useful error message
@@ -85,8 +97,8 @@ def run_single_test(compiler: Path, spec: dict) -> tuple[bool, str]:
 
 def main() -> int:
     if len(sys.argv) != 2:
-        print("Usage: python tests/run_tests.py <compiler-binary>")
-        print("Example: python tests/run_tests.py ./socialstory")
+        print("Usage: python input_tests/run_tests.py <compiler-binary>")
+        print("Example: python input_tests/run_tests.py ./socialstory")
         return 2
 
     compiler = Path(sys.argv[1]).resolve()
@@ -100,12 +112,20 @@ def main() -> int:
         print("Build first with: make")
         return 2
 
-    manifest = Path("tests/manifest.json")
-    if not manifest.exists():
-        print(f"ERROR: manifest not found: {manifest}")
+    script_dir = Path(__file__).resolve().parent
+    manifest_candidates = [
+        script_dir / "manifest.json",
+        Path("input_tests/manifest.json"),
+        Path("tests/manifest.json"),
+    ]
+
+    manifest = next((m for m in manifest_candidates if m.exists()), None)
+    if manifest is None:
+        print("ERROR: manifest not found in input_tests/ or tests/")
         return 2
 
     tests = json.loads(manifest.read_text(encoding="utf-8"))
+    manifest_dir = manifest.parent.resolve()
 
     print("=" * 60)
     print(f"  SocialStoryScript Test Runner — {len(tests)} tests")
@@ -121,7 +141,7 @@ def main() -> int:
         if "description" in spec:
             print(f"       {spec['description'][:72]}")
 
-        ok, msg = run_single_test(compiler, spec)
+        ok, msg = run_single_test(compiler, spec, manifest_dir)
 
         if ok:
             print(f"  ✅  PASS")

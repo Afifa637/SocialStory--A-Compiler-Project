@@ -1,8 +1,3 @@
-/* ========================================
- * AST_FUNCTIONS.H
- * AST Node Creation and Manipulation
- * ======================================== */
-
 #ifndef AST_FUNCTIONS_H
 #define AST_FUNCTIONS_H
 
@@ -10,11 +5,6 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* ========================================
- * AST NODE CREATION FUNCTIONS
- * ======================================== */
-
-/* Create a new AST node */
 ASTNode *make_node(ASTNodeType type)
 {
     ASTNode *node = (ASTNode *)malloc(sizeof(ASTNode));
@@ -43,7 +33,6 @@ ASTNode *make_node(ASTNodeType type)
     return node;
 }
 
-/* Create node with integer value */
 ASTNode *make_node_with_int(ASTNodeType type, int value)
 {
     ASTNode *node = make_node(type);
@@ -51,7 +40,6 @@ ASTNode *make_node_with_int(ASTNodeType type, int value)
     return node;
 }
 
-/* Create node with float value */
 ASTNode *make_node_with_float(ASTNodeType type, float value)
 {
     ASTNode *node = make_node(type);
@@ -59,7 +47,6 @@ ASTNode *make_node_with_float(ASTNodeType type, float value)
     return node;
 }
 
-/* Create node with string value */
 ASTNode *make_node_with_string(ASTNodeType type, const char *value)
 {
     ASTNode *node = make_node(type);
@@ -67,7 +54,6 @@ ASTNode *make_node_with_string(ASTNodeType type, const char *value)
     return node;
 }
 
-/* Create binary operation node */
 ASTNode *make_binary_op(ASTNodeType type, ASTNode *left, ASTNode *right)
 {
     ASTNode *node = make_node(type);
@@ -76,11 +62,6 @@ ASTNode *make_binary_op(ASTNodeType type, ASTNode *left, ASTNode *right)
     return node;
 }
 
-/* ========================================
- * AST PRINTING
- * ======================================== */
-
-/* Get node type name for printing */
 const char *get_node_type_name(ASTNodeType type)
 {
     switch (type)
@@ -166,7 +147,6 @@ const char *get_node_type_name(ASTNodeType type)
     }
 }
 
-/* Print AST recursively */
 void print_ast_node(ASTNode *node, int indent)
 {
     if (!node)
@@ -220,10 +200,16 @@ void print_ast_node(ASTNode *node, int indent)
     if (node->right)
         print_ast_node(node->right, indent + 1);
     if (node->param)
+    {
+        ASTNode *saved_next = node->param->next;
+        node->param->next = NULL;
         print_ast_node(node->param, indent + 1);
+        node->param->next = saved_next;
+    }
+    if (node->next)
+        print_ast_node(node->next, indent);
 }
 
-/* Print entire AST */
 void print_ast(ASTNode *root, int indent)
 {
     if (!root)
@@ -231,23 +217,10 @@ void print_ast(ASTNode *root, int indent)
 
     print_ast_node(root, indent);
 
-    // Print all statements in sequence
     if (root->type == AST_PROGRAM && root->body)
-    {
-        ASTNode *stmt = root->body;
-        while (stmt)
-        {
-            print_ast_node(stmt, indent + 1);
-            stmt = stmt->next;
-        }
-    }
+        print_ast_node(root->body, indent + 1);
 }
 
-/* ========================================
- * AST MEMORY MANAGEMENT
- * ======================================== */
-
-/* Free AST memory recursively */
 void free_ast(ASTNode *node)
 {
     if (!node)
@@ -269,4 +242,4 @@ void free_ast(ASTNode *node)
     free(node);
 }
 
-#endif /* AST_FUNCTIONS_H */
+#endif 

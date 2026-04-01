@@ -11,6 +11,64 @@ Input file : tests/input_io_test.txt
 ├─ PROGRAM
   Body:
     ├─ ANNOUNCE (input io)
+    ├─ ASK_FOR (input_likes)
+    ├─ ASK_FOR (input_followers)
+    ├─ ASK_FOR (posts_per_week)
+    ├─ ACCOUNT_CREATE (InputUser)
+    ├─ ACCOUNT_CREATE (inputuser)
+    ├─ ACCOUNT_INIT (InputUser)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (InputUser)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (InputUser)
+      ├─ METRIC (comments)
+    ├─ ACCOUNT_INIT (InputUser)
+      ├─ METRIC (posts)
+    ├─ ACCOUNT_INIT (inputuser)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_UPDATE (InputUser)
+      ├─ METRIC (likes)
+      ├─ IDENTIFIER (input_likes)
+    ├─ ACCOUNT_UPDATE (InputUser)
+      ├─ METRIC (followers)
+      ├─ IDENTIFIER (input_followers)
+    ├─ ACCOUNT_UPDATE (InputUser)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ IDENTIFIER (input_likes)
+        ├─ IDENTIFIER (posts_per_week)
+    ├─ ACCOUNT_UPDATE (InputUser)
+      ├─ METRIC (posts)
+      ├─ IDENTIFIER (posts_per_week)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ LOGICAL_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (InputUser) [likes]
+            ├─ LITERAL_INT [10]
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (InputUser) [followers]
+            ├─ LITERAL_INT [50]
+      Body:
+        ├─ ANNOUNCE (strong start)
+      Else:
+        ├─ CONDITIONAL
+          Condition:
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (InputUser) [likes]
+              ├─ LITERAL_INT [5]
+          Body:
+            ├─ ANNOUNCE (moderate start)
+          Else:
+            ├─ CONDITIONAL
+              Body:
+                ├─ ANNOUNCE (needs growth)
+    ├─ DISPLAY (InputUser) [likes]
+    ├─ DISPLAY (inputuser) [likes]
+    ├─ DISPLAY (InputUser) [comments]
+    ├─ DISPLAY (InputUser) [posts]
+    ├─ DISPLAY (InputUser)
+    ├─ DISPLAY (inputuser)
   ├─ ANNOUNCE (input io)
   ├─ ASK_FOR (input_likes)
   ├─ ASK_FOR (input_followers)

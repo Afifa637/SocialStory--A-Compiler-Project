@@ -11,6 +11,117 @@ Input file : tests/controlflow_loops_test.txt
 ├─ PROGRAM
   Body:
     ├─ ANNOUNCE (controlflow loops)
+    ├─ ACCOUNT_CREATE (Flow)
+    ├─ ACCOUNT_INIT (Flow)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Flow)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (Flow)
+      ├─ METRIC (comments)
+    ├─ LOOP [start:1, end:3, step:1]
+      Body:
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [2]
+        ├─ CONDITIONAL
+          Condition:
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Flow) [likes]
+              ├─ LITERAL_INT [2]
+          Body:
+            ├─ CONTINUE
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [100]
+    ├─ LOOP_INCREMENT [start:1, end:4, step:2]
+      Body:
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (followers)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_DECREMENT [start:4, end:1, step:2]
+      Body:
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (comments)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_RANGE [from:1, to:3]
+      Body:
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (shares)
+          ├─ LITERAL_INT [1]
+    ├─ LOOP_TRENDING
+      Condition:
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [likes]
+          ├─ LITERAL_INT [20]
+      Body:
+        ├─ ACCOUNT_UPDATE (Flow)
+          ├─ METRIC (likes)
+          ├─ LITERAL_INT [5]
+        ├─ CONDITIONAL
+          Condition:
+            ├─ LOGICAL_OP
+              ├─ LOGICAL_OP
+                ├─ COMPARISON
+                  ├─ ACCOUNT_REF (Flow) [likes]
+                  ├─ LITERAL_INT [15]
+                ├─ COMPARISON
+                  ├─ ACCOUNT_REF (Flow) [followers]
+                  ├─ LITERAL_INT [5]
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Flow) [comments]
+                ├─ LITERAL_INT [0]
+          Body:
+            ├─ BREAK
+    ├─ CONDITIONAL
+      Condition:
+        ├─ COMPARISON
+          ├─ ACCOUNT_REF (Flow) [likes]
+          ├─ LITERAL_INT [20]
+      Body:
+        ├─ ANNOUNCE (if branch)
+      Else:
+        ├─ CONDITIONAL
+          Condition:
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Flow) [likes]
+              ├─ LITERAL_INT [10]
+          Body:
+            ├─ ANNOUNCE (elseif branch)
+          Else:
+            ├─ CONDITIONAL
+              Body:
+                ├─ ANNOUNCE (else branch)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ UNARY_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [followers]
+            ├─ LITERAL_INT [9999]
+      Body:
+        ├─ ANNOUNCE (opposite branch taken)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ LOGICAL_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [likes]
+            ├─ LITERAL_INT [5]
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [followers]
+            ├─ LITERAL_INT [0]
+      Body:
+        ├─ ANNOUNCE (and branch taken)
+    ├─ CONDITIONAL
+      Condition:
+        ├─ LOGICAL_OP
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [likes]
+            ├─ LITERAL_INT [9999]
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [followers]
+            ├─ LITERAL_INT [0]
+      Body:
+        ├─ ANNOUNCE (or branch taken)
+    ├─ DISPLAY (Flow) [likes]
   ├─ ANNOUNCE (controlflow loops)
   ├─ ACCOUNT_CREATE (Flow)
   ├─ ACCOUNT_INIT (Flow)
@@ -24,6 +135,16 @@ Input file : tests/controlflow_loops_test.txt
       ├─ ACCOUNT_UPDATE (Flow)
         ├─ METRIC (likes)
         ├─ LITERAL_INT [2]
+      ├─ CONDITIONAL
+        Condition:
+          ├─ COMPARISON
+            ├─ ACCOUNT_REF (Flow) [likes]
+            ├─ LITERAL_INT [2]
+        Body:
+          ├─ CONTINUE
+      ├─ ACCOUNT_UPDATE (Flow)
+        ├─ METRIC (likes)
+        ├─ LITERAL_INT [100]
   ├─ LOOP_INCREMENT [start:1, end:4, step:2]
     Body:
       ├─ ACCOUNT_UPDATE (Flow)
@@ -48,6 +169,21 @@ Input file : tests/controlflow_loops_test.txt
       ├─ ACCOUNT_UPDATE (Flow)
         ├─ METRIC (likes)
         ├─ LITERAL_INT [5]
+      ├─ CONDITIONAL
+        Condition:
+          ├─ LOGICAL_OP
+            ├─ LOGICAL_OP
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Flow) [likes]
+                ├─ LITERAL_INT [15]
+              ├─ COMPARISON
+                ├─ ACCOUNT_REF (Flow) [followers]
+                ├─ LITERAL_INT [5]
+            ├─ COMPARISON
+              ├─ ACCOUNT_REF (Flow) [comments]
+              ├─ LITERAL_INT [0]
+        Body:
+          ├─ BREAK
   ├─ CONDITIONAL
     Condition:
       ├─ COMPARISON

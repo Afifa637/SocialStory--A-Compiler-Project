@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <math.h>
+#include <ctype.h>
 #include "socialstory_tokens.h"
 
 #ifndef HAVE_STRDUP
@@ -40,6 +41,25 @@ FILE* output_file = NULL;
 #define OP_MUL 2
 #define OP_DIV 3
 #define OP_MOD 4
+
+#define LOGICAL_AND 0
+#define LOGICAL_OR 1
+
+#define UNARY_NOT 0
+
+#define UPDATE_ADD 0
+#define UPDATE_SUB -1
+
+#define UPDATE_MODE_NONE 0
+#define UPDATE_MODE_MULTIPLY 1
+#define UPDATE_MODE_DIVIDE 2
+#define UPDATE_MODE_SET_VIRAL 3
+#define UPDATE_MODE_SET_TRENDING 4
+
+#define DEFAULT_POST_VIEWS 500
+
+#define LOOP_START_DAY 1
+#define LOOP_END_DAY_MIN 1
 
 #define CMP_GT 0
 #define CMP_LT 1
@@ -367,7 +387,7 @@ account_update:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;   /* expression node */
-        $$->ival = 0;     /* 0 = add */
+        $$->ival = UPDATE_ADD;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -377,7 +397,7 @@ account_update:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;   /* expression node */
-        $$->ival = -1;    /* -1 = subtract */
+        $$->ival = UPDATE_SUB;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -387,7 +407,7 @@ account_update:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;
-        $$->ival = 0;
+        $$->ival = UPDATE_ADD;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -397,7 +417,7 @@ account_update:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;
-        $$->ival = -1;    /* -1 = subtract */
+        $$->ival = UPDATE_SUB;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -419,7 +439,7 @@ story_post:
         $$ = make_node(AST_STORY_POST);
         $$->sval = $2;
         $$->left = make_node_with_string(AST_LITERAL_STRING, $5);
-        $$->ival = 5000; // Default views
+        $$->ival = DEFAULT_POST_VIEWS;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
     }
@@ -439,7 +459,7 @@ conditional:
         /* NEW FEATURE: opposite (logical NOT) */
         $$ = make_node(AST_CONDITIONAL);
         ASTNode* not_node = make_node(AST_UNARY_OP);
-        not_node->ival = 0; // NOT operation
+        not_node->ival = UNARY_NOT;
         not_node->left = $3;
         $$->condition = not_node;
         $$->body = $5;
@@ -462,7 +482,7 @@ conditional:
         /* Empty conditional with opposite */
         $$ = make_node(AST_CONDITIONAL);
         ASTNode* not_node = make_node(AST_UNARY_OP);
-        not_node->ival = 0; // NOT operation
+        not_node->ival = UNARY_NOT;
         not_node->left = $3;
         $$->condition = not_node;
         $$->body = NULL;  // Empty body allowed
@@ -654,13 +674,13 @@ comparison:
     | comparison T_ALSO comparison
     {
         $$ = make_binary_op(AST_LOGICAL_OP, $1, $3);
-        $$->ival = 0; // AND
+        $$->ival = LOGICAL_AND;
         $$->line_number = yylineno;
     }
     | comparison T_EITHER comparison
     {
         $$ = make_binary_op(AST_LOGICAL_OP, $1, $3);
-        $$->ival = 1; // OR
+        $$->ival = LOGICAL_OR;
         $$->line_number = yylineno;
     }
     ;
@@ -674,7 +694,7 @@ account_metric_ref:
         $$->sval2 = $2->sval;
         $$->line_number = yylineno;
         check_account_exists($1, yylineno);
-        free($2); // Free the temporary metric node
+        free($2);
     }
     ;
 
@@ -682,16 +702,16 @@ loop:
     T_EVERY_DAY_FOR T_NUMBER T_DAYS T_COMMA T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP);
-        $$->ival = 1;
+        $$->ival = LOOP_START_DAY;
         $$->ival2 = $2;
-        $$->step = 1;
+        $$->step = LOOP_START_DAY;
         $$->body = $6;
         $$->line_number = yylineno;
     }
     | T_EVERY T_NUMBER T_DAYS T_INCREMENTING_BY T_NUMBER T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP_INCREMENT);
-        $$->ival = 1;
+        $$->ival = LOOP_START_DAY;
         $$->ival2 = $2;
         $$->step = $5;
         $$->body = $7;
@@ -701,18 +721,18 @@ loop:
     {
         $$ = make_node(AST_LOOP_DECREMENT);
         $$->ival = $2;
-        $$->ival2 = 1;
+        $$->ival2 = LOOP_END_DAY_MIN;
         $$->step = $5;
         $$->body = $7;
         $$->line_number = yylineno;
     }
-    /* NEW FEATURE: For each follower from A to B range loop */
+    /* range loop */
     | T_FOR_EACH T_FOLLOWER_FROM T_NUMBER T_TO T_NUMBER T_LBRACE statements T_RBRACE
     {
         $$ = make_node(AST_LOOP_RANGE);
         $$->ival = $3;
         $$->ival2 = $5;
-        $$->step = 1;
+        $$->step = LOOP_START_DAY;
         $$->body = $7;
         $$->line_number = yylineno;
     }
@@ -988,7 +1008,6 @@ io_statement:
         $$->line_number = yylineno;
         free($3);
     }
-    /* NEW FEATURE: Ask for VARIABLE (user input) */
     | T_ASK_FOR T_ID T_DOT
     {
         $$ = make_node(AST_ASK_FOR);
@@ -1046,7 +1065,7 @@ account_update_ext:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->ival = $4;
-        $$->ival2 = 1; /* flag: multiply */
+        $$->ival2 = UPDATE_MODE_MULTIPLY;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -1056,7 +1075,7 @@ account_update_ext:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;
-        $$->ival2 = 1; /* flag: multiply */
+        $$->ival2 = UPDATE_MODE_MULTIPLY;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -1066,7 +1085,7 @@ account_update_ext:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->ival = $4;
-        $$->ival2 = 2; /* flag: divide */
+        $$->ival2 = UPDATE_MODE_DIVIDE;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -1076,7 +1095,7 @@ account_update_ext:
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
         $$->right = $4;
-        $$->ival2 = 2; /* flag: divide */
+        $$->ival2 = UPDATE_MODE_DIVIDE;
         $$->left = $5;
         $$->line_number = yylineno;
         check_account_exists($2, yylineno);
@@ -1092,7 +1111,7 @@ account_update_ext:
     {
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
-        $$->ival2 = 3; /* flag: set viral */
+        $$->ival2 = UPDATE_MODE_SET_VIRAL;
         $$->left = make_node_with_int(AST_LITERAL_INT, 1);
         ASTNode* m = make_node(AST_METRIC);
         m->sval = strdup("viral");
@@ -1104,7 +1123,7 @@ account_update_ext:
     {
         $$ = make_node(AST_ACCOUNT_UPDATE);
         $$->sval = $2;
-        $$->ival2 = 4; /* flag: set trending */
+        $$->ival2 = UPDATE_MODE_SET_TRENDING;
         ASTNode* m = make_node(AST_METRIC);
         m->sval = strdup("trending");
         $$->left = m;
@@ -1370,33 +1389,55 @@ literal:
  * ERROR HANDLING
  * ======================================== */
 void yyerror(const char *s) {
-    fprintf(stderr, "\n❌ SYNTAX ERROR at line %d:\n", yylineno);
-    fprintf(stderr, "   Unexpected token: '%s'\n", yytext);
-    fprintf(stderr, "   Parser message: %s\n", s);
-    
-    /* Helpful context-sensitive hints */
+    const char *hint_line1 = NULL;
+    const char *hint_line2 = NULL;
+
     if (yytext && yytext[0] != '\0') {
         if (strcmp(yytext, "+") == 0 || strcmp(yytext, "-") == 0 ||
             strcmp(yytext, "*") == 0 || strcmp(yytext, "/") == 0) {
-            fprintf(stderr, "   Hint: Arithmetic operators (+, -, *, /) work in expressions like:\n");
-            fprintf(stderr, "         The account Alice now has 100 + 50 likes.\n");
+            hint_line1 = "Hint: Arithmetic operators (+, -, *, /) work in expressions like:";
+            hint_line2 = "      The account Alice now has 100 + 50 likes.";
         } else if (strcmp(yytext, ",") == 0) {
-            fprintf(stderr, "   Hint: Check for missing keywords or incorrect list syntax.\n");
-            fprintf(stderr, "         Function params: The story of name begins with a, b, c\n");
+            hint_line1 = "Hint: Check for missing keywords or incorrect list syntax.";
+            hint_line2 = "      Function params: The story of name begins with a, b, c";
         } else if (strcmp(yytext, "{") == 0 || strcmp(yytext, "}") == 0) {
-            fprintf(stderr, "   Hint: Mismatched braces. Every 'When', loop, or function body needs { and }.\n");
+            hint_line1 = "Hint: Mismatched braces. Every 'When', loop, or function body needs { and }.";
         } else if (strcmp(yytext, ".") == 0) {
-            fprintf(stderr, "   Hint: Check the statement before this period for correct syntax.\n");
-            fprintf(stderr, "         All statements must end with a period (.)\n");
+            hint_line1 = "Hint: Check the statement before this period for correct syntax.";
+            hint_line2 = "      All statements must end with a period (.)";
+        } else if (strcmp(yytext, "@") == 0) {
+            hint_line1 = "Hint: Did you mean an account name? Use: The account NAME";
+        } else if (strcmp(yytext, "$") == 0) {
+            hint_line1 = "Hint: Variables are plain names, e.g.: The account myAcct";
+        } else if (strcmp(yytext, "^") == 0) {
+            hint_line1 = "Hint: '^' is not valid. Use: plus, minus, times, divided by";
+        } else if (strcmp(yytext, "&") == 0) {
+            hint_line1 = "Hint: Use 'also' for AND logic, not '&'";
+        } else if (strcmp(yytext, "|") == 0) {
+            hint_line1 = "Hint: Use 'either' for OR logic, not '|'";
+        } else if (strcmp(yytext, "!") == 0) {
+            hint_line1 = "Hint: Use 'opposite' for NOT logic, not '!'";
         } else {
-            fprintf(stderr, "   Hint: Check the SocialStoryScript syntax. Statements end with '.'\n");
-            fprintf(stderr, "         e.g. 'The account Alice gained 50 likes.'\n");
+            hint_line1 = "Hint: Check the SocialStoryScript syntax. Statements end with '.'.";
+            hint_line2 = "      e.g. 'The account Alice gained 50 likes.'";
         }
     }
+
+    fprintf(stderr, "\n❌ SYNTAX ERROR at line %d:\n", yylineno);
+    fprintf(stderr, "   Unexpected token: '%s'\n", yytext);
+    fprintf(stderr, "   Parser message: %s\n", s);
+    if (hint_line1)
+        fprintf(stderr, "   %s\n", hint_line1);
+    if (hint_line2)
+        fprintf(stderr, "   %s\n", hint_line2);
     fprintf(stderr, "\n");
     
     if (output_file) {
         fprintf(output_file, "\n❌ SYNTAX ERROR at line %d: near '%s' — %s\n", yylineno, yytext, s);
+        if (hint_line1)
+            fprintf(output_file, "   %s\n", hint_line1);
+        if (hint_line2)
+            fprintf(output_file, "   %s\n", hint_line2);
     }
 }
 
@@ -1427,6 +1468,20 @@ int compiler_run(const char* input_filename,
     printf("🔍 Phase 1: Lexical Analysis + Parsing...\n");
     int parse_result = yyparse();
 
+    /* Showcase mode: custom ordering/message only for the single demo input */
+    int showcase_mode = 0;
+    if (input_filename) {
+        const char *base = input_filename;
+        for (const char *p = input_filename; *p; ++p) {
+            if (*p == '/' || *p == '\\')
+                base = p + 1;
+        }
+        if (strcmp(base, "INPUT.showcase_all_features.txt") == 0 ||
+            strcmp(base, "input.showcase_all_features.txt") == 0) {
+            showcase_mode = 1;
+        }
+    }
+
     if (parse_result == 0 && error_count == 0) {
         if (semantic_errors == 0) {
             printf("   ✅ Parsing complete — 0 semantic errors\n\n");
@@ -1434,43 +1489,90 @@ int compiler_run(const char* input_filename,
             printf("   ⚠️  Parsing complete — %d semantic issue(s) detected before execution\n\n", semantic_errors);
         }
 
-        /* ---- AST ---- */
-        printf("🌲 Phase 2: Abstract Syntax Tree\n");
-        fprintf(output_file, "\n🌲 ABSTRACT SYNTAX TREE:\n");
-        fprintf(output_file, "========================\n");
-        print_ast(ast_root, 0);
-        print_ast_statistics(output_file);
-        printf("   ✅ AST built\n\n");
+        if (showcase_mode) {
+            printf("ℹ️  Showcase note: The syntax errors above are intentional\n");
+            printf("   to demonstrate parser hints, recovery, and error handling.\n\n");
+            fprintf(output_file, "\nℹ️  Showcase note: The syntax errors above are intentional\n");
+            fprintf(output_file, "   to demonstrate parser hints, recovery, and error handling.\n");
 
-        /* ---- TAC ---- */
-        printf("🔧 Phase 3: Three-Address Code Generation...\n");
-        fprintf(output_file, "\n🔧 THREE-ADDRESS CODE:\n");
-        fprintf(output_file, "======================\n");
-        if (ast_root && ast_root->body) {
-            generate_tac_statements(ast_root->body);
+            /* ---- Execute FIRST (showcase order) ---- */
+            printf("🎬 Phase 2: Program Execution...\n");
+            printf("──────────────────────────────────────────\n");
+            execute(ast_root);
+            printf("──────────────────────────────────────────\n");
+            printf("   ✅ Execution complete\n\n");
+
+            /* ---- AST ---- */
+            printf("🌲 Phase 3: Abstract Syntax Tree\n");
+            fprintf(output_file, "\n🌲 ABSTRACT SYNTAX TREE:\n");
+            fprintf(output_file, "========================\n");
+            print_ast(ast_root, 0);
+            print_ast_statistics(output_file);
+            printf("   ✅ AST built\n\n");
+
+            /* ---- Symbol Table ---- */
+            printf("📋 Phase 4: Symbol Table\n");
+            print_symbol_table();
+            print_symbol_table_stats(output_file);
+
+            /* ---- TAC ---- */
+            printf("🔧 Phase 5: Three-Address Code Generation...\n");
+            fprintf(output_file, "\n🔧 THREE-ADDRESS CODE:\n");
+            fprintf(output_file, "======================\n");
+            if (ast_root && ast_root->body) {
+                generate_tac_statements(ast_root->body);
+            }
+            fprintf(output_file, "\n💻 ORIGINAL TAC:\n");
+            print_tac_to_file(output_file);
+            printf("   ✅ TAC generated: %d temps, %d labels\n\n", temp_counter, label_counter);
+
+            /* ---- Optimize ---- */
+            printf("⚡ Phase 6: Code Optimization...\n");
+            run_all_optimizations(output_file);
+            fprintf(output_file, "\n💻 OPTIMIZED TAC:\n");
+            print_tac_to_file(output_file);
+            printf("   ✅ Optimizations applied\n\n");
+
+        } else {
+
+            /* ---- AST ---- */
+            printf("🌲 Phase 2: Abstract Syntax Tree\n");
+            fprintf(output_file, "\n🌲 ABSTRACT SYNTAX TREE:\n");
+            fprintf(output_file, "========================\n");
+            print_ast(ast_root, 0);
+            print_ast_statistics(output_file);
+            printf("   ✅ AST built\n\n");
+
+            /* ---- TAC ---- */
+            printf("🔧 Phase 3: Three-Address Code Generation...\n");
+            fprintf(output_file, "\n🔧 THREE-ADDRESS CODE:\n");
+            fprintf(output_file, "======================\n");
+            if (ast_root && ast_root->body) {
+                generate_tac_statements(ast_root->body);
+            }
+            fprintf(output_file, "\n💻 ORIGINAL TAC:\n");
+            print_tac_to_file(output_file);
+            printf("   ✅ TAC generated: %d temps, %d labels\n\n", temp_counter, label_counter);
+
+            /* ---- Optimize ---- */
+            printf("⚡ Phase 4: Code Optimization...\n");
+            run_all_optimizations(output_file);
+            fprintf(output_file, "\n💻 OPTIMIZED TAC:\n");
+            print_tac_to_file(output_file);
+            printf("   ✅ Optimizations applied\n\n");
+
+            /* ---- Execute ---- */
+            printf("🎬 Phase 5: Program Execution...\n");
+            printf("──────────────────────────────────────────\n");
+            execute(ast_root);
+            printf("──────────────────────────────────────────\n");
+            printf("   ✅ Execution complete\n\n");
+
+            /* ---- Symbol Table ---- */
+            printf("📋 Phase 6: Symbol Table\n");
+            print_symbol_table();
+            print_symbol_table_stats(output_file);
         }
-        fprintf(output_file, "\n💻 ORIGINAL TAC:\n");
-        print_tac_to_file(output_file);
-        printf("   ✅ TAC generated: %d temps, %d labels\n\n", temp_counter, label_counter);
-
-        /* ---- Optimize ---- */
-        printf("⚡ Phase 4: Code Optimization...\n");
-        run_all_optimizations(output_file);
-        fprintf(output_file, "\n💻 OPTIMIZED TAC:\n");
-        print_tac_to_file(output_file);
-        printf("   ✅ Optimizations applied\n\n");
-
-        /* ---- Execute ---- */
-        printf("🎬 Phase 5: Program Execution...\n");
-        printf("──────────────────────────────────────────\n");
-        execute(ast_root);
-        printf("──────────────────────────────────────────\n");
-        printf("   ✅ Execution complete\n\n");
-
-        /* ---- Symbol Table ---- */
-        printf("📋 Phase 6: Symbol Table\n");
-        print_symbol_table();
-        print_symbol_table_stats(output_file);
 
         /* ---- Final summary ---- */
         if (semantic_errors == 0 && error_count == 0) {

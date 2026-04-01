@@ -1,8 +1,3 @@
-/* ========================================
- * TAC_GENERATOR.H - Three-Address Code Generation
- * Add this to your socialstory_parser.y file
- * ======================================== */
-
 #ifndef TAC_GENERATOR_H
 #define TAC_GENERATOR_H
 
@@ -10,28 +5,22 @@
 #include <stdlib.h>
 #include <string.h>
 
-/* TAC Instruction Structure */
 typedef struct TACInstruction
 {
-    char *op;     // Operation: +, -, *, /, =, ifFalse, goto, call, return, param
-    char *arg1;   // First argument
-    char *arg2;   // Second argument
-    char *result; // Result/destination
-    int label;    // Label number for jumps (-1 if not a label)
+    char *op;     
+    char *arg1;   
+    char *arg2;  
+    char *result; 
+    int label;   
     struct TACInstruction *next;
 } TACInstruction;
 
-/* Global TAC Variables */
 TACInstruction *tac_head = NULL;
 TACInstruction *tac_tail = NULL;
 int temp_counter = 0;
 int label_counter = 0;
 
-/* ===================================
- * HELPER FUNCTIONS
- * =================================== */
 
-/* Generate new temporary variable */
 char *new_temp()
 {
     char *temp = (char *)malloc(16);
@@ -39,13 +28,11 @@ char *new_temp()
     return temp;
 }
 
-/* Generate new label */
 int new_label()
 {
     return label_counter++;
 }
 
-/* Check if string is a number */
 int is_number(const char *str)
 {
     if (!str || *str == '\0')
@@ -61,11 +48,7 @@ int is_number(const char *str)
     return 1;
 }
 
-/* ===================================
- * TAC EMISSION
- * =================================== */
 
-/* Emit a TAC instruction */
 TACInstruction *emit_tac(const char *op, const char *arg1, const char *arg2, const char *result)
 {
     TACInstruction *instr = (TACInstruction *)malloc(sizeof(TACInstruction));
@@ -89,7 +72,7 @@ TACInstruction *emit_tac(const char *op, const char *arg1, const char *arg2, con
     return instr;
 }
 
-/* Emit a label */
+// emit a label
 TACInstruction *emit_label(int label_num)
 {
     TACInstruction *instr = emit_tac("label", NULL, NULL, NULL);
@@ -97,11 +80,7 @@ TACInstruction *emit_label(int label_num)
     return instr;
 }
 
-/* ===================================
- * TAC GENERATION FOR EXPRESSIONS
- * =================================== */
 
-/* Generate TAC for expressions */
 char *generate_tac_expression(ASTNode *node)
 {
     if (!node)
@@ -128,6 +107,10 @@ char *generate_tac_expression(ASTNode *node)
     }
 
     case AST_IDENTIFIER:
+    {
+        return strdup(node->sval);
+    }
+
     case AST_ACCOUNT_REF:
     {
         return strdup(node->sval);
@@ -154,7 +137,7 @@ char *generate_tac_expression(ASTNode *node)
 
     case AST_METRIC:
     {
-        // For account.metric references
+        
         char *temp = new_temp();
         emit_tac("=", node->sval, NULL, temp);
         return temp;
@@ -239,7 +222,7 @@ char *generate_tac_expression(ASTNode *node)
         char *right = generate_tac_expression(node->right);
         char *result = new_temp();
 
-        const char *op = (node->ival == 0) ? "&&" : "||";
+        const char *op = (node->ival == LOGICAL_AND) ? "&&" : "||";
         emit_tac(op, left, right, result);
         free(left);
         free(right);
@@ -252,7 +235,7 @@ char *generate_tac_expression(ASTNode *node)
         char *operand = generate_tac_expression(node->left);
         char *result = new_temp();
 
-        if (node->ival == 0)
+        if (node->ival == UNARY_NOT)
         { // NOT operation
             emit_tac("!", operand, NULL, result);
         }
@@ -265,14 +248,11 @@ char *generate_tac_expression(ASTNode *node)
     }
 }
 
-/* ===================================
- * TAC GENERATION FOR STATEMENTS
- * =================================== */
 
 void generate_tac_statement(ASTNode *node);
 void generate_tac_statements(ASTNode *node);
 
-/* Generate TAC for a single statement */
+// Generate TAC for a single statement
 void generate_tac_statement(ASTNode *node)
 {
     if (!node)
@@ -336,7 +316,7 @@ void generate_tac_statement(ASTNode *node)
                 value_str = strdup(value_buf);
             }
             char *temp2 = new_temp();
-            emit_tac(node->ival == -1 ? "-" : "+", temp1, value_str, temp2);
+            emit_tac(node->ival == UPDATE_SUB ? "-" : "+", temp1, value_str, temp2);
 
             // Store back
             emit_tac("=", temp2, NULL, account_metric);
@@ -445,14 +425,12 @@ void generate_tac_statement(ASTNode *node)
         int start_label = new_label();
         int end_label = new_label();
 
-        // Initialize loop counter
         char counter[32];
         sprintf(counter, "loop_i_%d", start_label);
         char init_val[32];
         sprintf(init_val, "%d", node->ival);
         emit_tac("=", init_val, NULL, counter);
 
-        // Start label
         emit_label(start_label);
 
         // Check condition: i <= end_value
@@ -662,7 +640,7 @@ void generate_tac_statement(ASTNode *node)
     {
         if (node->sval2)
         {
-            emit_tac(node->sval, node->sval2, NULL, NULL);
+            emit_tac(node->sval, node->sval2, NULL, NULL); // fun name tai op
         }
         else
         {
@@ -698,14 +676,14 @@ void generate_tac_statement(ASTNode *node)
         break;
     }
 
-    /* NEW: Ask for user input */
+    //Ask for user input 
     case AST_ASK_FOR:
     {
         emit_tac("input", node->sval, NULL, NULL);
         break;
     }
 
-    /* NEW: String operations like reverse */
+    // String operations like reverse 
     case AST_STRING_OP:
     {
         emit_tac(node->sval, node->sval2 ? node->sval2 : "", NULL, NULL);
@@ -717,7 +695,7 @@ void generate_tac_statement(ASTNode *node)
     }
 }
 
-/* Generate TAC for a list of statements */
+// generate TAC for a list of statements
 void generate_tac_statements(ASTNode *node)
 {
     while (node)
@@ -727,11 +705,6 @@ void generate_tac_statements(ASTNode *node)
     }
 }
 
-/* ===================================
- * TAC OUTPUT & PRINTING
- * =================================== */
-
-/* Print TAC instructions to file */
 void print_tac_to_file(FILE *fp)
 {
     fprintf(fp, "\n💻 THREE-ADDRESS CODE (TAC):\n");
@@ -743,7 +716,6 @@ void print_tac_to_file(FILE *fp)
 
     while (instr)
     {
-        // Print label
         if (instr->label >= 0)
         {
             fprintf(fp, "L%d:\n", instr->label);
@@ -753,7 +725,6 @@ void print_tac_to_file(FILE *fp)
             fprintf(fp, "%4d: ", line_num++);
             instruction_count++;
 
-            // Print instruction
             if (strcmp(instr->op, "=") == 0)
             {
                 fprintf(fp, "%s = %s\n", instr->result, instr->arg1);
@@ -819,13 +790,13 @@ void print_tac_to_file(FILE *fp)
             }
             else if (instr->arg2)
             {
-                // Binary operation
+                //binary operation
                 fprintf(fp, "%s = %s %s %s\n",
                         instr->result, instr->arg1, instr->op, instr->arg2);
             }
             else
             {
-                // Unary or special operation
+                //unary or special operation
                 if (instr->result)
                 {
                     fprintf(fp, "%s = %s %s\n", instr->result, instr->op, instr->arg1 ? instr->arg1 : "");
@@ -848,7 +819,6 @@ void print_tac_to_file(FILE *fp)
     fprintf(fp, "========================================\n");
 }
 
-/* Free TAC memory */
 void free_tac()
 {
     TACInstruction *current = tac_head;
@@ -865,4 +835,4 @@ void free_tac()
     tac_head = tac_tail = NULL;
 }
 
-#endif /* TAC_GENERATOR_H */
+#endif 

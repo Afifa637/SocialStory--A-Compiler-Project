@@ -27,6 +27,24 @@ invalid_keyword goes here.
 // --- VALID STATEMENT AFTER RECOVERY ---
 The account B started with 7 followers.
 
+// --- INTENTIONAL SYNTAX ERROR 3 (operator token hint) ---
+The account A now has 10 + likes.
+
+// --- VALID STATEMENT AFTER RECOVERY ---
+Announce "continued after error three".
+
+// --- INTENTIONAL SYNTAX ERROR 4 (comma/list hint) ---
+The account A started with 5, likes.
+
+// --- VALID STATEMENT AFTER RECOVERY ---
+Announce "continued after error four".
+
+// --- INTENTIONAL SYNTAX ERROR 5 (brace hint) ---
+}
+
+// --- VALID STATEMENT AFTER RECOVERY ---
+Announce "continued after error five".
+
 // --- CONDITIONAL USING BOTH ACCOUNTS ---
 When A likes more than 0 also B followers more than 0
 {

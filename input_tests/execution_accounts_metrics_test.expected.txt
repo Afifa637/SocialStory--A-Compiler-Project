@@ -11,6 +11,48 @@ Input file : tests/execution_accounts_metrics_test.txt
 ├─ PROGRAM
   Body:
     ├─ ANNOUNCE (execution accounts metrics)
+    ├─ ACCOUNT_CREATE (Exec)
+    ├─ ACCOUNT_CREATE (Beta)
+    ├─ ACCOUNT_INIT (Exec)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Exec)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (Exec)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [10]
+        ├─ LITERAL_INT [15]
+    ├─ ACCOUNT_INIT (Exec)
+      ├─ METRIC (likes)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [2]
+        ├─ LITERAL_INT [50]
+    ├─ ACCOUNT_INIT (Beta)
+      ├─ METRIC (engagement rate)
+    ├─ ACCOUNT_INIT (Beta)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_UPDATE (Exec)
+      ├─ METRIC (likes)
+      ├─ LITERAL_INT [5]
+    ├─ ACCOUNT_UPDATE (Exec)
+      ├─ METRIC (followers)
+      ├─ LITERAL_INT [3]
+    ├─ ACCOUNT_UPDATE (Exec)
+      ├─ METRIC (views)
+      ├─ LITERAL_INT [20]
+    ├─ ACCOUNT_UPDATE (Exec)
+      ├─ METRIC (comments)
+      ├─ LITERAL_INT [2]
+    ├─ ACCOUNT_UPDATE (Beta)
+      ├─ METRIC (viral)
+    ├─ ACCOUNT_UPDATE (Beta)
+      ├─ METRIC (trending)
+    ├─ STORY_POST (Exec)
+      ├─ LITERAL_STRING (Campaign Launch)
+    ├─ DISPLAY (Exec) [likes]
+    ├─ DISPLAY (Exec)
+    ├─ DISPLAY (Beta) [followers]
+    ├─ DISPLAY (Beta)
   ├─ ANNOUNCE (execution accounts metrics)
   ├─ ACCOUNT_CREATE (Exec)
   ├─ ACCOUNT_CREATE (Beta)

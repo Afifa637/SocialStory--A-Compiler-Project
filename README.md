@@ -40,6 +40,29 @@ On Windows shells, use `./socialstory.exe` when needed.
 
 ---
 
+## Single-file showcase (with explicit runtime input values)
+
+Use:
+
+```bash
+make showcase
+```
+
+This runs `INPUT.showcase_all_features.txt` and pipes runtime values from:
+
+- `INPUT.showcase_runtime_values.txt`
+
+Current values in that file are:
+
+- line 1: `12` (for `Ask for input_likes.`)
+- line 2: `100` (for `Ask for input_followers.`)
+
+Showcase report output file:
+
+- `OUTPUT.showcase_all_feature.txt`
+
+---
+
 ## Run these first (evaluator fast path)
 
 1. `sample_programs/01_account_baseline_report.txt` — clear baseline analytics workflow
@@ -473,4 +496,28 @@ make build
 make test
 
 # 5) Optional manual run
-make run INPUT=sample_programs/01_account_baseline_report.txt -->
+make run INPUT=sample_programs/01_account_baseline_report.
+
+
+dsl SM analytics
+
+duplicate acc name symbol table
+
+declare na kore symbol use  symbol table
+
+float -> int e rejection  interpreter 135
+
+error hint on syntax error y
+
+error recovery with invalid token y 318
+
+case-insensitive keywords but case-sensitive identifiers symbol table r
+
+built in functions for analytics interpreter e
+
+visible optimization %
+
+feed array analytics with bounds checks interpreter e 124
+
+function arity mismatch semantic + runtime error inter 1214
+txt -->

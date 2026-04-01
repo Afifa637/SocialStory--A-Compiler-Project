@@ -14,6 +14,40 @@ Input file : tests/semantic_runtime_safety_test.txt
 ├─ PROGRAM
   Body:
     ├─ ACCOUNT_CREATE (Safety)
+    ├─ ACCOUNT_CREATE (Safety)
+    ├─ ACCOUNT_INIT (Ghost)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (safety)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Safety)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Safety)
+      ├─ METRIC (likes)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [10]
+        ├─ LITERAL_INT [0]
+    ├─ ACCOUNT_INIT (Safety)
+      ├─ METRIC (comments)
+      ├─ BINARY_OP
+        ├─ LITERAL_INT [10]
+        ├─ LITERAL_INT [0]
+    ├─ FEED_DECLARE
+      ├─ METRIC (posts)
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_FLOAT [1.50]
+      ├─ LITERAL_INT [77]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [5]
+      ├─ LITERAL_INT [99]
+    ├─ FUNCTION_DEF (addone)
+      Body:
+        ├─ RETURN
+          ├─ BINARY_OP
+            ├─ IDENTIFIER (x)
+            ├─ LITERAL_INT [1]
+      ├─ IDENTIFIER (x)
+    ├─ FUNCTION_CALL (addone)
+      ├─ LITERAL_INT [1]
   ├─ ACCOUNT_CREATE (Safety)
   ├─ ACCOUNT_CREATE (Safety)
   ├─ ACCOUNT_INIT (Ghost)

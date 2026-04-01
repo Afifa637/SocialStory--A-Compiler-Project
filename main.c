@@ -1,33 +1,19 @@
-/* ============================================================
- * main.c  —  SocialStoryScript Compiler Driver
- *
- * This is the ONLY file that contains main().
- * All compiler logic lives in:
- *   socialstory.l           Lexer  (Flex)
- *   socialstory_parser.y    Grammar + AST (Bison)
- *   interpreter.h           Runtime execution engine
- *   tac_generator.h         Three-Address Code
- *   optimizer.h             Optimization passes
- *   symbol_table.h          Symbol table
- *   ast_functions.h         AST helpers
- *   statistics.h            Reporting
- *
- * Build (after flex + bison):
- *   gcc -o socialstory socialstory_parser.tab.c lex.yy.c main.c -lm
- * ============================================================ */
+// Build (after flex + bison):
+// gcc -o socialstory socialstory_parser.tab.c lex.yy.c main.c -lm
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#ifdef _WIN32
+#define strcasecmp _stricmp
+#endif
 #include "compiler.h"
 
-/* Cleanup functions from the compiler headers */
 extern void free_ast(void *root);
 extern void free_symbol_table(void);
 extern void free_tac(void);
 extern void *ast_root;
 
-/* ---- Banner ---- */
 static void print_banner(const char *infile, const char *outfile)
 {
     printf("\n");
@@ -40,7 +26,6 @@ static void print_banner(const char *infile, const char *outfile)
     printf("╚══════════════════════════════════════════════════════╝\n\n");
 }
 
-/* ---- Result box ---- */
 static void print_result(int success, const char *outfile)
 {
     if (success)
@@ -65,14 +50,13 @@ static void print_result(int success, const char *outfile)
         printf("║  Lexical errors  : %-25d ║\n", error_count);
         printf("║  Semantic errors : %-25d ║\n", semantic_errors);
         printf("╠══════════════════════════════════════════════╣\n");
+        printf("║  Report: %-35s ║\n", outfile);
+        printf("╠══════════════════════════════════════════════╣\n");
         printf("║  Fix diagnostics and run again.              ║\n");
         printf("╚══════════════════════════════════════════════╝\n\n");
     }
 }
 
-/* ============================================================
- * main()
- * ============================================================ */
 int main(int argc, char **argv)
 {
 
@@ -97,7 +81,14 @@ int main(int argc, char **argv)
         if (*p == '/' || *p == '\\')
             base = p + 1;
     }
-    snprintf(output_filename, sizeof(output_filename), "output_%s", base);
+    if (strcasecmp(base, "INPUT.showcase_all_features.txt") == 0)
+    {
+        snprintf(output_filename, sizeof(output_filename), "OUTPUT.showcase_all_feature.txt");
+    }
+    else
+    {
+        snprintf(output_filename, sizeof(output_filename), "output_%s", base);
+    }
 
     FILE *out = fopen(output_filename, "w");
     if (!out)

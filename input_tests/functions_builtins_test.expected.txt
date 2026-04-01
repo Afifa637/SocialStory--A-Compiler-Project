@@ -11,6 +11,64 @@ Input file : tests/functions_builtins_test.txt
 ├─ PROGRAM
   Body:
     ├─ ANNOUNCE (functions builtins)
+    ├─ ACCOUNT_CREATE (Built)
+    ├─ ACCOUNT_INIT (Built)
+      ├─ METRIC (likes)
+    ├─ ACCOUNT_INIT (Built)
+      ├─ METRIC (followers)
+    ├─ ACCOUNT_INIT (Built)
+      ├─ METRIC (comments)
+    ├─ ACCOUNT_INIT (Built)
+      ├─ METRIC (shares)
+    ├─ FUNCTION_DEF (Ping)
+      Body:
+        ├─ ANNOUNCE (PING)
+        ├─ RETURN
+          ├─ LITERAL_INT [1]
+    ├─ FUNCTION_DEF (AddFive)
+      Body:
+        ├─ RETURN
+          ├─ BINARY_OP
+            ├─ IDENTIFIER (x)
+            ├─ LITERAL_INT [5]
+      ├─ IDENTIFIER (x)
+    ├─ FUNCTION_DEF (AddTwo)
+      Body:
+        ├─ RETURN
+          ├─ BINARY_OP
+            ├─ IDENTIFIER (a)
+            ├─ IDENTIFIER (b)
+      ├─ IDENTIFIER (a)
+    ├─ FUNCTION_CALL (Ping)
+    ├─ FUNCTION_CALL (AddFive)
+      ├─ LITERAL_INT [7]
+    ├─ FUNCTION_CALL (AddTwo)
+      ├─ LITERAL_INT [3]
+    ├─ BUILTIN_CALL (calculate_virality) [Built]
+    ├─ BUILTIN_CALL (calculate_engagement) [Built]
+    ├─ BUILTIN_CALL (analyze_growth) [Built]
+    ├─ BUILTIN_CALL (check_if_trending) [Built]
+    ├─ BUILTIN_CALL (count_total_engagement)
+    ├─ BUILTIN_CALL (find_top_post)
+    ├─ BUILTIN_CALL (find_max_viral_account)
+    ├─ BUILTIN_CALL (reverse_growth) [Built]
+    ├─ FEED_DECLARE
+      ├─ METRIC (posts)
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [0]
+      ├─ LITERAL_INT [100]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [1]
+      ├─ LITERAL_INT [250]
+    ├─ FEED_SET (likes)
+      ├─ LITERAL_INT [2]
+      ├─ LITERAL_INT [75]
+    ├─ BUILTIN_CALL (find_highest_reach)
+    ├─ BUILTIN_CALL (find_total_reach)
+    ├─ STRING_OP (detect_spam) [buy followers now click here]
+    ├─ BUILTIN_CALL (clamp_engagement)
+    ├─ STRING_OP (reverse) [Hello World]
+    ├─ DISPLAY (Built)
   ├─ ANNOUNCE (functions builtins)
   ├─ ACCOUNT_CREATE (Built)
   ├─ ACCOUNT_INIT (Built)
@@ -24,6 +82,8 @@ Input file : tests/functions_builtins_test.txt
   ├─ FUNCTION_DEF (Ping)
     Body:
       ├─ ANNOUNCE (PING)
+      ├─ RETURN
+        ├─ LITERAL_INT [1]
   ├─ FUNCTION_DEF (AddFive)
     Body:
       ├─ RETURN
@@ -248,8 +308,8 @@ Temporary variables used: 0/12
 [Line 56] 📝 feed[0].likes = 100
 [Line 57] 📝 feed[1].likes = 250
 [Line 58] 📝 feed[2].likes = 75
-[Line 59] 📡 RESULT: Highest reach = 0.00 (account: Built)
-[Line 60] 📡 RESULT: Total reach in feed = 0.00
+[Line 59] 📡 RESULT: Highest reach in feed = 250.00 (index: 1)
+[Line 60] 📡 RESULT: Total reach in feed = 425.00
 [Line 63] 🔍 Spam detection for "buy followers now click here": ⚠️ SPAM DETECTED!
 [Line 64] 🔧 Clamped Built engagement: 40.00 → 40.00
 [Line 65] 🔄 Reversed caption: "dlroW olleH"
